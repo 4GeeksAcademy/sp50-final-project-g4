@@ -30,7 +30,10 @@ class Professors(db.Model):
     email_professor = db.Column(db.String, unique=True)
     rol = db.Column(db.Enum('admin', 'professor', 'parent'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), unique=True)
-    users = db.relationship(Users)
+    users = db.relationship(Users, back_populates='professors', uselist=False)
+
+    def __repr__(self):
+        return f'<Professors: {self.name} {self.lastname}>'
 
     def serialize(self):
         return {'id': self.id,
@@ -54,9 +57,12 @@ class Parents(db.Model):
     email_parent = db.Column(db.String, unique=True)
     email_parent_2 = db.Column(db.String, unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), unique=True)
+    users = db.relationship(Users, back_populates='parents', uselist=False)
     student_id = db.Column(db.Integer, db.ForeignKey('students.id'), unique=True)
-    users = db.relationship(Users)
     students = db.relationship(Students)
+
+    def __repr__(self):
+        return f'<Parents: {self.id}, {self.name} {self.lastname}>'
 
     def serialize(self):
         return {'id': self.id,
@@ -71,21 +77,27 @@ class Students(db.Model):
     lastname = db.Column(db.String, nullable=False)
     date_of_birth = db.Column(db.Date, nullable=False)
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'), unique=True)
-    group = db.relationship(Groups)
+    group = db.relationship(Groups, back_populates='students', uselist=False)
 
+    def __repr__(self):
+        return f'<Students: {self.id}, {self.name} {self.lastname}>'
+        
     def serialize(self):
         return {'id': self.id,
                 'name': self.name,
-                'is_professor': self.is_professor}
+                'lastname': self.lastname,
+                'date_of_birth': self.date_of_birth}
 
 
 class Groups(db.Model):
     __tablename__ = 'groups'
     id = db.Column(db.Integer, primary_key=True)
     name_group = db.Column(db.String, nullable=False)
-    students = db.relationship('Students', backref='group', lazy=True)
     professor_id = db.Column(db.Integer, db.ForeignKey('professors.id'), unique=True)
-    professors = db.relationship(Professors)
+    professors = db.relationship(Professors, back_populates='group', uselist=False)
+
+    def __repr__(self):
+        return f'<Groups: {self.name_group}>'
 
     def serialize(self):
         return {'id': self.id,
@@ -103,8 +115,11 @@ class Notifications(db.Model):
     notes = db.Column(db.String)
     professor_id = db.Column(db.Integer, db.ForeignKey('professors.id'), unique=True)
     student_id = db.Column(db.Integer, db.ForeignKey('students.id'), unique=True)
-    professors = db.relationship(Professors)
+    professors = db.relationship(Professors, back_populates='notifications', uselist=False)
     students = db.relationship(Students)
+    
+    def __repr__(self):
+        return f'<Professors: {self.name} {self.lastname}>'
 
     def serialize(self):
         return {'id': self.id,
@@ -117,14 +132,17 @@ class Notifications(db.Model):
 
 
 class GlobalNotifications(db.Model):
+    __tablename__ = 'global_notifications'
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.Enum('Comió bien','Comió poco', 'No comió'))
     date = db.Column(db.Date, nullable=False)
     description = db.Column(db.String)
     url_img = db.Column(db.String)
     professor_id = db.Column(db.Integer, db.ForeignKey('professors.id'), unique=True)
-    professors = db.relationship(Professors)
-
+    professors = db.relationship(Professors, back_populates='global_notification', uselist=False)
+    
+    def __repr__(self):
+        return f'<Professors: {self.name} {self.lastname}>'
 
     def serialize(self):
         return {'id': self.id,
