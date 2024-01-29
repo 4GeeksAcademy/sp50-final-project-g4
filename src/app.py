@@ -32,8 +32,8 @@ setup_admin(app)
 setup_commands(app)
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(api, url_prefix='/api')
-# Setup the Flask-JWT-Extended extension
-app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET")
+
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET")  # Change this!
 jwt = JWTManager(app)
 
 

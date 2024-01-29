@@ -1,7 +1,7 @@
 import os
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
-from .models import db, Users, Professors, Parents, Students
+from .models import db, Users, Professors, Parents, Students, Groups, Notifications, GlobalNotifications
 
 
 def setup_admin(app):
@@ -13,9 +13,9 @@ def setup_admin(app):
     admin.add_view(ModelView(Professors, db.session))
     admin.add_view(ModelView(Parents, db.session))
     admin.add_view(ModelView(Students, db.session))
-    #admin.add_view(ModelView(Groups, db.session))
-    #admin.add_view(ModelView(Notifications, db.session))
-    #admin.add_view(ModelView(GlobalNotifications, db.session))
+    admin.add_view(ModelView(Groups, db.session))
+    admin.add_view(ModelView(Notifications, db.session))
+    admin.add_view(ModelView(GlobalNotifications, db.session))
     """
     You can duplicate that line to add mew models
     admin.add_view(ModelView(YourModelName, db.session))
