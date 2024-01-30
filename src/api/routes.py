@@ -4,7 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-from api.models import db, Users, Notifications, GlobalNotifications, Professors, Parents, Students, Groups 
+from api.models import db, Users, Professors, Parents, Groups, Students, Notifications, GlobalNotifications 
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import bcrypt
 
@@ -12,6 +12,7 @@ import bcrypt
 api = Blueprint('api', __name__)
 CORS(api)  # Allow CORS requests to this API
 
+""" 
 @api.route('/login', methods=['POST'])
 def handle_login():
     email = request.json('email')
@@ -43,15 +44,18 @@ def handle_login():
         return response_body, 403
     response_body["message"] = "Usted no es usuario"
     return response_body, 403            
+ """
 
+""" 
 @api.route('/logout', methods=["POST"])  
 @jwt_required()
 def handle_logout():
     user_id = get_jwt_identity()[0]  
     response_body = {'message': 'Logout successful'}
     return response_body, 200
-   
+ """
 
+""" 
 @api.route('/users', methods=['POST', 'GET'])
 @jwt_required
 def handle_users():
@@ -103,7 +107,7 @@ def handle_users():
                 return response_body, 200             
     else:
         return jsonify({'error': 'usuario no logueado'}), 403
-
+"""
 
 # @api.route('/notifications/list', methods=['GET'])
 # @jwt_required()
@@ -113,7 +117,7 @@ def handle_users():
 #     notifications = [notification.serialize() for notification in notifications]
 #     return jsonify(notifications), 200
 
-
+""" 
 @api.route('/notifications', methods=['POST'])
 @jwt_required
 def create_notification():
@@ -134,7 +138,7 @@ def create_notification():
     db.session.add(new_notification)
     db.session.commit()
     return jsonify({"message": "Notificacíon creada correctamente", "notificacíon": new_notification.serialize()}), 201
-
+"""
 
 # @api.route('/notifications/<int:notifications_id>', methods=['PUT'])
 # @jwt_required
