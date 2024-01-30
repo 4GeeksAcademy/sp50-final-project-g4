@@ -5,19 +5,12 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
-association_table = db.Table('association',
-    db.Column('Students', db.Integer, db.ForeignKey('students.id'), primary_key=True),
-    db.Column('GlobalNotifications', db.Integer, db.ForeignKey('global_notifications.id'), primary_key=True)
-)
-
-
 class Users(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, unique=False, nullable=False)
     is_professor = db.Column(db.Boolean, nullable=False)
-    professors = db.relationship('Professors', back_populates='users')
 
     def __repr__(self):
         return f'<User: {self.email}>'
@@ -35,12 +28,9 @@ class Professors(db.Model):
     lastname = db.Column(db.String, nullable=False)
     address =  db.Column(db.String, nullable=False)
     phone = db.Column(db.Integer, nullable=False)
-    email_professor = db.Column(db.String, unique=True)
-    rol = db.Column(db.Enum('admin', 'professor', name='is_admin'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    users = db.relationship('Users', back_populates='professors')
-    notifications = db.relationship('Notifications')
-    global_notifications = db.relationship('GlobalNotifications', backref='professors')
+    is_admin = db.Column(db.Boolean, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), unique=True)
+    users = db.relationship('Users')
 
 
     def __repr__(self):
@@ -52,8 +42,8 @@ class Professors(db.Model):
                 'lastname': self.lastname,
                 'address': self.address,
                 'phone': self.phone,
-                'email_professor': self.users.email,
-                'rol': self.rol}
+                'is_admin': self.is_admin,
+                'user_id': self.user_id}
 
 
 class Parents(db.Model):
@@ -63,11 +53,8 @@ class Parents(db.Model):
     lastname = db.Column(db.String, nullable=False)
     address =  db.Column(db.String, nullable=False)
     phone = db.Column(db.Integer, nullable=False)
-    email_parent = db.Column(db.String, unique=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), unique=True)
     users = db.relationship('Users')
-    # student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
-    students = db.relationship('Students')
 
 
 
@@ -80,8 +67,7 @@ class Parents(db.Model):
                 'lastname': self.lastname,
                 'address': self.address,
                 'phone': self.phone,
-                'email_parent': self.users.email,
-                'students': self.students.serialize()}
+                'user_id': self.user_id}
 
 
 class Students(db.Model):
@@ -91,9 +77,9 @@ class Students(db.Model):
     lastname = db.Column(db.String, nullable=False)
     date_of_birth = db.Column(db.Date, nullable=False)
     parent_id = db.Column(db.Integer, db.ForeignKey('parents.id'))
-    notifications = db.relationship('Notifications', backref='students', lazy=True)
-    group = db.relationship('Groups', uselist=False)
-    global_notification = db.relationship('GlobalNotifications', secondary=association_table)
+    parents = db.relationship('Parents', foreign_keys=[parent_id])
+    group_id = db.Column(db.Integer, db.ForeignKey('groups.id'))
+    groups = db.relationship('Groups', foreign_keys=[group_id])
     
 
     def __repr__(self):
@@ -104,39 +90,39 @@ class Students(db.Model):
                 'name': self.name,
                 'lastname': self.lastname,
                 'date_of_birth': self.date_of_birth,
-                'parent_id': self.parent_id}
+                'parent_id': self.parent_id,
+                'group_id': self.group_id}
 
 
 class Groups(db.Model):
     __tablename__ = 'groups'
     id = db.Column(db.Integer, primary_key=True)
-    name_group = db.Column(db.String, nullable=False)
-    professor = db.relationship('Professors', backref='groups')
+    name= db.Column(db.String, nullable=False)
     professor_id = db.Column(db.Integer, db.ForeignKey('professors.id'))
-    student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
-    student = db.relationship('Students',)
+    professor = db.relationship('Professors')
 
 
     def __repr__(self):
-        return f'<Groups: {self.id} {self.name_group}>'
+        return f'<Groups: {self.id} {self.name}>'
 
     def serialize(self):
         return {'id': self.id,
-                'name': self.name_group,
-                'professor_id': self.professor_id,
-                'student_id': [student.serialize() for student in self.students]}
+                'name': self.name,
+                'professor_id': self.professor_id}
 
 
 class Notifications(db.Model):
     __tablename__ = 'notifications'
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date)
-    eat = db.Column(db.Enum('Comió bien', 'Comió poco', 'No comió', name='eat_enum'))
-    sleep = db.Column(db.Enum('Durmió bien','Durmió poco', 'no Durmió', name='sleep_enum'))
+    eat = db.Column(db.Enum('Comió bien', 'Comió poco', 'No comió', name='eat'))
+    sleep = db.Column(db.Enum('Durmió bien','Durmió poco', 'no Durmió', name='sleep'))
     poop = db.Column(db.Boolean)
     notes = db.Column(db.String)
     professor_id = db.Column(db.Integer, db.ForeignKey('professors.id'))
+    professors = db.relationship('Professors', foreign_keys=[professor_id])
     student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
+    students = db.relationship('Students', foreign_keys=[student_id])
     
     def __repr__(self):
         return f'<Professors: {self.id}>'
@@ -155,23 +141,29 @@ class Notifications(db.Model):
 class GlobalNotifications(db.Model):
     __tablename__ = 'global_notifications'
     id = db.Column(db.Integer, primary_key=True)
-    type = db.Column(db.Enum('Festivo', 'Evento', 'Huelga', 'Notificación especial', name='type_enum'))
+    kind = db.Column(db.Enum('Festivo', 'Evento', 'Huelga', 'Notificación especial', name='kind'))
     date = db.Column(db.Date, nullable=False)
     description = db.Column(db.String)
     url_img = db.Column(db.String)
     professor_id = db.Column(db.Integer, db.ForeignKey('professors.id'))
-    student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
-    student = db.relationship('Students', secondary=association_table, backref='global_notifications')
+    professors = db.relationship('Professors')
     
     
     def __repr__(self):
-        return f'<Professors: {self.id} {self.type}>'
+        return f'<Professors: {self.id} {self.kind}>'
 
     def serialize(self):
         return {'id': self.id,
-                'type': self.type,
+                'type': self.kind,
                 'date': self.date,
                 'description': self.description,
                 'url_img': self.url_img,
-                'professor_id': self.professor_id,
-                'student_id': self.student_id}
+                'professor_id': self.professor_id}
+
+
+
+# user, like is_admin, generate password.
+# si no esta validado, pedir que la cambie.
+# Agregar un campo en la base "is_validate"
+# hacer un endpoint para cambiar contraseña, pedir 1er contraseña, contraseña nueva y id.
+# Validar si la 1er contraseña es ok, validar y reemplazar.
