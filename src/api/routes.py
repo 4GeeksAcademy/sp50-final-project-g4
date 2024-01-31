@@ -55,16 +55,14 @@ def handle_logout():
 @jwt_required()
 def handle_users():
     id = get_jwt_identity()
-    response_body = results = {}
-    if id:
-        user = Users.query.get(id[0]['id'])
-        user = user.serialize()
-        if user.is_admin:
-                professor = Professors.query.filter_by(user_id = id)
-                parents = Parents.query.filter_by(user_id = id)
-                return jsonify(users), 200           
-    else:
-        return jsonify({'error': 'usuario no logueado'}), 403
+    try:
+        if id[1]['is_admin']:
+            users= Users.query.all()
+            user_data = [user.serialize() for user in users]
+            return jsonify ({'user': user_data}), 200
+        return jsonify({'error': 'Acceso no autorizado'}), 403             
+    except:    
+        return jsonify({'error': 'Acceso no autorizado'}), 403
 
 
 @api.route('/notifications', methods=['GET'])
@@ -84,15 +82,13 @@ def create_notification():
     professor = Professors.query.get(id[0]['id'])
     if professor != 'professor':
         return jsonify({"error": "Acceso no autorizado"}), 403 
-    new_notification = Notifications(
-                                     date=data['date'],
+    new_notification = Notifications(date=data['date'],
                                      eat=data['eat'],
                                      sleep=data['sleep'],
                                      poop=data['poop'],
                                      notes=data['notes'],
                                      professor_id=data['professor_id'],
-                                     student_id=data['student_id']
-                                     )
+                                     student_id=data['student_id'])
     db.session.add(new_notification)
     db.session.commit()
     return jsonify({"message": "Notificacíon creada correctamente", "notificacíon": new_notification.serialize()}), 201
@@ -151,14 +147,12 @@ def create_globalnotification():
     professor = Professors.query.get(id[0]['id'])
     if professor != 'professor':
         return jsonify({"error": "Acceso no autorizado"}), 403 
-    new_globalnotification = GlobalNotifications(
-                                                 kind=data['kind'],
+    new_globalnotification = GlobalNotifications(kind=data['kind'],
                                                  date=data['date'],
                                                  description=data['description'],
                                                  url_img=data['url_img'],
                                                  professor_id=data['professor_id'],
-                                                 professors=data['professors']
-                                                 )
+                                                 professors=data['professors'])
     db.session.add(new_globalnotification)
     db.session.commit()
     return jsonify({"message": "Notificacíon global creada correctamente", "notificacíon global": new_globalnotification.serialize()}), 201
@@ -203,9 +197,9 @@ def delete_globalnotifications(globalnotifications_id):
 @jwt_required()
 def handle_professor():
     id = get_jwt_identity()
-    user = Professors.query.get(id[0]['id'])
+    user = Professors.query.get(id[0]['id']) 
     if user.is_admin:
-        professors = Professors.query.all()
+        professors = Professors.query.all() # ver mas adelante mostrar el email. se puede utilizar un .join
         professor_data = [professor.serialize() for professor in professors]
         return jsonify ({'professors': professor_data}), 200
     return jsonify({"error": "Acceso no autorizado"}), 403
@@ -225,17 +219,15 @@ def professor_details(professor_id):
 def create_professor():
     data = request.json
     id = get_jwt_identity()
-    professor = Professors.query.get(id)
+    professor = Professors.query.get(id) #TODO: para corregir 
     if professor.is_admin:
         return jsonify({"error": "Acceso no autorizado"}), 403 
-    new_professor = Professors(
-                               name=data['name'],
+    new_professor = Professors(name=data['name'],
                                lastname=data['lastname'],
                                address=data['address'],
                                phone=data['phone'],
                                is_admin=data['is_admin'],
-                               user_id=data['user_id']
-                               )
+                               user_id=data['user_id'])
     db.session.add(new_professor)
     db.session.commit()
     return jsonify({"message": "Profesor creado correctamente", "professor": new_professor.serialize()}), 201
@@ -304,13 +296,11 @@ def create_parent():
     parents = Parents.query.get(id)
     if professor.is_admin:
         return jsonify({"error": "Acceso no autorizado"}), 403 
-    new_parent = Parents(
-                         name=data['name'],
+    new_parent = Parents(name=data['name'],
                          lastname=data['lastname'],
                          address=data['address'],
                          phone=data['phone'],
-                         user_id=data['user_id']
-                         )
+                         user_id=data['user_id'])
     db.session.add(new_parent)
     db.session.commit()
     return jsonify({"message": "Representante creado correctamente", "Representate": new_parent.serialize()}), 201
@@ -379,15 +369,13 @@ def create_student():
     students = Students.query.get(id)
     if professor.is_admin:
         return jsonify({"error": "Acceso no autorizado"}), 403  
-    new_student = Students(
-                           name=data['name'],
+    new_student = Students(name=data['name'],
                            lastname=data['lastname'],
                            date_of_birth=data['date_of_birth'],
                            parent_id=data['parent_id'],
                            parents=data['parents'],
                            group=data['group'],
-                           group_id=data['group_id']
-                           )
+                           group_id=data['group_id'])
     db.session.add(new_student)
     db.session.commit()
     return jsonify({"message": "Estudiante creado correctamente", "Representate": new_student.serialize()}), 201
@@ -437,11 +425,9 @@ def create_group():
     groups = Groups.query.get(id)
     if professor.is_admin:
         return jsonify({"error": "Acceso no autorizado"}), 403  
-    new_group = Groups(
-                       name=data['group'],
+    new_group = Groups(name=data['group'],
                        professor_id=data['professor_id'],
-                       professor=data['professor']
-                       )
+                       professor=data['professor'])
     db.session.add(new_group)
     db.session.commit()
     return jsonify({"message": "Grupo creado correctamente", "Grupo": new_group.serialize()}), 201
@@ -482,19 +468,18 @@ def update_group(group_id):
     return jsonify({"message": "Grupo actualizado correctamente", "Grupo": existing_groups.serialize()})
 
 
-@api.route('/admin/group/assign/<int:group_id>', methods=['DELETE'])
-@jwt_required()
-def delete_group(group_id):
-    id = get_jwt_identity()
-    groups = Groups.query.get(id)
-    if professor.is_admin:
-        return jsonify({"error": "Acceso no autorizado"}), 403 
-    existing_groups = Groups.query.get(group_id)
-    if not existing_groups:
-        return jsonify({"error": "Grupo no encontrado"}), 404 
-    db.session.delete(existing_groups)
-    db.session.commit()
-    return jsonify({"message": "Grupo eliminado correctamente"})
+# @api.route('/admin/group/assign/<int:group_id>', methods=['DELETE'])
+# @jwt_required()
+# def delete_group(group_id):
+#     id = get_jwt_identity()
+#     if not professor.is_admin: #TODO: corregir con try except 
+#         return jsonify({"error": "Acceso no autorizado"}), 403 
+#     existing_groups = Groups.query.get(group_id)
+#     if not existing_groups:
+#         return jsonify({"error": "Grupo no encontrado"}), 404 
+#     db.session.delete(existing_groups)
+#     db.session.commit()
+#     return jsonify({"message": "Grupo eliminado correctamente"})
 
 
 @api.route('/groups', methods=['GET'])
