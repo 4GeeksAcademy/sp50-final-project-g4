@@ -143,6 +143,62 @@ def handle_globalnotifications():
     return jsonify(global_notifications), 200
 
 
+@api.route('/globalnotifications', methods=['POST'])
+@jwt_required()
+def create_globalnotification():
+    data = request.json
+    id = get_jwt_identity()
+    professor = Professors.query.get(id[0]['id'])
+    if professor != 'professor':
+        return jsonify({"error": "Acceso no autorizado"}), 403 
+    new_globalnotification = GlobalNotifications(
+                                                 kind=data['kind'],
+                                                 date=data['date'],
+                                                 description=data['description'],
+                                                 url_img=data['url_img'],
+                                                 professor_id=data['professor_id'],
+                                                 professors=data['professors']
+                                                 )
+    db.session.add(new_globalnotification)
+    db.session.commit()
+    return jsonify({"message": "Notificacíon global creada correctamente", "notificacíon global": new_globalnotification.serialize()}), 201
+
+
+@api.route('/globalnotifications/<int:globalnotifications_id>', methods=['PUT'])
+@jwt_required()
+def update_globalnotifications(globalnotifications_id):
+    data = request.json
+    id = get_jwt_identity()
+    existing_globalnotifications = GlobalNotifications.query.get(globalnotifications_id)
+    if not existing_professor:
+        return jsonify({"error": "Profesor no encontrado"}), 404  
+    if existing_professor.professor != 'professor':
+        return jsonify({"error": "Acceso no autorizado"}), 403  
+    existing_globalnotifications.kind = data['kind']
+    existing_globalnotifications.date = data['date']
+    existing_globalnotifications.description = data['description']
+    existing_globalnotifications.url_img = data['url_img']
+    existing_globalnotifications.professor_id = data['professor_id']
+    existing_globalnotifications.professors = data['professors']
+    db.session.commit()
+    return jsonify({"message": "Notificacíon global actualizada correctamente", "notificacíon global": existing_globalnotifications.serialize()})
+
+
+@api.route('/globalnotifications/<int:globalnotifications_id>', methods=['DELETE'])
+@jwt_required()
+def delete_globalnotifications(globalnotifications_id):
+    id = get_jwt_identity()
+    professor = Professors.query.get(id[0]['id'])
+    if professor != 'professor':
+        return jsonify({"error": "Acceso no autorizado"}), 403  
+    existing_globalnotifications = GlobalNotifications.query.get(professor_id)
+    if not existing_globalnotifications:
+        return jsonify({"error": "Notificacíon no encontrado"}), 404  
+    db.session.delete(existing_globalnotifications)
+    db.session.commit()
+    return jsonify({"message": "Notificacíon global eliminada correctamente"})
+
+
 @api.route('/professors', methods=['GET'])
 @jwt_required()
 def handle_professor():
