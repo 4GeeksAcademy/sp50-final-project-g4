@@ -5,20 +5,11 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
-""" 
-association_table = db.Table('association',
-    db.Column('Students', db.Integer, db.ForeignKey('students.id'), primary_key=True),
-    db.Column('GlobalNotifications', db.Integer, db.ForeignKey('global_notifications.id'), primary_key=True)
-) 
-"""
-
-
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, unique=False, nullable=False)
     is_professor = db.Column(db.Boolean, nullable=False)
-    # professors = db.relationship('Professors', back_populates='users')
 
     def __repr__(self):
         return f'<User: {self.email}>'
@@ -35,14 +26,10 @@ class Professors(db.Model):
     lastname = db.Column(db.String, nullable=False)
     address =  db.Column(db.String, nullable=False)
     phone = db.Column(db.Integer, nullable=False)
-    # email_professor = db.Column(db.String, unique=True)  # Dato repetido (ya está en users)
-    # rol = db.Column(db.Enum('admin', 'professor', name='is_admin'), nullable=False)  # Deber ser boolean
     is_admin = db.Column(db.Boolean, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), unique=True)  # unique, relations un usuario a un professor
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), unique=True)
     users = db.relationship('Users')
-    # users = db.relationship('Users', back_populates='professors')
-    # notifications = db.relationship('Notifications')
-    # global_notifications = db.relationship('GlobalNotifications', backref='professors')
+
 
     def __repr__(self):
         return f'<Professors: {self.name} {self.lastname}>'
@@ -55,8 +42,6 @@ class Professors(db.Model):
                 'phone': self.phone,
                 'is_admin': self.is_admin,
                 'user_id': self.user_id}
-                # 'email_professor': self.users.email,
-                # 'rol': self.rol}
 
 
 class Parents(db.Model):
@@ -65,11 +50,9 @@ class Parents(db.Model):
     lastname = db.Column(db.String, nullable=False)
     address =  db.Column(db.String, nullable=False)
     phone = db.Column(db.Integer, nullable=False)
-    # email_parent = db.Column(db.String, unique=True)  # Dato repetido (ya está en users)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), unique=True)  # unique, relations un usuario a un professor
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), unique=True)
     users = db.relationship('Users')
-    # student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
-    # students = db.relationship('Students')
+
 
     def __repr__(self):
         return f'<Parents: {self.id}, {self.name} {self.lastname}>'
@@ -81,26 +64,6 @@ class Parents(db.Model):
                 'address': self.address,
                 'phone': self.phone,
                 'user_id': self.user_id}
-                # 'email_parent': self.users.email,
-                # 'students': self.students.serialize()}
-
-
-class Groups(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
-    professor_id = db.Column(db.Integer, db.ForeignKey('professors.id'))
-    professor = db.relationship('Professors')
-    # student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
-    # student = db.relationship('Students',)
-
-    def __repr__(self):
-        return f'<Groups: {self.id} {self.name}>'
-
-    def serialize(self):
-        return {'id': self.id,
-                'name': self.name,
-                'professor_id': self.professor_id}
-                # 'student_id': [student.serialize() for student in self.students]}
 
 
 class Students(db.Model):
@@ -112,8 +75,7 @@ class Students(db.Model):
     parents = db.relationship('Parents', foreign_keys=[parent_id])
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'))
     groups = db.relationship('Groups', foreign_keys=[group_id])
-    # notifications = db.relationship('Notifications', backref='students', lazy=True)
-    # global_notification = db.relationship('GlobalNotifications', secondary=association_table)
+    
 
     def __repr__(self):
         return f'<Students: {self.id}, {self.name} {self.lastname}>'
@@ -125,6 +87,23 @@ class Students(db.Model):
                 'date_of_birth': self.date_of_birth,
                 'parent_id': self.parent_id,
                 'group_id': self.group_id}
+
+
+class Groups(db.Model):
+    __tablename__ = 'groups'
+    id = db.Column(db.Integer, primary_key=True)
+    name= db.Column(db.String, nullable=False)
+    professor_id = db.Column(db.Integer, db.ForeignKey('professors.id'))
+    professor = db.relationship('Professors')
+
+
+    def __repr__(self):
+        return f'<Groups: {self.id} {self.name}>'
+
+    def serialize(self):
+        return {'id': self.id,
+                'name': self.name,
+                'professor_id': self.professor_id}
 
 
 class Notifications(db.Model):
@@ -156,23 +135,29 @@ class Notifications(db.Model):
 class GlobalNotifications(db.Model):
     __tablename__ = 'global_notifications'
     id = db.Column(db.Integer, primary_key=True)
-    kind = db.Column(db.Enum('Festivo', 'Evento', 'Huelga', 'Notificación especial', name='kind'))  ## no usar type
+    kind = db.Column(db.Enum('Festivo', 'Evento', 'Huelga', 'Notificación especial', name='kind'))
     date = db.Column(db.Date, nullable=False)
     description = db.Column(db.String)
     url_img = db.Column(db.String)
     professor_id = db.Column(db.Integer, db.ForeignKey('professors.id'))
     professors = db.relationship('Professors')
-    # student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
-    # student = db.relationship('Students', secondary=association_table, backref='global_notifications')
+    
     
     def __repr__(self):
-        return f'<Professors: {self.id} {self.type}>'
+        return f'<Professors: {self.id} {self.kind}>'
 
     def serialize(self):
         return {'id': self.id,
-                'type': self.type,
+                'type': self.kind,
                 'date': self.date,
                 'description': self.description,
                 'url_img': self.url_img,
                 'professor_id': self.professor_id}
-                # 'student_id': self.student_id}
+
+
+
+# user, like is_admin, generate password.
+# si no esta validado, pedir que la cambie.
+# Agregar un campo en la base "is_validate"
+# hacer un endpoint para cambiar contraseña, pedir 1er contraseña, contraseña nueva y id.
+# Validar si la 1er contraseña es ok, validar y reemplazar.
