@@ -65,33 +65,40 @@ def handle_users():
         return jsonify({'error': 'Acceso no autorizado'}), 403
 
 
-@api.route('/notifications', methods=['GET'])
+@api.route('/notifications/parents/<int:student_id>', methods=['GET']) # falta arreglar
 @jwt_required()
-def handle_notifications():
-    id = get_jwt_identity()
-    notifications = Notifications.query.filter_by(student_id = id)
-    notifications = [notification.serialize() for notification in notifications]
-    return jsonify(notifications), 200
+def handle_notifications_parents(student_id): 
+    notifications = Notifications.query.filter_by(student_id = student_id)
+    results = [row.serialize() for row in notifications]
+    return jsonify(results), 200
 
+
+@api.route('/notifications/professor', methods=['GET']) # falta arreglar
+@jwt_required()
+def handle_notifications_professor():
+    id = get_jwt_identity()
+    notifications = Notifications.query.filter_by(professor_id = id[0]['id'])
+    results = [row.serialize() for row in notifications]
+    return jsonify(results), 200
 
 @api.route('/notifications', methods=['POST'])
 @jwt_required()
 def create_notification():
     data = request.json
     id = get_jwt_identity()
-    professor = Professors.query.get(id[0]['id'])
-    if professor != 'professor':
-        return jsonify({"error": "Acceso no autorizado"}), 403 
-    new_notification = Notifications(date=data['date'],
-                                     eat=data['eat'],
-                                     sleep=data['sleep'],
-                                     poop=data['poop'],
-                                     notes=data['notes'],
-                                     professor_id=data['professor_id'],
-                                     student_id=data['student_id'])
-    db.session.add(new_notification)
-    db.session.commit()
-    return jsonify({"message": "Notificacíon creada correctamente", "notificacíon": new_notification.serialize()}), 201
+    try:
+        if id[1]['is_admin']:
+            new_notification = Notifications(date=data['date'],
+                                             eat=data['eat'],
+                                             sleep=data['sleep'],
+                                             poop=data['poop'],
+                                             notes=data['notes'])
+            db.session.add(new_notification)
+            db.session.commit()
+            return jsonify({"message": "Notificacíon creada correctamente", "notificacíon": new_notification.serialize()}), 201
+        return jsonify({"error": "Acceso no autorizado, debe ser admin"}), 403 
+    except:
+        return jsonify({"error": "Acceso no autorizado, debe ser profesor"}), 403
 
 
 @api.route('/notifications/<int:notifications_id>', methods=['PUT'])
@@ -100,100 +107,93 @@ def update_notification(notifications_id):
     data = request.json
     id = get_jwt_identity()
     existing_notification = Notifications.query.get(notifications_id)
-    if not existing_professor:
-        return jsonify({"error": "Profesor no encontrado"}), 404  
-    if existing_professor.professor != 'professor':
-        return jsonify({"error": "Acceso no autorizado"}), 403  
-    existing_notification.date = data['date']
-    existing_notification.eat = data['eat']
-    existing_notification.sleep = data['sleep']
-    existing_notification.poop = data['poop']
-    existing_notification.notes = data['notes']
-    existing_notification.professor_id = data['professor_id']
-    existing_notification.student_id = data['student_id']
-    db.session.commit()
-    return jsonify({"message": "Notificacíon actualizada correctamente", "notificacíon": existing_notification.serialize()})
+    if not existing_students:
+        return jsonify({"error": "Notificacíon no encontrada"}), 404  
+    if id[1]['is_admin']:
+        existing_notification.date = data['date']
+        existing_notification.eat = data['eat']
+        existing_notification.sleep = data['sleep']
+        existing_notification.poop = data['poop']
+        existing_notification.notes = data['notes']
+        db.session.commit()
+        return jsonify({"message": "Notificacíon actualizada correctamente", "notificacíon": existing_notification.serialize()})
+    return jsonify({"error": "Acceso no autorizado"}), 403  
 
 
-@api.route('/notifications/<int:notifications_id>', methods=['DELETE'])
+@api.route('/notifications/<int:notifications_id>', methods=['DELETE']) # en teoria funciona
 @jwt_required()
 def delete_notifications(notifications_id):
     id = get_jwt_identity()
-    professor = Professors.query.get(id[0]['id'])
-    if professor != 'professor':
-        return jsonify({"error": "Acceso no autorizado"}), 403  
-    existing_notification = Notifications.query.get(professor_id)
-    if not existing_notification:
-        return jsonify({"error": "Notificacíon no encontrado"}), 404  
-    db.session.delete(existing_notification)
-    db.session.commit()
-    return jsonify({"message": "Notificacíon eliminada correctamente"})
+    if id[1]['is_admin']:
+        existing_notification = Notifications.query.get(notifications_id)
+        db.session.delete(existing_notification)
+        db.session.commit()
+        return jsonify({"message": "Notificacíon eliminada correctamente"})
+    return jsonify({"error": "Acceso no autorizado"}), 403 
+    return jsonify({"error": "Notificacíon no encontrada"}), 404
 
 
-@api.route('/globalnotifications', methods=['GET'])
+@api.route('/globalnotifications', methods=['GET']) # no funciona (id=id)
 @jwt_required()
 def handle_globalnotifications():
-    id = get_jwt_identity()
-    global_notifications = GlobalNotifications.query.filter_by(professor_id = id)
-    global_notifications = [global_notification.serialize() for global_notification in global_notifications]
-    return jsonify(global_notifications), 200
+    global_notifications = GlobalNotifications.query.all()
+    results = [row.serialize() for row in global_notifications]
+    return jsonify(results), 200
+    
 
 
-@api.route('/globalnotifications', methods=['POST'])
+@api.route('/globalnotifications', methods=['POST']) # arreglado
 @jwt_required()
 def create_globalnotification():
     data = request.json
     id = get_jwt_identity()
-    professor = Professors.query.get(id[0]['id'])
-    if professor != 'professor':
-        return jsonify({"error": "Acceso no autorizado"}), 403 
-    new_globalnotification = GlobalNotifications(kind=data['kind'],
-                                                 date=data['date'],
-                                                 description=data['description'],
-                                                 url_img=data['url_img'],
-                                                 professor_id=data['professor_id'],
-                                                 professors=data['professors'])
-    db.session.add(new_globalnotification)
-    db.session.commit()
-    return jsonify({"message": "Notificacíon global creada correctamente", "notificacíon global": new_globalnotification.serialize()}), 201
+    try:
+        if id[1]['is_admin']:
+            new_globalnotification = GlobalNotifications(kind=data['kind'],
+                                                         date=data['date'],
+                                                         description=data['description'],
+                                                         url_img=data['url_img'])
+            db.session.add(new_globalnotification)
+            db.session.commit()
+            return jsonify({"message": "Notificacíon global creada correctamente", "notificacíon global": new_globalnotification.serialize()}), 201
+        return jsonify({"error": "Acceso no autorizado, debe ser admin"}), 403 
+    except:
+        return jsonify({"error": "Acceso no autorizado, debe ser profesor"}), 403 
 
 
-@api.route('/globalnotifications/<int:globalnotifications_id>', methods=['PUT'])
+@api.route('/globalnotifications/<int:globalnotifications_id>', methods=['PUT']) # arreglado
 @jwt_required()
 def update_globalnotifications(globalnotifications_id):
     data = request.json
     id = get_jwt_identity()
     existing_globalnotifications = GlobalNotifications.query.get(globalnotifications_id)
-    if not existing_professor:
+    if not existing_globalnotifications:
         return jsonify({"error": "Profesor no encontrado"}), 404  
-    if existing_professor.professor != 'professor':
-        return jsonify({"error": "Acceso no autorizado"}), 403  
-    existing_globalnotifications.kind = data['kind']
-    existing_globalnotifications.date = data['date']
-    existing_globalnotifications.description = data['description']
-    existing_globalnotifications.url_img = data['url_img']
-    existing_globalnotifications.professor_id = data['professor_id']
-    existing_globalnotifications.professors = data['professors']
-    db.session.commit()
-    return jsonify({"message": "Notificacíon global actualizada correctamente", "notificacíon global": existing_globalnotifications.serialize()})
+    if id[1]['is_admin']:
+        existing_globalnotifications.kind = data['kind']
+        existing_globalnotifications.date = data['date']
+        existing_globalnotifications.description = data['description']
+        existing_globalnotifications.url_img = data['url_img']
+        #existing_globalnotifications.professor_id = data['professor_id']   
+        db.session.commit()
+        return jsonify({"message": "Notificacíon global actualizada correctamente", "notificacíon global": existing_globalnotifications.serialize()})
+    return jsonify({"error": "Acceso no autorizado"}), 403
 
 
-@api.route('/globalnotifications/<int:globalnotifications_id>', methods=['DELETE'])
+@api.route('/globalnotifications/<int:globalnotifications_id>', methods=['DELETE']) # En teoria funciona
 @jwt_required()
 def delete_globalnotifications(globalnotifications_id):
     id = get_jwt_identity()
-    professor = Professors.query.get(id[0]['id'])
-    if professor != 'professor':
-        return jsonify({"error": "Acceso no autorizado"}), 403  
-    existing_globalnotifications = GlobalNotifications.query.get(professor_id)
-    if not existing_globalnotifications:
-        return jsonify({"error": "Notificacíon no encontrado"}), 404  
-    db.session.delete(existing_globalnotifications)
-    db.session.commit()
-    return jsonify({"message": "Notificacíon global eliminada correctamente"})
+    if id[1]['is_admin']:
+        existing_globalnotifications = GlobalNotifications.query.get(globalnotifications_id)
+        db.session.delete(existing_globalnotifications)
+        db.session.commit()
+        return jsonify({"message": "Notificacíon global eliminada correctamente"})
+    return jsonify({"error": "Acceso no autorizado"}), 403 
+    return jsonify({"error": "Notificacíon global no encontrado"}), 404
 
 
-@api.route('/professors', methods=['GET'])
+@api.route('/professors', methods=['GET']) #arreglado y funcionando
 @jwt_required()
 def handle_professor():
     id = get_jwt_identity()
@@ -204,7 +204,7 @@ def handle_professor():
         return jsonify ({'professors': professor_data}), 200
     return jsonify({"error": "Acceso no autorizado"}), 403
 
-@api.route('/professors/<int:professor_id>', methods=['GET'])
+@api.route('/professors/<int:professor_id>', methods=['GET']) #arreglado y funcionando
 @jwt_required()
 def professor_details(professor_id):
     id = get_jwt_identity()
@@ -214,26 +214,37 @@ def professor_details(professor_id):
         return jsonify(professor.serialize()), 200
     return jsonify({"error": "Acceso no autorizado"}), 403
 
-@api.route('/professors', methods=['POST'])
+# @api.route('/professors/user/<int:professor_id>', methods=['GET']) #arreglado y funcionando
+# @jwt_required()
+# def professor_details_user(professor_id):
+#     id = get_jwt_identity()
+#     user = Professors.query.get(id[0]['id'])
+#     if user.id:
+#         professor = Professors.query.filter_by(id=professor_id).first() 
+#         return jsonify(professor.serialize()), 200
+#     return jsonify({"error": "Acceso no autorizado"}), 403
+
+@api.route('/professors', methods=['POST']) # arreglado y funcionando 
 @jwt_required()
 def create_professor():
     data = request.json
     id = get_jwt_identity()
-    professor = Professors.query.get(id) #TODO: para corregir 
-    if professor.is_admin:
-        return jsonify({"error": "Acceso no autorizado"}), 403 
-    new_professor = Professors(name=data['name'],
-                               lastname=data['lastname'],
-                               address=data['address'],
-                               phone=data['phone'],
-                               is_admin=data['is_admin'],
-                               user_id=data['user_id'])
-    db.session.add(new_professor)
-    db.session.commit()
-    return jsonify({"message": "Profesor creado correctamente", "professor": new_professor.serialize()}), 201
+    try:
+        if id[1]['is_admin']:
+            new_professor = Professors(name=data['name'],
+                                       lastname=data['lastname'],
+                                       address=data['address'],
+                                       phone=data['phone'],
+                                       is_admin=data['is_admin'])
+            db.session.add(new_professor)
+            db.session.commit()
+            return jsonify({"message": "Profesor creado correctamente", "professor": new_professor.serialize()}), 201
+        return jsonify({"error": "Acceso no autorizado, debe ser admin"}), 403 
+    except:
+        return jsonify({"error": "Acceso no autorizado, debe ser profesor"}), 403
 
 
-@api.route('/professors/<int:professor_id>', methods=['PUT'])
+@api.route('/professors/<int:professor_id>', methods=['PUT']) #Arreglado y funcionando 
 @jwt_required()
 def update_professor(professor_id):
     data = request.json
@@ -241,33 +252,31 @@ def update_professor(professor_id):
     existing_professor = Professors.query.get(professor_id)
     if not existing_professor:
         return jsonify({"error": "Profesor no encontrado"}), 404  
-    if existing_professor.is_admin:
-        return jsonify({"error": "Acceso no autorizado"}), 403  
-    existing_professor.name = data['name']
-    existing_professor.lastname = data['lastname']
-    existing_professor.address = data['address']
-    existing_professor.phone = data['phone']
-    existing_professor.is_admin = data['is_admin']
-    db.session.commit()
-    return jsonify({"message": "Profesor actualizado correctamente", "professor": existing_professor.serialize()})
+    if id[1]['is_admin']:
+        existing_professor.name = data['name']
+        existing_professor.lastname = data['lastname']
+        existing_professor.address = data['address']
+        existing_professor.phone = data['phone']
+        existing_professor.is_admin = data['is_admin']
+        db.session.commit()
+        return jsonify({"message": "Profesor actualizado correctamente", "Profesor": existing_professor.serialize()})
+    return jsonify({"error": "Acceso no autorizado"}), 403 
 
 
-@api.route('/professors/<int:professor_id>', methods=['DELETE'])
+@api.route('/professors/<int:professor_id>', methods=['DELETE']) # En teoria arreglado
 @jwt_required()
 def delete_professor(professor_id):
     id = get_jwt_identity()
-    professor = Professors.query.get(id)
-    if professor.is_admin:
-        return jsonify({"error": "Acceso no autorizado"}), 403  
-    existing_professor = Professors.query.get(professor_id)
-    if not existing_professor:
-        return jsonify({"error": "Profesor no encontrado"}), 404  
-    db.session.delete(existing_professor)
-    db.session.commit()
-    return jsonify({"message": "Profesor eliminado correctamente"})
+    if id[1]['is_admin']:
+        existing_professor = Professors.query.get(professor_id)
+        db.session.delete(existing_professor)
+        db.session.commit()
+        return jsonify({"message": "Profesor eliminado correctamente"})
+    return jsonify({"error": "Acceso no autorizado"}), 403 
+    return jsonify({"error": "Profesor no encontrado"}), 404
 
 
-@api.route('/parents', methods=['GET'])
+@api.route('/parents', methods=['GET']) # Arreglado y funcionando
 @jwt_required()
 def handle_parents():
     id = get_jwt_identity()
@@ -278,7 +287,7 @@ def handle_parents():
         return jsonify ({'parents': parent_data}), 200
     return jsonify({"error": "Acceso no autorizado"}), 403
 
-@api.route('/parents/<int:parents_id>', methods=['GET'])
+@api.route('/parents/<int:parents_id>', methods=['GET']) # Arreglado y funcionando
 @jwt_required()
 def parents_details(parents_id):
     id = get_jwt_identity()
@@ -288,59 +297,56 @@ def parents_details(parents_id):
         return jsonify(parents.serialize()), 200
     return jsonify({"error": "Acceso no autorizado"}), 403
 
-@api.route('/parents', methods=['POST'])
+@api.route('/parents', methods=['POST']) # Arreglado y funcionando
 @jwt_required()
 def create_parent():
     data = request.json
     id = get_jwt_identity()
-    parents = Parents.query.get(id)
-    if professor.is_admin:
-        return jsonify({"error": "Acceso no autorizado"}), 403 
-    new_parent = Parents(name=data['name'],
-                         lastname=data['lastname'],
-                         address=data['address'],
-                         phone=data['phone'],
-                         user_id=data['user_id'])
-    db.session.add(new_parent)
-    db.session.commit()
-    return jsonify({"message": "Representante creado correctamente", "Representate": new_parent.serialize()}), 201
+    try:
+        if id[1]['is_admin']:
+            new_parent = Parents(name=data['name'],
+                                 lastname=data['lastname'],
+                                 address=data['address'],
+                                 phone=data['phone'])
+            db.session.add(new_parent)
+            db.session.commit()
+            return jsonify({"message": "Representante creado correctamente", "Representate": new_parent.serialize()}), 201
+        return jsonify({"error": "Acceso no autorizado, debe ser admin"}), 403 
+    except:
+        return jsonify({"error": "Acceso no autorizado, debe ser profesor"}), 403
 
 
-@api.route('/parents/<int:parents_id>', methods=['PUT'])
+@api.route('/parents/<int:parents_id>', methods=['PUT']) # Arreglado y funcionando
 @jwt_required()
 def update_parent(parents_id):
     data = request.json
     id = get_jwt_identity()
     existing_parents = Parents.query.get(parents_id)
-    if not existing_professor:
+    if not existing_parents:
         return jsonify({"error": "Representate no encontrado"}), 404  
-    if existing_professor.is_admin:
-        return jsonify({"error": "Acceso no autorizado"}), 403 
-    existing_parents.name = data['name']
-    existing_parents.lastname = data['lastname']
-    existing_parents.address = data['address']
-    existing_parents.phone = data['phone']
-    existing_parents.user_id = data['user_id']
-    db.session.commit()
-    return jsonify({"message": "Representate actualizado correctamente", "professor": existing_parents.serialize()})
+    if id[1]['is_admin']:
+        existing_parents.name = data['name']
+        existing_parents.lastname = data['lastname']
+        existing_parents.address = data['address']
+        existing_parents.phone = data['phone']
+        db.session.commit()
+        return jsonify({"message": "Representate actualizado correctamente", "Representante": existing_parents.serialize()})
+    return jsonify({"error": "Acceso no autorizado"}), 403
 
-
-@api.route('/parents/<int:parents_id>', methods=['DELETE'])
+@api.route('/parents/<int:parents_id>', methods=['DELETE']) #En teoria Arreglado
 @jwt_required()
 def delete_parent(parents_id):
     id = get_jwt_identity()
-    parents = Parents.query.get(id)
-    if professor.is_admin:
-        return jsonify({"error": "Acceso no autorizado"}), 403  
-    existing_parents = Parents.query.get(parents_id)
-    if not existing_parents:
-        return jsonify({"error": "Representante no encontrado"}), 404 
-    db.session.delete(existing_professor)
-    db.session.commit()
-    return jsonify({"message": "Representante eliminado correctamente"})
+    if id[1]['is_admin']:
+        existing_parents = Parents.query.get(parents_id)
+        db.session.delete(existing_parents)
+        db.session.commit()
+        return jsonify({"message": "Representate eliminado correctamente"})
+    return jsonify({"error": "Acceso no autorizado"}), 403 
+    return jsonify({"error": "Representate no encontrado"}), 404
 
 
-@api.route('/students', methods=['GET'])
+@api.route('/students', methods=['GET']) # Arreglado y funcionando
 @jwt_required()
 def handle_students():
     id = get_jwt_identity()
@@ -348,40 +354,53 @@ def handle_students():
     if user.is_admin:
         students = Students.query.all()
         student_data = [student.serialize() for student in students]
-        return jsonify ({'professors': student_data}), 200
+        return jsonify ({'Parents': student_data}), 200
     return jsonify({"error": "Acceso no autorizado"}), 403
 
-@api.route('/students/<int:students_id>', methods=['GET'])
+@api.route('/students/list', methods=['GET']) # Arreglado y funcionando
+@jwt_required()
+def handle_studentslist():
+    id = get_jwt_identity()
+    user = Professors.query.get(id[0]['id'])
+    if user.id:
+        students = Students.query.all()
+        student_data = [student.serialize() for student in students]
+        return jsonify ({'Parents': student_data}), 200
+    return jsonify({"error": "Acceso no autorizado"}), 403
+
+
+@api.route('/students/<int:students_id>', methods=['GET']) # Arreglado y funcionando
 @jwt_required()
 def students_details(students_id):
     id = get_jwt_identity()
     user = Professors.query.get(id[0]['id'])
-    if user.is_admin:
+    if user.id:
         students = Students.query.filter_by(id=students_id).first() 
         return jsonify(students.serialize()), 200
     return jsonify({"error": "Acceso no autorizado"}), 403
 
-@api.route('/students', methods=['POST'])
+
+@api.route('/students', methods=['POST']) # Arreglado y funcionando
 @jwt_required()
 def create_student():
     data = request.json
     id = get_jwt_identity()
-    students = Students.query.get(id)
-    if professor.is_admin:
-        return jsonify({"error": "Acceso no autorizado"}), 403  
-    new_student = Students(name=data['name'],
-                           lastname=data['lastname'],
-                           date_of_birth=data['date_of_birth'],
-                           parent_id=data['parent_id'],
-                           parents=data['parents'],
-                           group=data['group'],
-                           group_id=data['group_id'])
-    db.session.add(new_student)
-    db.session.commit()
-    return jsonify({"message": "Estudiante creado correctamente", "Representate": new_student.serialize()}), 201
+    try:
+        if id[1]['is_admin']:
+            new_student = Students(name=data['name'],
+                                   lastname=data['lastname'],
+                                   date_of_birth=data['date_of_birth'],
+                                   parent_id=data['parent_id'],
+                                   group_id=data['group_id'])
+            db.session.add(new_student)
+            db.session.commit()
+            return jsonify({"message": "Estudiante creado correctamente", "Representate": new_student.serialize()}), 201
+        return jsonify({"error": "Acceso no autorizado, debe ser admin"}), 403 
+    except:
+        return jsonify({"error": "Acceso no autorizado, debe ser profesor"}), 403    
 
 
-@api.route('/students/<int:students_id>', methods=['PUT'])
+@api.route('/students/<int:students_id>', methods=['PUT']) # Arreglado y funcionando
 @jwt_required()
 def update_student(students_id):
     data = request.json
@@ -389,48 +408,45 @@ def update_student(students_id):
     existing_students = Students.query.get(students_id)
     if not existing_students:
         return jsonify({"error": "Estudiante no encontrado"}), 404  
-    if existing_professor.is_admin:
-        return jsonify({"error": "Acceso no autorizado"}), 403  
-    existing_students.name = data['name']
-    existing_students.lastname = data['lastname']
-    existing_students.date_of_birth = data['date_of_birth']
-    existing_students.parent_id = data['parent_id']
-    existing_students.parents = data['parents']
-    existing_students.group = data['group']
-    existing_students.group_id = data['group_id']
-    db.session.commit()
-    return jsonify({"message": "Estudiante actualizado correctamente", "professor": existing_students.serialize()})
+    if id[1]['is_admin']:
+        existing_students.name = data['name']
+        existing_students.lastname = data['lastname']
+        existing_students.date_of_birth = data['date_of_birth']
+        existing_students.parent_id = data['parent_id']
+        existing_students.group_id = data['group_id']
+        db.session.commit()
+        return jsonify({"message": "Estudiante actualizado correctamente", "Representante": existing_students.serialize()})
+    return jsonify({"error": "Acceso no autorizado"}), 403  
 
 
-@api.route('/students/<int:students_id>', methods=['DELETE'])
+@api.route('/students/<int:students_id>', methods=['DELETE']) # Arreglado y funcionando
 @jwt_required()
-def delete_student(parents_id):
+def delete_student(students_id):
     id = get_jwt_identity()
-    students = Students.query.get(id)
-    if professor.is_admin:
-        return jsonify({"error": "Acceso no autorizado"}), 403 
-    existing_students = Students.query.get(students_id)
-    if not existing_professor:
-        return jsonify({"error": "Estudiante no encontrado"}), 404 
-    db.session.delete(existing_students)
-    db.session.commit()
-    return jsonify({"message": "Estudiante eliminado correctamente"})
+    if id[1]['is_admin']:
+        existing_students = Students.query.get(students_id)
+        db.session.delete(existing_students)
+        db.session.commit()
+        return jsonify({"message": "Estudiante eliminado correctamente"})
+    return jsonify({"error": "Acceso no autorizado"}), 403 
+    return jsonify({"error": "Estudiante no encontrado"}), 404 
 
   
-@api.route('/admin/group/create', methods=['POST'])
+@api.route('/admin/group/create', methods=['POST']) # Arreglado y funcionando
 @jwt_required()
 def create_group():
     data = request.json
     id = get_jwt_identity()
-    groups = Groups.query.get(id)
-    if professor.is_admin:
-        return jsonify({"error": "Acceso no autorizado"}), 403  
-    new_group = Groups(name=data['group'],
-                       professor_id=data['professor_id'],
-                       professor=data['professor'])
-    db.session.add(new_group)
-    db.session.commit()
-    return jsonify({"message": "Grupo creado correctamente", "Grupo": new_group.serialize()}), 201
+    try:
+        if id[1]['is_admin']:
+            new_group = Groups(name=data['name'],
+                               professor_id=data['professor_id'])
+            db.session.add(new_group)
+            db.session.commit()
+            return jsonify({"message": "Grupo creado correctamente", "Grupo": new_group.serialize()}), 201
+        return jsonify({"error": "Acceso no autorizado, debe ser admin"}), 403 
+    except:
+        return jsonify({"error": "Acceso no autorizado, debe ser profesor"}), 403
 
 
 # @api.route('/admin/group/assign', methods=['POST'])
@@ -451,7 +467,7 @@ def create_group():
 #     return jsonify({"message": "Asignado correctamente", "Grupo": assign_group.serialize()}), 201
 
 
-@api.route('/admin/group/assign/<int:group_id>', methods=['PUT'])
+@api.route('/admin/group/assign/<int:group_id>', methods=['PUT']) # Arreglado y funcionando
 @jwt_required()
 def update_group(group_id):
     data = request.json
@@ -459,13 +475,12 @@ def update_group(group_id):
     existing_groups = Groups.query.get(group_id)
     if not existing_groups:
         return jsonify({"error": "Grupo no encontrado"}), 404  
-    if existing_professor.is_admin:
-        return jsonify({"error": "Acceso no autorizado"}), 403  
-    existing_groups.name_group = data['name_group']
-    existing_groups.professor_id = data['professor_id']
-    existing_groups.professor = data['professor']
-    db.session.commit()
-    return jsonify({"message": "Grupo actualizado correctamente", "Grupo": existing_groups.serialize()})
+    if id[1]['is_admin']:
+        existing_groups.name_group = data['name_group']
+        existing_groups.professor = data['professor']
+        db.session.commit()
+        return jsonify({"message": "Grupo actualizado correctamente", "Grupo": existing_groups.serialize()})
+    return jsonify({"error": "Acceso no autorizado"}), 403
 
 
 # @api.route('/admin/group/assign/<int:group_id>', methods=['DELETE'])
@@ -482,7 +497,7 @@ def update_group(group_id):
 #     return jsonify({"message": "Grupo eliminado correctamente"})
 
 
-@api.route('/groups', methods=['GET'])
+@api.route('/groups', methods=['GET']) # Arreglado y funcionando
 @jwt_required()
 def handle_groups():
     id = get_jwt_identity()
