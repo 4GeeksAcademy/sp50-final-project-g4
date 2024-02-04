@@ -10,7 +10,7 @@ import ScrollToTop from "./component/ScrollToTop.jsx";
 import { BackendURL } from "./component/BackendURL.jsx";
 import { Navbar } from "./component/Navbar.jsx";
 import { Footer } from "./component/Footer.jsx";
-
+import { Login } from "./pages/Login.jsx";
 
 // Create your first component
 const Layout = () => {
