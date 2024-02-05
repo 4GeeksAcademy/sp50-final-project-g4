@@ -5,21 +5,21 @@ import { Card } from "../../js/component/Card.jsx";
 const cards = [
   {
     id: 1,
-    title: "x",
-    // image: image1,
-    url: "#",
+    title: "Notificaciones",
+    //image: image1,
+    url: "https://cdn.pixabay.com/photo/2016/11/28/10/48/child-1864718_1280.jpg",
   },
   {
     id: 2,
-    title: "x",
-    // image: image2,
-    url: "#",
+    title: "Notas",
+    //image: image2,
+    url: "https://cdn.pixabay.com/photo/2016/11/28/10/48/child-1864718_1280.jpg",
   },
   {
     id: 3,
-    title: "x",
-    // image: image3,
-    url: "#",
+    title: "Notificaciones Globales",
+    //image: image3,
+    url: "https://cdn.pixabay.com/photo/2016/11/28/10/48/child-1864718_1280.jpg#",
   },
 ];
 

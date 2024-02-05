@@ -7,7 +7,7 @@ export const Card = ({imageSource, title, text, url }) => {
   return (
     <div className="card text-center bg-dark animate__animated animate__fadeInUp">
       <div className="overflow">
-        <img src="#" alt="a wallpaper" className="card-img-top" />
+        <img src="https://cdn.pixabay.com/photo/2016/11/28/10/48/child-1864718_1280.jpg" alt="a wallpaper" className="card-img-top" />
       </div>
       <div className="card-body text-light">
         <h4 className="card-title">{title}</h4>
