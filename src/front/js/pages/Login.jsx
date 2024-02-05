@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import login from "../../styles/login.css"
-import LogoURL from "../../img/BabySteps.png";
+//import LogoURL from "../../img/BabySteps.png";
 import { Context } from "../store/appContext";
 
 
