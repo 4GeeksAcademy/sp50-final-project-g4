@@ -15,28 +15,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			]
 		},
-		actions: { 
-			login: async (email, password) => {
-				console.log(email, password);
-				const opt = {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json"
-					},
-					body: JSON.stringify({ email: email, password: password }),
-				}
-				try {
-					const resp = await fetch(process.env.BACKEND_URL + "/api/login", opt)
-					const data = await resp.json()
-					console.log(data)
-					await setStore({ user: data.data })
-					//aca pongo el is login 
-					return true
-				} catch (error) {
-					console.error(error);
-					return false
-				}
-			},
+		actions: {
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");  // Use getActions() to call a function within a fuction
 			},
