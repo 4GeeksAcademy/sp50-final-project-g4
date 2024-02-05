@@ -12,6 +12,7 @@ import { Navbar } from "./component/Navbar.jsx";
 import { Footer } from "./component/Footer.jsx";
 import Card from "./component/Card.jsx";
 import { Cards } from "./component/Cards.jsx";
+import { Login } from "./pages/Login.jsx";
 
 
 // Create your first component
