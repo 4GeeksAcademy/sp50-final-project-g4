@@ -10,7 +10,10 @@ import ScrollToTop from "./component/ScrollToTop.jsx";
 import { BackendURL } from "./component/BackendURL.jsx";
 import { Navbar } from "./component/Navbar.jsx";
 import { Footer } from "./component/Footer.jsx";
+import Card from "./component/Card.jsx";
+import { Cards } from "./component/Cards.jsx";
 import { Login } from "./pages/Login.jsx";
+
 
 // Create your first component
 const Layout = () => {
@@ -29,6 +32,7 @@ const Layout = () => {
                         <Route element={<Demo />} path="/demo" />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<h1>Not found!</h1>} path="*"/>
+                        <Route element={<Cards />} path="/card" />
                     </Routes>
                     <Footer />
                 </ScrollToTop>
