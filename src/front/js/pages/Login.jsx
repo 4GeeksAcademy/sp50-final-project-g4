@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import login from "../../styles/login.css"
-import LogoURL from "../../img/BabySteps.png";
+//import LogoURL from "../../img/BabySteps.png";
 import { Context } from "../store/appContext";
 
 
@@ -18,7 +18,7 @@ export const Login = () => {
         <div class="wrapper">
             <div class="login-box" >
                 <div class="login-header" >
-                    <img className = "" src={LogoURL}       />
+                    {/* <img className = "" src={LogoURL}       /> */}
                 </div>
                 <form onSubmit={e => login(e)}>
                     <div class="input-box">
