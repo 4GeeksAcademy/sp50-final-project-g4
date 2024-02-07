@@ -1,0 +1,33 @@
+.FirstMenu {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.FirstMenu .nav-tabs {
+    text-align: center;
+    margin: 0 auto;
+  }
+  
+  .FirstMenu .nav-tabs .nav-link {
+    width: 150px;
+    margin: 0 5px;
+  }
+
+  .accordion-body-comida {
+    display: flex;
+    justify-content: center;
+  }
+
+  .accordion-body-comida .form-check {
+    margin: 10px 10px;
+  }
+
+  .accordion-body-sueño {
+    display: flex;
+    justify-content: center;
+  }
+
+  .accordion-body-sueño .form-check {
+    margin: 10px 10px;
+  }
