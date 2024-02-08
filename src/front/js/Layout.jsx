@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import injectContext from "./store/appContext";
 // Import pages or views
 import { Home } from "./pages/Home.jsx";
-import { Demo } from "./pages/Demo.jsx";
 import { Single } from "./pages/Single.jsx";
 import { FormParents } from "./pages/FormParents.jsx";
 import { HomeAdmin } from "./pages/HomeAdmin.jsx";
@@ -37,7 +36,6 @@ const Layout = () => {
                     <Navbar />
                     <Routes>
                         <Route element={<Home />} path="/" />
-                        <Route element={<Demo />} path="/demo" />
                         <Route element={<HomeAdmin />} path="/homeadmin" />
                         <Route element={<FormParents />} path="/formparents" />
                         <Route element={<FormProfessors />} path="/formprofessors" />
