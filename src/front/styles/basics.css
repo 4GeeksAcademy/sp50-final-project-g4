@@ -31,3 +31,17 @@
   .accordion-body-sueño .form-check {
     margin: 10px 10px;
   }
+
+  .accordion-body-higiene {
+    display: flex;
+    justify-content: center;
+  }
+
+  .accordion-body-higiene .form-check {
+    margin: 10px 10px;
+  }
+
+  .poops {
+    color: #053d42
+
+  }
