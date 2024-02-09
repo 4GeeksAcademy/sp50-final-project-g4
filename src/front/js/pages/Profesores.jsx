@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 import basics from "../../styles/basics.css"
-// import { MenuURL} from "../../img/MenuBS.jpg"
-// import {CalendarioURL} from "../../img/Calendario.jpg"
+import MenuURL from "../../img/MenuBS.jpg"
+import CalendarioURL from "../../img/Calendario.jpg"
 
 export const Profesores = () => {
     const { store, actions } = useContext(Context);
@@ -40,8 +40,8 @@ export const Profesores = () => {
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     
-                    <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0"></div>
-                    <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...</div>
+                    <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0"><img className = "" src={MenuURL}       /></div>
+                    <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0"><img className = "" src={CalendarioURL}       /></div>
                     
                 </div>
 
