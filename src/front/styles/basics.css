@@ -99,3 +99,9 @@
   color: white;
   padding: 8px 16px;
 }
+
+.Extra-Comments label {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+}

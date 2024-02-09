@@ -135,7 +135,7 @@ export const Profesores = () => {
 
                     <div class="Extra-Comments">
                         <label for="floatingTextarea">Comentarios extras</label>
-                        <textarea class="form-control" placeholder="Anotaciones" id="floatingTextarea"></textarea>
+                        <textarea class="form-control" placeholder="Escribe aqui comentarios extra para los padres" id="floatingTextarea"></textarea>
 
                     </div>
                     <div className="Boton_Enviar">
