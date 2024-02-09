@@ -87,3 +87,15 @@
 .Extra-Comments{
   padding: 1em 0 1em 0;
 }
+
+.Boton_Enviar {
+  display: flex;
+  justify-content: center;
+}
+
+.Boton_Enviar button {
+  background-color: #086972;
+  border-radius: 8px;
+  color: white;
+  padding: 8px 16px;
+}
