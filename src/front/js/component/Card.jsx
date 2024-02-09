@@ -35,4 +35,3 @@ Card.propTypes = {
   url: PropTypes.string,
   imageSource: PropTypes.string
 };
-
