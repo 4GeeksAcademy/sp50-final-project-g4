@@ -12,7 +12,7 @@ export const Profesores = () => {
         <div className="Container-1">
             <div className="SubContainer-1">
                 <div className="Title">
-                <h1>Bienvenido "store.user.name"</h1>
+                    <h1>Bienvenido "store.user.name"</h1>
                 </div>
                 {/* <div class="FirstMenu">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -38,7 +38,7 @@ export const Profesores = () => {
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                Alumnos
+                                Alumnos <span className="acordion_icons"><i class="fa-solid fa-children"></i></span>
                             </button>
                         </h2>
                         <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
@@ -50,12 +50,12 @@ export const Profesores = () => {
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed show" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                Notificaciones Comida
+                                Notificaciones Alimentación <span className="acordion_icons"><i class="fa-solid fa-utensils"></i></span>
                             </button>
                         </h2>
                         <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                             <div class="accordion-body-comida">
-                                <div class="form-check">
+                                {/* <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" required />
                                     <label class="form-check-label" for="defaultCheck1">
                                         Come bien
@@ -73,6 +73,28 @@ export const Profesores = () => {
                                     <label class="form-check-label" for="defaultCheck3">
                                         No come
                                     </label>
+                                </div> */}
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"/>
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            Come bien
+                                        </label>
+                                    
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"/>
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            Come poco
+                                        </label>
+                                 
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"/>
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            No come
+                                        </label>
+                                    
                                 </div>
 
 
@@ -82,21 +104,21 @@ export const Profesores = () => {
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                Notificaciones de sueño
+                                Notificaciones Sueño <span className="acordion_icons"><i class="fa-solid fa-bed"></i></span>
                             </button>
                         </h2>
                         <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                                 <div class="accordion-body-sueño">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" required />
+                                        <input class="form-check-input" type="radio" value="" id="defaultCheck1" required />
                                         <label class="form-check-label" for="defaultCheck1">
                                             No duerme
                                         </label>
 
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" required />
+                                        <input class="form-check-input" type="radio" value="" id="defaultCheck2" required />
                                         <label class="form-check-label" for="defaultCheck2">
                                             Duerme
                                         </label>
@@ -110,7 +132,7 @@ export const Profesores = () => {
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                Notificaciones de higiene
+                                Notificaciones Higiene <span className="acordion_icons"><i class="fa-solid fa-poo"></i></span>
                             </button>
                         </h2>
                         <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
@@ -152,9 +174,10 @@ export const Profesores = () => {
                     </div>
                 </div>
 
-                <div class="form-floating">
-                    <textarea class="form-control" placeholder="Anotaciones" id="floatingTextarea"></textarea>
+                <div class="Extra-Comments">
                     <label for="floatingTextarea">Comentarios extras</label>
+                    <textarea class="form-control" placeholder="Anotaciones" id="floatingTextarea"></textarea>
+
                 </div>
             </div>
         </div>
