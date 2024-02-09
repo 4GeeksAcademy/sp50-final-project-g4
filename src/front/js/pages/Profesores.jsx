@@ -56,22 +56,22 @@ export const Profesores = () => {
                         <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                             <div class="accordion-body-comida">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
-                                    <label class="form-check-label" for="flexRadioDefault1">
+                                    <input class="form-check-input" type="radio" name="Come" id="flexRadioDefaulta" />
+                                    <label class="form-check-label" for="flexRadioDefaulta">
                                         Come bien
                                     </label>
 
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefaultb" id="flexRadioDefaultb" />
+                                    <input class="form-check-input" type="radio" name="Come" id="flexRadioDefaultb" />
                                     <label class="form-check-label" for="flexRadioDefaultb">
                                         Come poco
                                     </label>
 
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefaulta" id="flexRadioDefaulta" />
-                                    <label class="form-check-label" for="flexRadioDefaulta">
+                                    <input class="form-check-input" type="radio" name="Come" id="flexRadioDefaultc" />
+                                    <label class="form-check-label" for="flexRadioDefaultc">
                                         No come
                                     </label>
 
@@ -82,11 +82,11 @@ export const Profesores = () => {
                     </div>
                     <div class="accordion-item">
                         <h2 class="accordion-header">
-                            <button class="accordion-button collapsed show" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                            <button class="accordion-button collapsed show" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseTwo">
                                 Notificaciones Sueño <span className="acordion_icons"><i class="fa-solid fa-utensils"></i></span>
                             </button>
                         </h2>
-                        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                             <div class="accordion-body-comida">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
@@ -102,7 +102,7 @@ export const Profesores = () => {
                                     </label>
 
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -135,7 +135,7 @@ export const Profesores = () => {
                             </div>
                         </div>
                     </div> */}
-                    <div class="accordion-item">
+                    {/* <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                 Notificaciones Higiene <span className="acordion_icons"><i class="fa-solid fa-poo"></i></span>
@@ -175,6 +175,48 @@ export const Profesores = () => {
 
 
                                 </div>
+                            </div>
+                        </div>
+                    </div> */}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed show" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseTwo">
+                                Notificaciones Sueño <span className="acordion_icons"><i class="fa-solid fa-utensils"></i></span>
+                            </button>
+                        </h2>
+                        <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body-comida">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefaultP" id="flexRadioDefaultP" />
+                                    <label class="form-check-label" for="flexRadioDefaultP">
+                                        <span class="poops">
+                                            <i class="fa-solid fa-poop"></i>
+                                        </span>
+                                    </label>
+
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefaultP" id="flexRadioDefaultP2" />
+                                    <label class="form-check-label" for="flexRadioDefaultP2">
+                                    <span class="poops">
+                                            <i class="fa-solid fa-poop"></i>
+                                            <i class="fa-solid fa-poop"></i>
+                                        </span>
+                                    </label>
+
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefaultP" id="flexRadioDefaultP3" />
+                                    <label class="form-check-label" for="flexRadioDefaultP3">
+                                    <span class="poops">
+                                            <i class="fa-solid fa-poop"></i>
+                                            <i class="fa-solid fa-poop"></i>
+                                            <i class="fa-solid fa-poop"></i>
+                                        </span>
+                                    </label>
+
+                                </div>
+
                             </div>
                         </div>
                     </div>
