@@ -83,7 +83,7 @@ export const Profesores = () => {
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed show" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseTwo">
-                                Notificaciones Sueño <span className="acordion_icons"><i class="fa-solid fa-utensils"></i></span>
+                                Notificaciones Sueño <span className="acordion_icons"><i class="fa-solid fa-bed"></i></span>
                             </button>
                         </h2>
                         <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
@@ -106,86 +106,15 @@ export const Profesores = () => {
                             </div>
                         </div>
                     </div>
-                    {/* <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                Notificaciones Sueño <span className="acordion_icons"><i class="fa-solid fa-bed"></i></span>
-                            </button>
-                        </h2>
-                        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <div class="accordion-body-sueño">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
-                                        <label class="form-check-label" for="flexRadioDefault1">
-                                            Duerme
-                                        </label>
-
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
-                                        <label class="form-check-label" for="flexRadioDefault2">
-                                            No duerme
-                                        </label>
-
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </div>
-                    </div> */}
-                    {/* <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                Notificaciones Higiene <span className="acordion_icons"><i class="fa-solid fa-poo"></i></span>
-                            </button>
-                        </h2>
-                        <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <div class="accordion-body-higiene">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" required />
-                                        <label class="form-check-label" for="defaultCheck1">
-                                            <span class="poops">
-                                                <i class="fa-solid fa-poop"></i>
-                                            </span>
-                                        </label>
-
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" required />
-                                        <label class="form-check-label" for="defaultCheck2">
-                                            <span class="poops">
-                                                <i class="fa-solid fa-poop"></i>
-                                                <i class="fa-solid fa-poop"></i>
-                                            </span>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" required />
-                                        <label class="form-check-label" for="defaultCheck2">
-                                            <span class="poops">
-                                                <i class="fa-solid fa-poop"></i>
-                                                <i class="fa-solid fa-poop"></i>
-                                                <i class="fa-solid fa-poop"></i>
-                                            </span>
-                                        </label>
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </div>
-                    </div> */}
+                   
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed show" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseTwo">
-                                Notificaciones Sueño <span className="acordion_icons"><i class="fa-solid fa-utensils"></i></span>
+                                Notificaciones Higiene <span className="acordion_icons"><i class="fa-solid fa-poop"></i></span>
                             </button>
                         </h2>
                         <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                            <div class="accordion-body-comida">
+                            <div class="accordion-body-higiene">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="flexRadioDefaultP" id="flexRadioDefaultP" />
                                     <label class="form-check-label" for="flexRadioDefaultP">
