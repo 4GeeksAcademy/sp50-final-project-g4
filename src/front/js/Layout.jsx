@@ -19,6 +19,7 @@ import { Footer } from "./component/Footer.jsx";
 // import Card from "./component/Card.jsx";
 // import { Cards } from "./component/Cards.jsx";
 import { Login } from "./pages/Login.jsx";
+import { Profesores } from "./pages/Profesores.jsx";
 
 
 
@@ -43,6 +44,7 @@ const Layout = () => {
                         <Route element={<ProfessorsAdmin />} path="/professorsadmin" />
                         <Route element={<ParentsAdmin />} path="/parentsadmin" />
                         <Route element={<ParentsDetails />} path="/parentsdetails" />
+                        <Route element={<Profesores />} path="/profesores" />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<h1>Not found!</h1>} path="*"/>
                         {/* <Route element={<Cards />} path="/card" /> */}

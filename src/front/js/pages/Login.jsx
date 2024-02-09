@@ -1,16 +1,23 @@
-import React, { useContext, useState } from "react";
-import login from "../../styles/login.css"
-//import LogoURL from "../../img/BabySteps.png";
+import React, { useContext, useState, useSyncExternalStore } from "react";
+import "../../styles/login.css"
+import LogoURL from '../../img/Babysteps.png';
 import { Context } from "../store/appContext";
+import { useNavigate } from "react-router-dom";
 
 
 export const Login = () => {
     const { store, actions } = useContext(Context)
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const login = (e) => {
         e.preventDefault();
+        if (!store.isAdmin) {
+            navigate('/homeadmin');
+        } else {
+            navigate('/');
+        }
         actions.login(email, password)
     };
 
@@ -18,7 +25,7 @@ export const Login = () => {
         <div className="wrapper">
             <div className="login-box" >
                 <div className="login-header" >
-                    {/* <img classNameName = "" src={LogoURL}       /> */}
+                    <img className = "" src={LogoURL} />
                 </div>
                 <form onSubmit={e => login(e)}>
                     <div className="input-box">
@@ -28,7 +35,7 @@ export const Login = () => {
                         <i className="bx bx-user icon"></i>
                     </div>
                     <div className="input-box">
-                        <input type="password" id="pass" className="input-field" onChange={e => setPassword(e.target.value)} autoComplete="off" placeholder="password" />
+                        <input type="password" id="pass" className="input-field" onChange={e => setPassword(e.target.value)} autoComplete="off" placeholder="password" required />
                         <i className="bx bx-lock-alt icon" id="show-password">
                         </i>
                     </div>

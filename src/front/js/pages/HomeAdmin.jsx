@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import test from '../../styles/test.css'
 import { Context } from "../store/appContext";
@@ -7,30 +7,21 @@ import { fa } from '@fortawesome/free-solid-svg-icons';
 
 
 export const HomeAdmin = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [name, setName] = useState("");
-    const [lastname, setLastname] = useState("");
-    const [address, setAddress] = useState("");
-    const [phone, setPhone] = useState("");
-    const [group, setGroup] = useState("");
-    const [isAdmin, setIsAdmin] = useState(false)
     const { store, actions } = useContext(Context)
     const navigate = useNavigate();
+    const person = store.profile;
+    
+
+    useEffect(() => {
+		actions.getProfessors()
+	}, [])
 
 
-    const handleSelectGruop = (e) => {
-        setGroup(e.target.value);
-    }
-
-    const handleClickProfessor = () => {
-        useNavigate('/professors');
-    }
 
     return (
         <div>
             <div className="box-root padding-top--48 flex-flex flex-justifyContent--center">
-                <h1>Bienvenido "store.user.name"</h1>
+                <h1>Bienvenido {person.name}</h1>
             </div>
             <div className="formbg-inner padding-horizontal--48">
                 <form id="stripe-login">

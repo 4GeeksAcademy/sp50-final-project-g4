@@ -3,15 +3,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			isAdmin: false,
 			isLogged: false,
+			isProfessor: false,
 			token: "",
 			user: {},
 			profile: {},
-			professors: {},
-			parents: {},
-			students: {},
-			isProfessor: false,
-			parents: {}, // agregar al login y logout
-			notifications: {}, // agregar al login y logout
+			professors: [],
+			parents: [],
+			students: [],
+			notifications: [], // agregar al login y logout
 			globalNotifications: {} // agregar al login y logout
 			// Falta mas 
 		},
@@ -41,6 +40,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 							isAdmin: data.results.profile.is_admin,
 						})
 					}
+					console.log(getStore().user)
+
 					localStorage.setItem('token', data.access_token) 
 					localStorage.setItem('user', JSON.stringify(data.results.user)) 
 					localStorage.setItem('profile', JSON.stringify(data.results.profile)) 
@@ -68,7 +69,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 				}
 			},
-			logout: () => {
+			logOut: () => {
 				setStore({
 					isLogged: false,
 					user: {},
@@ -77,6 +78,39 @@ const getState = ({ getStore, getActions, setStore }) => {
 					isAdmin: false
 				});
 				localStorage.clear();
+			},
+			getProfessors: async () => {
+				const store = getStore();
+				const url = process.env.BACKEND_URL + 'api/professors';
+				const options = { 
+					method: 'GET',
+					headers: {
+						'Authorization': `Bearer ${getStore().token}`
+					}};
+				const response = await fetch(url, options);
+				if (response.ok) {
+					const data = await response.json();
+					console.log(data)
+					console.log({ 'professors': data.professors });
+					setStore({ professors: data.professors });
+					// localStorage.setItem("professors", JSON.stringify(data.results));
+				} else {
+					console.log('Error: ', response.status, response.statusText)
+				}
+			},
+			getParents: async () => {
+				const store = getStore();
+				const url = process.env.BACKEND_URL + 'api/parents';
+				const options = { method: 'GET' };
+				const response = await fetch(url, options);
+				if (response.ok) {
+					const data = await response.json();
+					console.log({ 'parents': data.parents });
+					setStore({ parents: data.parents });
+					// localStorage.setItem("characters", JSON.stringify(data.results));
+				} else {
+					console.log('Error: ', response.status, response.statusText)
+				}
 			},
 			// exampleFunction: () => {
 			// 	getActions().changeColor(0, "green");  // Use getActions() to call a function within a fuction
