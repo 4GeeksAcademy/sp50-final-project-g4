@@ -29,14 +29,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const resp = await fetch(process.env.BACKEND_URL + "/api/login", opt)
 					const data = await resp.json()
 					console.log(data)
-					await setStore({ user: data.data })
-					//aca pongo el is login 
-					return true
+					setStore({ 
+						isLogged: true,
+						user: data.results.user,
+						profile: data.results.profile,
+						token: data.access_token,
+						isProfessor: data.results.user.is_professor
+					});
+					if (data.results.profile.is_admin) {
+						setStore({
+							isAdmin: data.results.profile.is_admin,
+						})
+					}
+					console.log(getStore().user)
+
+					localStorage.setItem('token', data.access_token) 
+					localStorage.setItem('user', JSON.stringify(data.results.user)) 
+					localStorage.setItem('profile', JSON.stringify(data.results.profile)) 
+					return data
 				} catch (error) {
 					console.error(error);
 					return false
 				}
-			},
+			}
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");  // Use getActions() to call a function within a fuction
 			},
