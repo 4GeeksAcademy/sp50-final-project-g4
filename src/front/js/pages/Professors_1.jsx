@@ -66,14 +66,14 @@ export const Professors_1 = () => {
                         </h2>
                         <div class="SleepCheck">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="Come" id="flexRadioDefaultSleep" />
+                                <input class="form-check-input" type="radio" name="Duerme" id="flexRadioDefaultSleep" />
                                 <label class="form-check-label" for="flexRadioDefaultSleep">
                                     Duerme
                                 </label>
 
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="Come" id="flexRadioDefaultSleep" />
+                                <input class="form-check-input" type="radio" name="Duerme" id="flexRadioDefaultSleep" />
                                 <label class="form-check-label" for="flexRadioDefaultSleep">
                                     No duerme
                                 </label>
@@ -88,14 +88,14 @@ export const Professors_1 = () => {
                         </h2>
                         <div class="HygieneCheck">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="Come" id="flexRadioDefaultHygiene" />
+                                <input class="form-check-input" type="radio" name="Higiene" id="flexRadioDefaultHygiene" />
                                 <label class="form-check-label" for="flexRadioDefaultHygiene">
                                     Cambio
                                 </label>
 
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="Come" id="flexRadioDefaultHygiene" />
+                                <input class="form-check-input" type="radio" name="" id="flexRadioDefaultHygiene" />
                                 <label class="form-check-label" for="flexRadioDefaultHygiene">
                                     No cambio
                                 </label>
