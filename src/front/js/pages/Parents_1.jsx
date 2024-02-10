@@ -25,7 +25,15 @@ export const Professors_1 = () => {
                     </li>
                 </ul>
             </div>
-            <div>
-                
+            <div className="CardNotif">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">"store.student.name"</h5>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">Notificaciones del día</h6>
+                        <p class="card-text">Aquí nos traemos las notif del back</p>
+                    </div>
+                </div>
             </div>
         </div>
+    )
+}

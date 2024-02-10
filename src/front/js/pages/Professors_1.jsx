@@ -68,7 +68,14 @@ export const Professors_1 = () => {
                             <div className="form-check">
                                 <input className="form-check-input" type="radio" name="Duerme" id="flexRadioDefaultSleep" />
                                 <label className="form-check-label" for="flexRadioDefaultSleep">
-                                    Duerme
+                                    Duerme bien
+                                </label>
+
+                            </div>
+                            <div className="form-check">
+                                <input className="form-check-input" type="radio" name="Duerme" id="flexRadioDefaultSleep" />
+                                <label className="form-check-label" for="flexRadioDefaultSleep">
+                                    Duerme poco
                                 </label>
 
                             </div>
@@ -79,7 +86,6 @@ export const Professors_1 = () => {
                                 </label>
 
                             </div>
-
                         </div>
                     </div>
                     <div className="Hygiene">
