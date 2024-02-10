@@ -9,8 +9,8 @@ export const Professors_1 = () => {
 
 
     return (
-        <div className="Container-1">
-            <div className="SubContainer-1">
+        <div className="Container-a">
+            <div className="SubContainer-a">
                 <div className="Title">
                     <h2>Bienvenido "store.user.name"</h2>
                 </div>
