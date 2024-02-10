@@ -79,7 +79,7 @@ export const Professors_1 = () => {
                                 </label>
 
                             </div>
-                            
+
                         </div>
                     </div>
                     <div class="Hygiene">
@@ -101,14 +101,24 @@ export const Professors_1 = () => {
                                 </label>
 
                             </div>
-                            
+
                         </div>
                     </div>
+                    <div class="Extra-Comments">
+                    <h2 class="Comments-header">
+                            Comentarios
+                    </h2>
+                        <label for="floatingTextarea">Comentarios extras</label>
+                        <textarea class="form-control" placeholder="Escribe aqui comentarios extra para los padres" id="floatingTextarea"></textarea>
+
+                    </div>
+                    <div className="Boton_Enviar">
+                        <button type="submit"> Enviar </button>
+                    </div>
                 </div>
+
             </div>
+
         </div>
-
-
-
     );
 }
