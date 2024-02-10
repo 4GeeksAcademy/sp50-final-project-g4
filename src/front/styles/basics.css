@@ -105,3 +105,22 @@
   justify-content: center;
   font-weight: bold;
 }
+
+.CardsProfessors {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card_StudentsList,
+.card_StudentsNotif {
+  flex: 1 1 auto;
+  margin: 10px;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+@media (max-width: 768px) {
+  .CardsProfessors {
+    flex-direction: column;
+  }
+}
