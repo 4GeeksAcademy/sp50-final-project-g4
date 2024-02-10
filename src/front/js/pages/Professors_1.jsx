@@ -6,7 +6,7 @@ import CalendarioURL from "../../img/Calendario.jpg"
 
 export const Professors_1 = () => {
     const { store, actions } = useContext(Context);
-    
+
 
     return (
         <div className="Container-1">
@@ -16,7 +16,7 @@ export const Professors_1 = () => {
                 </div>
             </div>
             <div class="CardsProfessors">
-                <div class="card_StudentList" style="width: 12rem;">
+                <div class="card_StudentsList">
                     <img src="..." class="card-img-top" alt="..." />
                     <div class="cardList">
                         <h5>ALUMNOS DEL GRUPO</h5>
@@ -30,8 +30,40 @@ export const Professors_1 = () => {
                         </ul>
                     </div>
                 </div>
+                <div class="card_StudentsNotif">
+                    <div class="food">
+                        <h2 class="food-header">
+                            Notificaciones Alimentación <span className="acordion_icons"><i class="fa-solid fa-utensils"></i></span>
+                        </h2>
+                        <div class="Food">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="Come" id="flexRadioDefaulta" />
+                                <label class="form-check-label" for="flexRadioDefaulta">
+                                    Come bien
+                                </label>
+
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="Come" id="flexRadioDefaultb" />
+                                <label class="form-check-label" for="flexRadioDefaultb">
+                                    Come poco
+                                </label>
+
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="Come" id="flexRadioDefaultc" />
+                                <label class="form-check-label" for="flexRadioDefaultc">
+                                    No come
+                                </label>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
+
 
     );
 }
