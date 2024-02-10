@@ -15,66 +15,66 @@ export const Professors_1 = () => {
                     <h2>Bienvenido "store.user.name"</h2>
                 </div>
             </div>
-            <div class="CardsProfessors">
-                <div class="card_StudentsList">
-                    <img src="..." class="card-img-top" alt="..." />
-                    <div class="cardList">
+            <div className="CardsProfessors">
+                <div className="card_StudentsList">
+                    <img src="..." className="card-img-top" alt="..." />
+                    <div className="cardList">
                         <h2>ALUMNOS DEL GRUPO</h2>
-                        <p class="card-text">De aquí me traigo la lista de alumnos</p>
-                        <ul class="list-group">
-                            <li class="list-group-item">Alumno 1</li>
-                            <li class="list-group-item">Alumno 2</li>
-                            <li class="list-group-item">Alumno 3</li>
-                            <li class="list-group-item">Alumno 4</li>
-                            <li class="list-group-item">Alumno 5</li>
+                        <p className="card-text">De aquí me traigo la lista de alumnos</p>
+                        <ul className="list-group">
+                            <li className="list-group-item">Alumno 1</li>
+                            <li className="list-group-item">Alumno 2</li>
+                            <li className="list-group-item">Alumno 3</li>
+                            <li className="list-group-item">Alumno 4</li>
+                            <li className="list-group-item">Alumno 5</li>
                         </ul>
                     </div>
                 </div>
-                <div class="card_StudentsNotif">
+                <div className="card_StudentsNotif">
                     <h1>NOTIFICACIONES</h1>
-                    <div class="Food">
-                        <h2 class="food-header">
-                            Notificaciones Alimentación <span className="notif_icons"><i class="fa-solid fa-utensils"></i></span>
+                    <div className="Food">
+                        <h2 className="food-header">
+                            Notificaciones Alimentación <span className="notif_icons"><i className="fa-solid fa-utensils"></i></span>
                         </h2>
-                        <div class="FoodCheck">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="Come" id="flexRadioDefaultFood" />
-                                <label class="form-check-label" for="flexRadioDefaultfood">
+                        <div className="FoodCheck">
+                            <div className="form-check">
+                                <input className="form-check-input" type="radio" name="Come" id="flexRadioDefaultFood" />
+                                <label className="form-check-label" for="flexRadioDefaultfood">
                                     Come bien
                                 </label>
 
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="Come" id="flexRadioDefaultFood" />
-                                <label class="form-check-label" for="flexRadioDefaultFood">
+                            <div className="form-check">
+                                <input className="form-check-input" type="radio" name="Come" id="flexRadioDefaultFood" />
+                                <label className="form-check-label" for="flexRadioDefaultFood">
                                     Come poco
                                 </label>
 
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="Come" id="flexRadioDefaultc" />
-                                <label class="form-check-label" for="flexRadioDefaultc">
+                            <div className="form-check">
+                                <input className="form-check-input" type="radio" name="Come" id="flexRadioDefaultc" />
+                                <label className="form-check-label" for="flexRadioDefaultc">
                                     No come
                                 </label>
 
                             </div>
                         </div>
                     </div>
-                    <div class="Sleep">
-                        <h2 class="sleep-header">
-                            Notificaciones Sueño <span className="notif_icons"><i class="fa-solid fa-utensils"></i></span>
+                    <div className="Sleep">
+                        <h2 className="sleep-header">
+                            Notificaciones Sueño <span className="notif_icons"><i className="fa-solid fa-utensils"></i></span>
                         </h2>
-                        <div class="SleepCheck">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="Duerme" id="flexRadioDefaultSleep" />
-                                <label class="form-check-label" for="flexRadioDefaultSleep">
+                        <div className="SleepCheck">
+                            <div className="form-check">
+                                <input className="form-check-input" type="radio" name="Duerme" id="flexRadioDefaultSleep" />
+                                <label className="form-check-label" for="flexRadioDefaultSleep">
                                     Duerme
                                 </label>
 
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="Duerme" id="flexRadioDefaultSleep" />
-                                <label class="form-check-label" for="flexRadioDefaultSleep">
+                            <div className="form-check">
+                                <input className="form-check-input" type="radio" name="Duerme" id="flexRadioDefaultSleep" />
+                                <label className="form-check-label" for="flexRadioDefaultSleep">
                                     No duerme
                                 </label>
 
@@ -82,21 +82,21 @@ export const Professors_1 = () => {
 
                         </div>
                     </div>
-                    <div class="Hygiene">
-                        <h2 class="hygiene-header">
-                            Notificaciones Higiene <span className="notif_icons"><i class="fa-solid fa-poop"></i></span>
+                    <div className="Hygiene">
+                        <h2 className="hygiene-header">
+                            Notificaciones Higiene <span className="notif_icons"><i className="fa-solid fa-poop"></i></span>
                         </h2>
-                        <div class="HygieneCheck">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="Higiene" id="flexRadioDefaultHygiene" />
-                                <label class="form-check-label" for="flexRadioDefaultHygiene">
+                        <div className="HygieneCheck">
+                            <div className="form-check">
+                                <input className="form-check-input" type="radio" name="Higiene" id="flexRadioDefaultHygiene" />
+                                <label className="form-check-label" for="flexRadioDefaultHygiene">
                                     Cambio
                                 </label>
 
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="" id="flexRadioDefaultHygiene" />
-                                <label class="form-check-label" for="flexRadioDefaultHygiene">
+                            <div className="form-check">
+                                <input className="form-check-input" type="radio" name="" id="flexRadioDefaultHygiene" />
+                                <label className="form-check-label" for="flexRadioDefaultHygiene">
                                     No cambio
                                 </label>
 
@@ -104,12 +104,12 @@ export const Professors_1 = () => {
 
                         </div>
                     </div>
-                    <div class="Extra-Comments">
-                    <h2 class="Comments-header">
+                    <div className="Extra-Comments">
+                    <h2 className="Comments-header">
                             Comentarios
                     </h2>
                         <label for="floatingTextarea">Comentarios extras</label>
-                        <textarea class="form-control" placeholder="Escribe aqui comentarios extra para los padres" id="floatingTextarea"></textarea>
+                        <textarea className="form-control" placeholder="Escribe aqui comentarios extra para los padres" id="floatingTextarea"></textarea>
 
                     </div>
                     <div className="Boton_Enviar">

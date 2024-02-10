@@ -25,4 +25,7 @@ export const Professors_1 = () => {
                     </li>
                 </ul>
             </div>
+            <div>
+                
+            </div>
         </div>
