@@ -346,7 +346,7 @@ def delete_parent(parents_id):
     return jsonify({"error": "Representate no encontrado"}), 404
 
 
-@api.route('/students', methods=['GET']) # Arreglado y funcionando
+@api.route('/students', methods=['GET']) # Arreglado y funcionando hace lo mismo que /students/list
 @jwt_required()
 def handle_students():
     id = get_jwt_identity()
@@ -357,7 +357,7 @@ def handle_students():
         return jsonify ({'Parents': student_data}), 200
     return jsonify({"error": "Acceso no autorizado"}), 403
 
-@api.route('/students/list', methods=['GET']) # Arreglado y funcionando
+@api.route('/students/list', methods=['GET']) # Arreglado y funcionando hace lo mismo que '/students'
 @jwt_required()
 def handle_studentslist():
     id = get_jwt_identity()
@@ -365,7 +365,7 @@ def handle_studentslist():
     if user.id:
         students = Students.query.all()
         student_data = [student.serialize() for student in students]
-        return jsonify ({'Parents': student_data}), 200
+        return jsonify ({'data': student_data}), 200
     return jsonify({"error": "Acceso no autorizado"}), 403
 
 
@@ -509,4 +509,27 @@ def handle_groups():
     return jsonify({"error": "Acceso no autorizado"}), 403
 
 
+@api.route("/group_by_professor", methods=['GET'])
+@jwt_required()
+def handle_group_by_professor():
+    id = get_jwt_identity()
+    user = Professors.query.get(id[0]['id'])
+    print(id[1])
+    if user:
+        groups = Groups.query.filter_by(professor_id = id[1]["id"])
+        data = [group.serialize() for group in groups]
+        print("data in Groups")
+        return jsonify({"data": data })
+    return jsonify({"msg": "user not found"}), 404
 
+@api.route("/student_by_group/<int:id_group>", methods=['GET'])
+@jwt_required()
+def handle_student_by_group(id_group):
+    id = get_jwt_identity()
+    user = Professors.query.get(id[0]['id'])
+    if user:
+        students = Students.query.filter_by(group_id = id_group)
+        data = [student.serialize() for student in students]
+        print("data in students")
+        return jsonify({"data": data }), 200
+    return jsonify({"msg": "user not found"}), 404
