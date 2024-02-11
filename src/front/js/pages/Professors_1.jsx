@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import basics from "../../styles/basics.css"
 import MenuURL from "../../img/MenuBS.jpg"
@@ -6,13 +6,19 @@ import CalendarioURL from "../../img/Calendario.jpg"
 
 export const Professors_1 = () => {
     const { store, actions } = useContext(Context);
+    const [selected, setSelected] = useState()
+
+    useEffect(() => {
+        //llamar lista de alumnos del profesor
+        actions.getGroupAndStudentsByProfessor()
+    }, [])
 
 
     return (
         <div className="Container-a">
             <div className="SubContainer-a">
                 <div className="Title">
-                    <h2>Bienvenido "store.user.name"</h2>
+                    <h2>Bienvenido {store.profile ? store.profile.name : "usuario"}</h2>
                 </div>
             </div>
             <div className="CardsProfessors">
@@ -22,16 +28,20 @@ export const Professors_1 = () => {
                         <h2>ALUMNOS DEL GRUPO</h2>
                         <p className="card-text">De aquí me traigo la lista de alumnos</p>
                         <ul className="list-group">
-                            <li className="list-group-item">Alumno 1</li>
-                            <li className="list-group-item">Alumno 2</li>
-                            <li className="list-group-item">Alumno 3</li>
-                            <li className="list-group-item">Alumno 4</li>
-                            <li className="list-group-item">Alumno 5</li>
+                            {store.studentInGroup && store.studentInGroup.map(el => 
+                            <li id={el.id} key={el.id} 
+                                className={`list-group-item ${selected==el.id ? "active" : ""}`}
+                                onClick={e=>setSelected(e.target.id)}
+                            >{el.name}</li>  )}
+                            
+                          
                         </ul>
                     </div>
                 </div>
-                <div className="card_StudentsNotif">
+                <form className="card_StudentsNotif" onSubmit={e=>e.preventDefault()}>
                     <h1>NOTIFICACIONES</h1>
+                    <h4>Estudiante: {selected && store.studentInGroup.filter(el=> el.id == selected)[0].name}</h4>
+
                     <div className="Food">
                         <h2 className="food-header">
                             Notificaciones Alimentación <span className="notif_icons"><i className="fa-solid fa-utensils"></i></span>
@@ -111,17 +121,17 @@ export const Professors_1 = () => {
                         </div>
                     </div>
                     <div className="Extra-Comments">
-                    <h2 className="Comments-header">
+                        <h2 className="Comments-header">
                             Comentarios
-                    </h2>
+                        </h2>
                         <label for="floatingTextarea">Comentarios extras</label>
                         <textarea className="form-control" placeholder="Escribe aqui comentarios extra para los padres" id="floatingTextarea"></textarea>
 
                     </div>
                     <div className="Boton_Enviar">
-                        <button type="submit"> Enviar </button>
+                        <input type="submit" className="btn btn-primary" value="Enviar"/>
                     </div>
-                </div>
+                </form>
 
             </div>
 
