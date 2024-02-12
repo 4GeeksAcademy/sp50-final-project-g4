@@ -11,6 +11,8 @@ export const Login = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
+    const navigate = useNavigate()
+
     const login = (e) => {
         e.preventDefault();
         actions.login(email, password)
@@ -47,6 +49,7 @@ export const Login = () => {
                     </div>
 
                 </form>
+                <button onClick={()=>navigate("/professors_1")}>professors</button>
             </div>
 
         </div>
