@@ -387,7 +387,7 @@ def handle_studentslist():
     if user.id:
         students = Students.query.all()
         student_data = [student.serialize() for student in students]
-        return jsonify ({'data': student_data}), 200
+        return jsonify ({'students': student_data}), 200
     return jsonify({"error": "Acceso no autorizado"}), 403
 
 
