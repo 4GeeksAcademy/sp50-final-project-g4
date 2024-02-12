@@ -65,6 +65,23 @@ def handle_users():
         return jsonify({'error': 'Acceso no autorizado'}), 403
 
 
+@api.route('/users', methods=['POST']) # arreglado y funcionando 
+@jwt_required()
+def create_user():
+    data = request.json
+    id = get_jwt_identity()
+    try:
+        if id[1]['is_admin']:
+            new_user = Users(email=data['email'],
+                             password=data['password'],
+                             is_professor=data['is_professor'])
+            db.session.add(new_user)
+            db.session.commit()
+            return jsonify({"message": "Usuario creado correctamente", "usuario": new_user.serialize()}), 201
+        return jsonify({"error": "Acceso no autorizado, debe ser admin"}), 403 
+    except:
+        return jsonify({"error": "Acceso no autorizado, debe ser profesor"}), 403
+
 @api.route('/notifications/parents/<int:student_id>', methods=['GET']) # falta arreglar
 @jwt_required()
 def handle_notifications_parents(student_id): 
@@ -359,7 +376,7 @@ def handle_students():
     if user.is_admin:
         students = Students.query.all()
         student_data = [student.serialize() for student in students]
-        return jsonify ({'Parents': student_data}), 200
+        return jsonify ({'students': student_data}), 200
     return jsonify({"error": "Acceso no autorizado"}), 403
 
 @api.route('/students/list', methods=['GET']) # Arreglado y funcionando hace lo mismo que '/students'
