@@ -7,12 +7,28 @@ import CalendarioURL from "../../img/Calendario.jpg"
 export const Professors_1 = () => {
     const { store, actions } = useContext(Context);
     const [selected, setSelected] = useState()
-
+    const [food, setFood] = useState()
+    const [sleep, setSleep] = useState()
+    const [hygiene, setHygiene] = useState()
     useEffect(() => {
         //llamar lista de alumnos del profesor
         actions.getGroupAndStudentsByProfessor()
     }, [])
 
+    let handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(sleep)
+    }
+
+    let handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(food)
+    }
+
+    let handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(hygiene)
+    }
 
     return (
         <div className="Container-a">
@@ -28,19 +44,19 @@ export const Professors_1 = () => {
                         <h2>ALUMNOS DEL GRUPO</h2>
                         <p className="card-text">De aquí me traigo la lista de alumnos</p>
                         <ul className="list-group">
-                            {store.studentInGroup && store.studentInGroup.map(el => 
-                            <li id={el.id} key={el.id} 
-                                className={`list-group-item ${selected==el.id ? "active" : ""}`}
-                                onClick={e=>setSelected(e.target.id)}
-                            >{el.name}</li>  )}
-                            
-                          
+                            {store.studentInGroup && store.studentInGroup.map(el =>
+                                <li id={el.id} key={el.id}
+                                    className={`list-group-item ${selected == el.id ? "active" : ""}`}
+                                    onClick={e => setSelected(e.target.id)}
+                                >{el.name}</li>)}
+
+
                         </ul>
                     </div>
                 </div>
-                <form className="card_StudentsNotif" onSubmit={e=>e.preventDefault()}>
+                <form className="card_StudentsNotif" onSubmit={handleSubmit}>
                     <h1>NOTIFICACIONES</h1>
-                    <h4>Estudiante: {selected && store.studentInGroup.filter(el=> el.id == selected)[0].name}</h4>
+                    <h4>Estudiante: {selected && store.studentInGroup.filter(el => el.id == selected)[0].name}</h4>
 
                     <div className="Food">
                         <h2 className="food-header">
@@ -48,21 +64,24 @@ export const Professors_1 = () => {
                         </h2>
                         <div className="FoodCheck">
                             <div className="form-check">
-                                <input className="form-check-input" type="radio" name="Come" id="flexRadioDefaultFood" />
+                                <input className="form-check-input" type="radio" name="Come" id="flexRadioDefaultFood"
+                                    onChange={(e) => setFood('Come bien')} />
                                 <label className="form-check-label" for="flexRadioDefaultfood">
                                     Come bien
                                 </label>
 
                             </div>
                             <div className="form-check">
-                                <input className="form-check-input" type="radio" name="Come" id="flexRadioDefaultFood" />
+                                <input className="form-check-input" type="radio" name="Come" id="flexRadioDefaultFood"
+                                onChange={(e) => setFood('Come poco')} />
                                 <label className="form-check-label" for="flexRadioDefaultFood">
                                     Come poco
                                 </label>
 
                             </div>
                             <div className="form-check">
-                                <input className="form-check-input" type="radio" name="Come" id="flexRadioDefaultc" />
+                                <input className="form-check-input" type="radio" name="Come" id="flexRadioDefaultc" 
+                                onChange={(e) => setFood('No come')} />
                                 <label className="form-check-label" for="flexRadioDefaultc">
                                     No come
                                 </label>
@@ -76,21 +95,24 @@ export const Professors_1 = () => {
                         </h2>
                         <div className="SleepCheck">
                             <div className="form-check">
-                                <input className="form-check-input" type="radio" name="Duerme" id="flexRadioDefaultSleep" />
+                                <input className="form-check-input" type="radio" name="Duerme" id="flexRadioDefaultSleep"
+                                    onChange={(e) => setSleep('Duerme bien')} />
                                 <label className="form-check-label" for="flexRadioDefaultSleep">
                                     Duerme bien
                                 </label>
 
                             </div>
                             <div className="form-check">
-                                <input className="form-check-input" type="radio" name="Duerme" id="flexRadioDefaultSleep" />
+                                <input className="form-check-input" type="radio" name="Duerme" id="flexRadioDefaultSleep"
+                                    onChange={(e) => setSleep('Duerme poco')} />
                                 <label className="form-check-label" for="flexRadioDefaultSleep">
                                     Duerme poco
                                 </label>
 
                             </div>
                             <div className="form-check">
-                                <input className="form-check-input" type="radio" name="Duerme" id="flexRadioDefaultSleep" />
+                                <input className="form-check-input" type="radio" name="Duerme" id="flexRadioDefaultSleep"
+                                    onChange={(e) => setSleep('No duerme')} />
                                 <label className="form-check-label" for="flexRadioDefaultSleep">
                                     No duerme
                                 </label>
@@ -104,14 +126,16 @@ export const Professors_1 = () => {
                         </h2>
                         <div className="HygieneCheck">
                             <div className="form-check">
-                                <input className="form-check-input" type="radio" name="Higiene" id="flexRadioDefaultHygiene" />
+                                <input className="form-check-input" type="radio" name="Higiene" id="flexRadioDefaultHygiene"
+                                onChange={(e) => setHygiene('Cambio')} />
                                 <label className="form-check-label" for="flexRadioDefaultHygiene">
                                     Cambio
                                 </label>
 
                             </div>
                             <div className="form-check">
-                                <input className="form-check-input" type="radio" name="" id="flexRadioDefaultHygiene" />
+                                <input className="form-check-input" type="radio" name="" id="flexRadioDefaultHygiene"
+                                onChange={(e) => setHygiene('No cambio')} />
                                 <label className="form-check-label" for="flexRadioDefaultHygiene">
                                     No cambio
                                 </label>
@@ -129,7 +153,7 @@ export const Professors_1 = () => {
 
                     </div>
                     <div className="Boton_Enviar">
-                        <input type="submit" className="btn btn-primary" value="Enviar"/>
+                        <input type="submit" className="btn btn-primary" value="Enviar" />
                     </div>
                 </form>
 

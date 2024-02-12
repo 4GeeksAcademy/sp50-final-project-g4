@@ -108,7 +108,7 @@ def update_notification(notifications_id):
     id = get_jwt_identity()
     existing_notification = Notifications.query.get(notifications_id)
     if not existing_students:
-        return jsonify({"error": "Notificacíon no encontrada"}), 404  
+        return jsonify({"error": "Notificación no encontrada"}), 404  
     if id[1]['is_admin']:
         existing_notification.date = data['date']
         existing_notification.eat = data['eat']

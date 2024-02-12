@@ -2,12 +2,15 @@ import React, { useContext, useState } from "react";
 import login from "../../styles/login.css"
 //import LogoURL from "../../img/BabySteps.png";
 import { Context } from "../store/appContext";
+import { useNavigate } from "react-router-dom";
 
 
 export const Login = () => {
     const { store, actions } = useContext(Context)
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const navigate = useNavigate()
 
     const login = (e) => {
         e.preventDefault();
@@ -38,6 +41,7 @@ export const Login = () => {
                     </div>
 
                 </form>
+                <button onClick={()=>navigate("/professors_1")}>professors</button>
             </div>
 
         </div>
