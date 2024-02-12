@@ -5,6 +5,7 @@ import injectContext from "./store/appContext";
 import { Home } from "./pages/Home.jsx";
 import { Demo } from "./pages/Demo.jsx";
 import { Single } from "./pages/Single.jsx";
+
 import { FormParents } from "./pages/FormParents.jsx";
 import { HomeAdmin } from "./pages/HomeAdmin.jsx";
 import { FormProfessors } from "./pages/FormProfessors.jsx";
@@ -12,6 +13,7 @@ import { FormStudents } from "./pages/FormStudents.jsx";
 import { ProfessorsAdmin } from "./pages/ProfessorsAdmin.jsx";
 import { ParentsAdmin } from "./pages/ParentsAdmin.jsx";
 import { ParentsDetails } from "./pages/ParentsDetails.jsx";
+
 // Import components
 import ScrollToTop from "./component/ScrollToTop.jsx";
 import { BackendURL } from "./component/BackendURL.jsx";
@@ -20,6 +22,10 @@ import { Footer } from "./component/Footer.jsx";
 // import Card from "./component/Card.jsx";
 // import { Cards } from "./component/Cards.jsx";
 import { Login } from "./pages/Login.jsx";
+import {Professors_1} from "./pages/Professors_1.jsx";
+import { Profesores } from "./pages/Profesores.jsx";
+import { Parents_1 } from "./pages/Parents_1.jsx";
+
 
 
 
@@ -38,17 +44,28 @@ const Layout = () => {
                     <Routes>
                         <Route element={<Home />} path="/" />
                         <Route element={<Demo />} path="/demo" />
+
+                        {/* <Route element={<HomeAdmin />} path="/homeadmin" />
+
                         <Route element={<HomeAdmin />} path="/homeadmin" />
+
                         <Route element={<FormParents />} path="/formparents" />
                         <Route element={<FormProfessors />} path="/formprofessors" />
                         <Route element={<FormStudents />} path="/formstudents" />
                         <Route element={<ProfessorsAdmin />} path="/professorsadmin" />
                         <Route element={<ParentsAdmin />} path="/parentsadmin" />
+
+                        <Route element={<ParentsDetails />} path="/parentsdetails" /> */}
+
                         <Route element={<ParentsDetails />} path="/parentsdetails" />
+
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<h1>Not found!</h1>} path="*"/>
                         {/* <Route element={<Cards />} path="/card" /> */}
                         <Route element={<Login />} path="/login" />
+                        <Route element={<Professors_1 />} path="/professors_1" />
+                        <Route element={<Parents_1 />} path="/parents_1" />
+                        
                     </Routes>
                     <Footer />
                 </ScrollToTop>

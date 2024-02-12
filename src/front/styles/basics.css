@@ -1,33 +1,135 @@
 .FirstMenu {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 
 }
 
 .FirstMenu .nav-tabs {
-    text-align: center;
-    margin: 0 auto;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.FirstMenu .nav-tabs .nav-link {
+  width: 150px;
+  margin: 0 5px;
+}
+
+.accordion-body-comida {
+  display: flex;
+  justify-content: center;
+}
+
+.accordion-body-comida .form-check {
+  margin: 10px 10px;
+}
+
+.accordion-body-sueño {
+  display: flex;
+  justify-content: center;
+}
+
+.accordion-body-sueño .form-check {
+  margin: 10px 10px;
+}
+
+.accordion-body-higiene {
+  display: flex;
+  justify-content: center;
+}
+
+.accordion-body-higiene .form-check {
+  margin: 10px 10px;
+}
+
+.poops {
+  color: #053d42
+}
+
+.Container-1 {
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  height: 90vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #0fc1d1 ;
+}
+
+.tab-content {
+  width: 100%;
+  display: flex; 
+  align-items: center;
+}
+
+.SubContainer-1 {
+  width: 85%;
+  background-color: #e6e6e6;
+  backdrop-filter: blur(75px);
+  border: 2px solid #c6c3c3;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  padding: 2.5em 2.5em 4em 2.5em;
+  color: black;
+
+}
+
+.Title{
+  padding: 1em 0 1em 0;
+}
+
+.acordion_icons {
+  padding-left: 10px;
+}
+
+.Extra-Comments{
+  padding: 1em 0 1em 0;
+}
+
+.Boton_Enviar {
+  display: flex;
+  justify-content: center;
+}
+
+.Boton_Enviar button {
+  background-color: #086972;
+  border-radius: 8px;
+  color: white;
+  padding: 8px 16px;
+}
+
+.Extra-Comments label {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.CardsProfessors {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card_StudentsList,
+.card_StudentsNotif {
+  flex: 1 1 auto;
+  margin: 10px;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+@media (max-width: 768px) {
+  .CardsProfessors {
+    flex-direction: column;
   }
+}
+
+.CardNotif {
+  background-color: #fff; 
+  border-radius: 10px; 
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.15); 
+  padding: 15px; 
+  margin-bottom: 20px; }
+
   
-  .FirstMenu .nav-tabs .nav-link {
-    width: 150px;
-    margin: 0 5px;
-  }
-
-  .accordion-body-comida {
-    display: flex;
-    justify-content: center;
-  }
-
-  .accordion-body-comida .form-check {
-    margin: 10px 10px;
-  }
-
-  .accordion-body-sueño {
-    display: flex;
-    justify-content: center;
-  }
-
-  .accordion-body-sueño .form-check {
-    margin: 10px 10px;
-  }
