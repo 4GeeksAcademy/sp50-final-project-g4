@@ -1,37 +1,28 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext.js";
 import Col from 'react-bootstrap/Col';
-import Image from 'react-bootstrap/Image';
 import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { useNavigate } from "react-router";
-import Babysteps from '../../img/Babysteps.png'
 import { Link } from "react-router-dom";
 
 
 export const ProfessorsAdmin = () => {
     const { store, actions } = useContext(Context);
-    const professor = store.professors;
+    const professors = store.professors;
     const navigate = useNavigate();
 
-    const handleDeleteContact = (id) => {
-        // const updatedContacts = store.contact.filter((item, currentIndex) => {
-        //     return currentIndex !== id;
-        //     const updatedContacts = store.contact.filter(contact => contact.id !== id);
-        // };
-        actions.deleteContact(id);
+    const handleDeleteProfessor = (id) => {
+        actions.deleteProfessor(id);
     }
 
-    useEffect(() => {
-        actions.getProfessors()
-    }, [])
 
     return (
         <div className="container">
 
             <h1 className="text-center">Profesores</h1>
             <ListGroup className="container">
-                    {store.professors.map((item, index) =>
+                    {professors.map((item, index) =>
                         <ListGroup.Item className="list-group-item container-fluid mb-5" key={index}>
                             <Row className="p-1">
                                 <Col xs={11} md={11} className="mt-2">
@@ -44,15 +35,15 @@ export const ProfessorsAdmin = () => {
                                     <span
                                         className="fas fa-pencil-alt"
                                         style={{ cursor: "pointer" }}
-                                        onClick={() => navigate(`/${item.id}`)}>
+                                        onClick={() => navigate(`/professors/${item.id}`)}>
                                     </span>
                                     <span
                                         className="fas fa-trash-alt"
                                         style={{ cursor: "pointer" }}
-                                        onClick={() => handleDeleteContact(item.id)}>
+                                        onClick={() => handleDeleteProfessor(item.id)}>
                                     </span>
                                     <div>
-                                        <Link to='/professorsdetails' className="btn btn btn-outline-secondary border-0 mt-5 float-end">
+                                        <Link to={`/professors/${item.id}`} className="btn btn btn-outline-secondary border-0 mt-5 float-end">
                                             <>+detalles</>
                                         </Link>
                                     </div>
@@ -61,6 +52,11 @@ export const ProfessorsAdmin = () => {
                         </ListGroup.Item>
                     )}
             </ListGroup>
+            <Link to="/homeadmin">
+				<button className="btn ms-5" type="submit" style={{ marginBottom: "68px", backgroundColor: "#0fc1d1" }} role="button">
+					Atrás
+				</button>
+			</Link>
         </div>
     );
 }

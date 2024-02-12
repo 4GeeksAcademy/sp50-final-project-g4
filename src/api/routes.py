@@ -354,7 +354,7 @@ def handle_students():
     if user.is_admin:
         students = Students.query.all()
         student_data = [student.serialize() for student in students]
-        return jsonify ({'Parents': student_data}), 200
+        return jsonify ({'students': student_data}), 200
     return jsonify({"error": "Acceso no autorizado"}), 403
 
 @api.route('/students/list', methods=['GET']) # Arreglado y funcionando
@@ -365,7 +365,7 @@ def handle_studentslist():
     if user.id:
         students = Students.query.all()
         student_data = [student.serialize() for student in students]
-        return jsonify ({'Parents': student_data}), 200
+        return jsonify ({'students': student_data}), 200
     return jsonify({"error": "Acceso no autorizado"}), 403
 
 

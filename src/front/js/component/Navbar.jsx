@@ -11,24 +11,24 @@ export const Navbar = () => {
 
 	return (
 		<>
-			{
-				localStorage.getItem("token")/* actions.isLogged() */ ?
-
-					<nav className="navbar navbar-light bg-light">
+					<nav className="container-fluid navbar navbar-light bg-light">
 						<div className="container">
 							<Link to="/">
 								<span className="navbar-brand mb-0 h1">BabySteps</span>
 							</Link>
+			{
+				localStorage.getItem("token")/* actions.isLogged() */ ?
+
 							<div className="ml-auto">
 								<Link to="/login">
-									<button className="btn btn-primary" style={{ backgroundColor: "#086972" }} /* onClick={actions.logOut()} */>Cerrar Sesión</button>
+									<button className="btn btn-primary" style={{ backgroundColor: "#086972" }} onClick={()=>actions.logOut()}>Cerrar Sesión</button>
 								</Link>
 							</div>
-						</div>
-					</nav>
 					:
 					""
-			}
+				}
+				</div>
+			</nav>
 		</>
 	)
 };

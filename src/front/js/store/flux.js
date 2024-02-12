@@ -8,10 +8,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			user: {},
 			profile: {},
 			professors: [],
+			currentProfessor: {},
 			parents: [],
 			students: [],
 			notifications: [], // agregar al login y logout
-			globalNotifications: {} // agregar al login y logout
+			globalNotifications: [] // agregar al login y logout
 			// Falta mas 
 		},
 		actions: { 
@@ -25,7 +26,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					body: JSON.stringify({ email: email, password: password }),
 				}
 				try {
-					const resp = await fetch(process.env.BACKEND_URL + "/api/login", opt)
+					const resp = await fetch(process.env.BACKEND_URL + "api/login", opt)
 					const data = await resp.json()
 					console.log(data)
 					setStore({ 
@@ -78,6 +79,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					isAdmin: false
 				});
 				localStorage.clear();
+				console.log(localStorage);
 			},
 			getProfessors: async () => {
 				const store = getStore();
@@ -85,15 +87,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const options = { 
 					method: 'GET',
 					headers: {
-						'Authorization': `Bearer ${getStore().token}`
+						"Content-Type": "application/json",
+						'Authorization': "Bearer " + localStorage.getItem("token")
 					}};
 				const response = await fetch(url, options);
 				if (response.ok) {
 					const data = await response.json();
-					console.log(data)
 					console.log({ 'professors': data.professors });
 					setStore({ professors: data.professors });
-					// localStorage.setItem("professors", JSON.stringify(data.results));
+					// localStorage.setItem("professors", JSON.stringify(data.professors));
 				} else {
 					console.log('Error: ', response.status, response.statusText)
 				}
@@ -101,13 +103,116 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getParents: async () => {
 				const store = getStore();
 				const url = process.env.BACKEND_URL + 'api/parents';
-				const options = { method: 'GET' };
+				const options = { 
+					method: 'GET',
+					headers: {
+						"Content-Type": "application/json",
+						'Authorization': "Bearer " + localStorage.getItem("token")
+					}};
 				const response = await fetch(url, options);
 				if (response.ok) {
 					const data = await response.json();
 					console.log({ 'parents': data.parents });
 					setStore({ parents: data.parents });
-					// localStorage.setItem("characters", JSON.stringify(data.results));
+					// localStorage.setItem("parents", JSON.stringify(data.parents));
+				} else {
+					console.log('Error: ', response.status, response.statusText)
+				}
+			},
+			getStudents: async () => {
+				const store = getStore();
+				const url = process.env.BACKEND_URL + 'api/students';
+				const options = { 
+					method: 'GET',
+					headers: {
+						"Content-Type": "application/json",
+						'Authorization': "Bearer " + localStorage.getItem("token")
+				} };
+				const response = await fetch(url, options);
+				if (response.ok) {
+					const data = await response.json();
+					console.log({ 'students': data.students });
+					setStore({ students: data.students });
+					// localStorage.setItem("students", JSON.stringify(data.students));
+				} else {
+					console.log('Error: ', response.status, response.statusText)
+				}
+			},
+			createProfessor: async (newProfessor) => {
+				const store = getStore();
+
+				const url = process.env.BACKEND_URL + 'api/professors';
+				const options = {
+					method: 'POST',
+					headers: {
+						'Authorization': "Bearer " + localStorage.getItem("token")
+					},
+					body: JSON.stringify(newProfessor)
+				}
+				const response = await fetch(url, options);
+				if (response.ok) {
+					console.log(response);
+					const data = await response.json();
+					console.log({ "professors": data });
+					getActions().getProfessors();
+					// setStore({ "professors": [...store.professors, data] })
+				} else {
+					console.log('Error: ', response.status, response.statusText)
+				}
+			},
+			updateProfessor: async (id, editedProfessor) => {
+				const store = getStore();
+				const base_url = process.env.BACKEND_URL + 'api/professors/' + id;
+				const options = {
+					method: 'PUT',
+					headers: { 
+						'Content-Type': 'application/json',
+						'Authorization': "Bearer " + localStorage.getItem("token")
+					},
+					body: JSON.stringify(editedProfessor)
+				};
+				const response = await fetch(url, options);
+				console.log(response);
+				if (response.ok) {
+					const data = await response.json();
+					console.log({ "professors": data.professors });
+					getActions().getProfessors();
+				} else {
+					console.log('Error: ', response.status, response.statusText)
+				}
+			},
+			deleteProfessor: async (id) => {
+				const store = getStore();
+				const url = process.env.BACKEND_URL + 'api/professors/' + id;
+				const options = { 
+					method: 'DELETE',
+					headers: { 
+						'Content-Type': 'application/json',
+						'Authorization': "Bearer " + localStorage.getItem("token")
+					},
+				};
+				const response = await fetch(url, options);
+				if (response.ok) {
+					const data = await response.json();
+        			getActions().getProfessors();
+				} else {
+					console.log('Error: ', response.status, response.statusText)
+				}
+			},
+			getprofessorDetails: async (id) => {
+				const store = getStore();
+				const url = process.env.BACKEND_URL + 'api/professors/' + id;
+				const options = { method: 'GET',
+				headers: {
+					"Content-Type": "application/json",
+					'Authorization': "Bearer " + localStorage.getItem("token")
+				}};
+				const response = await fetch(url, options);
+				if (response.ok) {
+					const data = await response.json()
+					console.log(data);
+					setStore({ currentProfessor: data })
+					// localStorage.setItem({'characters': JSON.stringify(data.results)})
 				} else {
 					console.log('Error: ', response.status, response.statusText)
 				}

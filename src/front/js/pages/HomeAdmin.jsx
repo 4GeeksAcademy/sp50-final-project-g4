@@ -4,6 +4,9 @@ import test from '../../styles/test.css'
 import { Context } from "../store/appContext";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { fa } from '@fortawesome/free-solid-svg-icons';
+import { ProfessorsAdmin } from "./ProfessorsAdmin.jsx";
+import { ParentsAdmin } from "./ParentsAdmin.jsx";
+import { StudentsAdmin } from "./StudentsAdmin.jsx";
 
 
 export const HomeAdmin = () => {
@@ -13,9 +16,12 @@ export const HomeAdmin = () => {
     
 
     useEffect(() => {
-		actions.getProfessors()
+        if (store.profile.is_admin) {
+            actions.getProfessors()
+            actions.getParents()
+            actions.getStudents()
+        }
 	}, [])
-
 
 
     return (
@@ -29,7 +35,7 @@ export const HomeAdmin = () => {
                         <div className="container-fluid text-center">
                             <div className="row g-5 h6">
                                 <div className="col">
-                                    <Link to='/professorsadmin'>
+                                    <Link to='/professors'>
                                         <div className="cards-admin text-center pt-4">
                                             <h3>Profesores</h3>
                                             <div className="card-body content">
@@ -59,7 +65,7 @@ export const HomeAdmin = () => {
                                     </Link>
                                 </div>
                                 <div className="col">
-                                    <Link to='/studentsadmin'>
+                                    <Link to="/studentsadmin">
                                         <div className="cards-admin text-center pt-4">
                                             <h3>Estudiantes</h3>
                                             <div className="card-body">
@@ -67,7 +73,7 @@ export const HomeAdmin = () => {
                                             </div>
                                             <div className="card-footer">
                                                 <Link to='/students' className="btn btn-outline-secondary border-0">
-                                                    Estudiantes
+                                                    Estudiantes {store.students && `${store.students.length}`}
                                                 </Link>
                                             </div>
                                         </div>

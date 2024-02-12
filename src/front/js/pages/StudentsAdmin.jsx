@@ -7,9 +7,9 @@ import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 
 
-export const ParentsAdmin = () => {
+export const StudentsAdmin = () => {
     const { store, actions } = useContext(Context)
-    const parents = store.parents;
+    const students = store.students;
     const navigate = useNavigate();
 
     const handleDeleteContact = (id) => {
@@ -24,16 +24,16 @@ export const ParentsAdmin = () => {
     return (
         <div className="container">
 
-            <h1 className="text-center">Padres</h1>
+            <h1 className="text-center">Estudiantes</h1>
             <ListGroup className="container">
-                {parents.map((item, index) =>
+                {students.map((item, index) =>
                 <ListGroup.Item className="list-group-item container-fluid mb-4" key={index}>
                     <Row className="p-1">
                         <Col xs={11} md={11} className="mt-2">
                             <h4>{item.name} {item.lastname}</h4>
-                            <h5 className="text-secondary mt-3"><i className="fas fa-map-marker-alt me-3"></i>{item.address}</h5>
-                            <p className="text-secondary my-1"><i className="fas fa-phone me-3"></i>{item.phone}</p>
-                            <p className="text-secondary"><i className="fas fa-envelope me-3"></i>{item.email}</p>
+                            <h5 className="text-secondary mt-3"><i className="fas fa-map-marker-alt me-3"></i>{item.date_of_birth}</h5>
+                            <p className="text-secondary my-1"><i className="fas fa-phone me-3"></i>{/* {item.parent_id} */}</p>
+                            <p className="text-secondary"><i className="fas fa-envelope me-3"></i>{/* {item.group_id} */}</p>
                         </Col>
                         <Col xs={1} md={1} className="mt-2">
                             <span
@@ -47,7 +47,7 @@ export const ParentsAdmin = () => {
                                     onClick={() => handleDeleteContact(item.id)}>
                             </span>
                             <div>
-                                <Link to='/parentsdetails' className="btn btn btn-outline-secondary border-0 mt-5 float-end">
+                                <Link to='/studentsdetails' className="btn btn btn-outline-secondary border-0 mt-5 float-end">
                                     +detalles
                                 </Link>
                             </div>

@@ -13,12 +13,14 @@ export const Login = () => {
 
     const login = (e) => {
         e.preventDefault();
-        if (!store.isAdmin) {
-            navigate('/homeadmin');
-        } else {
-            navigate('/');
-        }
         actions.login(email, password)
+        if (!store.profile.is_admin == true) {
+            navigate('/homeadmin');
+        } else if (store.user.is_professor) {
+            navigate('/');
+        } else {
+            navigate('/')
+        }
     };
 
     return (
