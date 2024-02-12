@@ -86,18 +86,23 @@ def handle_notifications_professor():
 def create_notification():
     data = request.json
     id = get_jwt_identity()
+    print(id[0]["is_professor"])
     try:
-        if id[1]['is_admin']:
+        if id[0]["is_professor"]:
+            
             new_notification = Notifications(date=data['date'],
                                              eat=data['eat'],
                                              sleep=data['sleep'],
                                              poop=data['poop'],
-                                             notes=data['notes'])
+                                             notes=data['notes'],
+                                             professor_id= id[1]['id'],
+                                             student_id=data['student_id'],                                             )
             db.session.add(new_notification)
             db.session.commit()
             return jsonify({"message": "Notificacíon creada correctamente", "notificacíon": new_notification.serialize()}), 201
         return jsonify({"error": "Acceso no autorizado, debe ser admin"}), 403 
-    except:
+    except Exception as e: 
+        print (e)
         return jsonify({"error": "Acceso no autorizado, debe ser profesor"}), 403
 
 
@@ -513,8 +518,10 @@ def handle_groups():
 @jwt_required()
 def handle_group_by_professor():
     id = get_jwt_identity()
-    user = Professors.query.get(id[0]['id'])
+    user = Professors.query.get(id[1]['id'])
     print(id[1])
+    print(user)
+    print(id)
     if user:
         groups = Groups.query.filter_by(professor_id = id[1]["id"])
         data = [group.serialize() for group in groups]
@@ -526,7 +533,7 @@ def handle_group_by_professor():
 @jwt_required()
 def handle_student_by_group(id_group):
     id = get_jwt_identity()
-    user = Professors.query.get(id[0]['id'])
+    user = Professors.query.get(id[1]['id'])
     if user:
         students = Students.query.filter_by(group_id = id_group)
         data = [student.serialize() for student in students]

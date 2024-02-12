@@ -77,7 +77,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const respGroup_by_Professor = await fetch(process.env.BACKEND_URL + "/api/group_by_professor", opt)
 					const dataGroup_by_Professor = await respGroup_by_Professor.json()
-					console.log(dataGroup_by_Professor)
+					console.log("dataGroup", dataGroup_by_Professor)
 					await setStore({
 						professorGroups: dataGroup_by_Professor.data[0]
 					})
@@ -85,7 +85,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 						const respStudentsByGroup = await fetch(process.env.BACKEND_URL + `/api/student_by_group/${dataGroup_by_Professor.data[0].id}`, opt)
 						const dataStudentsByGroup = await respStudentsByGroup.json()
-						console.log(dataStudentsByGroup)
+						console.log("dataStudent", dataStudentsByGroup)
 						await setStore({
 							studentInGroup: dataStudentsByGroup.data
 						})
@@ -113,6 +113,35 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 
 			},
+
+			newNotification: async (sleep, food, hygiene, notif, student) => {
+				const opt = {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + localStorage.getItem("token")
+					},
+					body: JSON.stringify({
+						date: new Date().toISOString(),
+						eat: food,
+						sleep: sleep,
+						poop: !hygiene.includes("No"),
+						notes: notif,
+						student_id: student
+					})
+				}
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + `/api/notifications`, opt)
+					const data = await resp.json()
+					console.log(data)
+
+				} catch (error) {
+					console.log("error-----> ", error)
+
+				}
+			},
+
+
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");  // Use getActions() to call a function within a fuction
 			},

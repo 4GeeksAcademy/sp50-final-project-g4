@@ -23,6 +23,8 @@ export const Professors_1 = () => {
         console.log(food)
         console.log(hygiene)
         console.log(notif)
+        
+        actions.newNotification(sleep, food, hygiene, notif, selected)
        }
 
     // let handleSubmit = async (e) => {
@@ -70,25 +72,25 @@ export const Professors_1 = () => {
                         <div className="FoodCheck">
                             <div className="form-check">
                                 <input className="form-check-input" type="radio" name="Come" id="flexRadioDefaultFood"
-                                    onChange={(e) => setFood('Come bien')} />
+                                    onChange={(e) => setFood('Comió bien')} />
                                 <label className="form-check-label" for="flexRadioDefaultfood">
-                                    Come bien
+                                Comió bien
                                 </label>
 
                             </div>
                             <div className="form-check">
                                 <input className="form-check-input" type="radio" name="Come" id="flexRadioDefaultFood"
-                                onChange={(e) => setFood('Come poco')} />
+                                onChange={(e) => setFood('Comió poco')} />
                                 <label className="form-check-label" for="flexRadioDefaultFood">
-                                    Come poco
+                                Comió poco
                                 </label>
 
                             </div>
                             <div className="form-check">
                                 <input className="form-check-input" type="radio" name="Come" id="flexRadioDefaultc" 
-                                onChange={(e) => setFood('No come')} />
+                                onChange={(e) => setFood('No comió')} />
                                 <label className="form-check-label" for="flexRadioDefaultc">
-                                    No come
+                                No comió
                                 </label>
 
                             </div>
@@ -101,25 +103,25 @@ export const Professors_1 = () => {
                         <div className="SleepCheck">
                             <div className="form-check">
                                 <input className="form-check-input" type="radio" name="Duerme" id="flexRadioDefaultSleep"
-                                    onChange={(e) => setSleep('Duerme bien')} />
+                                    onChange={(e) => setSleep('Durmió bien')} />
                                 <label className="form-check-label" for="flexRadioDefaultSleep">
-                                    Duerme bien
+                                Durmió bien
                                 </label>
 
                             </div>
                             <div className="form-check">
                                 <input className="form-check-input" type="radio" name="Duerme" id="flexRadioDefaultSleep"
-                                    onChange={(e) => setSleep('Duerme poco')} />
+                                    onChange={(e) => setSleep('Durmió poco')} />
                                 <label className="form-check-label" for="flexRadioDefaultSleep">
-                                    Duerme poco
+                                Durmió bien
                                 </label>
 
                             </div>
                             <div className="form-check">
                                 <input className="form-check-input" type="radio" name="Duerme" id="flexRadioDefaultSleep"
-                                    onChange={(e) => setSleep('No duerme')} />
+                                    onChange={(e) => setSleep('no Durmió')} />
                                 <label className="form-check-label" for="flexRadioDefaultSleep">
-                                    No duerme
+                                no Durmió
                                 </label>
 
                             </div>
