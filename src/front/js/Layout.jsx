@@ -22,6 +22,7 @@ import { Footer } from "./component/Footer.jsx";
 import { Login } from "./pages/Login.jsx";
 import {Professors_1} from "./pages/Professors_1.jsx";
 import { Profesores } from "./pages/Profesores.jsx";
+import { Parents_1 } from "./pages/Parents_1.jsx";
 
 
 
@@ -52,7 +53,8 @@ const Layout = () => {
                         {/* <Route element={<Cards />} path="/card" /> */}
                         <Route element={<Login />} path="/login" />
                         <Route element={<Professors_1 />} path="/professors_1" />
-                        <Route element={<Profesores />} path="/profesores" />
+                        <Route element={<Parents_1 />} path="/parents_1" />
+                        
                     </Routes>
                     <Footer />
                 </ScrollToTop>

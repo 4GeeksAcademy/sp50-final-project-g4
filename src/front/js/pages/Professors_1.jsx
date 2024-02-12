@@ -10,6 +10,8 @@ export const Professors_1 = () => {
     const [food, setFood] = useState()
     const [sleep, setSleep] = useState()
     const [hygiene, setHygiene] = useState()
+    const [notif, setNotif] = useState()
+
     useEffect(() => {
         //llamar lista de alumnos del profesor
         actions.getGroupAndStudentsByProfessor()
@@ -18,17 +20,20 @@ export const Professors_1 = () => {
     let handleSubmit = async (e) => {
         e.preventDefault();
         console.log(sleep)
-    }
-
-    let handleSubmit = async (e) => {
-        e.preventDefault();
         console.log(food)
-    }
-
-    let handleSubmit = async (e) => {
-        e.preventDefault();
         console.log(hygiene)
-    }
+        console.log(notif)
+       }
+
+    // let handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     console.log(food)
+    // }
+
+    // let handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     console.log(hygiene)
+    // }
 
     return (
         <div className="Container-a">
@@ -149,7 +154,8 @@ export const Professors_1 = () => {
                             Comentarios
                         </h2>
                         <label for="floatingTextarea">Comentarios extras</label>
-                        <textarea className="form-control" placeholder="Escribe aqui comentarios extra para los padres" id="floatingTextarea"></textarea>
+                        <textarea className="form-control" placeholder="Escribe aqui comentarios extra para los padres" 
+                        id="floatingTextarea" onChange={(e) => setNotif(e.target.value)}></textarea>
 
                     </div>
                     <div className="Boton_Enviar">
