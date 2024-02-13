@@ -17,6 +17,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 		actions: {
 			login: async (email, password) => {
+				const actions = getActions();
 				console.log(email, password);
 				const opt = {
 					method: "POST",
@@ -27,10 +28,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				try {
 					const resp = await fetch(process.env.BACKEND_URL + "api/login", opt)
+					if (!resp.ok) {
+						console.log("error:", resp.status, resp.statusText)
+						return  // TODO: aca hay que enviar un mje de que los datos de acceso son incorrectos
+					}
 					const data = await resp.json()
+					localStorage.setItem('token', data.access_token)
+					localStorage.setItem('user', JSON.stringify(data.results.user))
+					localStorage.setItem('profile', JSON.stringify(data.results.profile))
 					console.log(data)
 					setStore({
 						isLogged: true,
+						isAdmin: false,
 						user: data.results.user,
 						profile: data.results.profile,
 						token: data.access_token,
@@ -38,13 +47,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 					if (data.results.profile.is_admin) {
 						setStore({
-							isAdmin: data.results.profile.is_admin,
+							isAdmin: true,
 						})
+						actions.getProfessors()
+						actions.getParents()
+						actions.getStudents()
+					}
+					if (getStore().isProfessor) {
+						// Es prof, por lo tanto ..  
+						//Falta completar con el action 
+					} else {
+						// Es padre, por lo tanto traemos las notif.  
+						//Falta completar con el action 
 					}
 					console.log(getStore().user)
-					localStorage.setItem('token', data.access_token)
-					localStorage.setItem('user', JSON.stringify(data.results.user))
-					localStorage.setItem('profile', JSON.stringify(data.results.profile))
 					return data
 				} catch (error) {
 					console.error(error);
@@ -52,15 +68,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			isLogged: () => {
-				if(localStorage.getItem('token')){
+				if (localStorage.getItem('token')) {
 					setStore({
 						isLogged: true,
 						user: localStorage.getItem('user'),
 						profile: localStorage.getItem('profile')
 					})
-					setStore({isProfessor: getStore().user.is_professor})
+					setStore({ isProfessor: getStore().user.is_professor })
 					if (getStore().profile.is_admin) {
-						setStore({isAdmin: getStore().profile.is_admin})
+						setStore({ isAdmin: getStore().profile.is_admin })
 					}
 				}
 				else {
@@ -176,12 +192,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getProfessors: async () => {
 				const store = getStore();
 				const url = process.env.BACKEND_URL + 'api/professors';
-				const options = { 
+				const options = {
 					method: 'GET',
 					headers: {
 						"Content-Type": "application/json",
 						'Authorization': "Bearer " + localStorage.getItem("token")
-					}};
+					}
+				};
 				const response = await fetch(url, options);
 				if (response.ok) {
 					const data = await response.json();
@@ -195,12 +212,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getParents: async () => {
 				const store = getStore();
 				const url = process.env.BACKEND_URL + 'api/parents';
-				const options = { 
+				const options = {
 					method: 'GET',
 					headers: {
 						"Content-Type": "application/json",
 						'Authorization': "Bearer " + localStorage.getItem("token")
-					}};
+					}
+				};
 				const response = await fetch(url, options);
 				if (response.ok) {
 					const data = await response.json();
@@ -214,12 +232,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getStudents: async () => {
 				const store = getStore();
 				const url = process.env.BACKEND_URL + 'api/students';
-				const options = { 
+				const options = {
 					method: 'GET',
 					headers: {
 						"Content-Type": "application/json",
 						'Authorization': "Bearer " + localStorage.getItem("token")
-				} };
+					}
+				};
 				const response = await fetch(url, options);
 				if (response.ok) {
 					const data = await response.json();
@@ -257,7 +276,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const base_url = process.env.BACKEND_URL + 'api/professors/' + id;
 				const options = {
 					method: 'PUT',
-					headers: { 
+					headers: {
 						'Content-Type': 'application/json',
 						'Authorization': "Bearer " + localStorage.getItem("token")
 					},
@@ -276,9 +295,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			deleteProfessor: async (id) => {
 				const store = getStore();
 				const url = process.env.BACKEND_URL + 'api/professors/' + id;
-				const options = { 
+				const options = {
 					method: 'DELETE',
-					headers: { 
+					headers: {
 						'Content-Type': 'application/json',
 						'Authorization': "Bearer " + localStorage.getItem("token")
 					},
@@ -286,7 +305,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const response = await fetch(url, options);
 				if (response.ok) {
 					const data = await response.json();
-        			getActions().getProfessors();
+					getActions().getProfessors();
 				} else {
 					console.log('Error: ', response.status, response.statusText)
 				}
@@ -294,11 +313,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getprofessorDetails: async (id) => {
 				const store = getStore();
 				const url = process.env.BACKEND_URL + 'api/professors/' + id;
-				const options = { method: 'GET',
-				headers: {
-					"Content-Type": "application/json",
-					'Authorization': "Bearer " + localStorage.getItem("token")
-				}};
+				const options = {
+					method: 'GET',
+					headers: {
+						"Content-Type": "application/json",
+						'Authorization': "Bearer " + localStorage.getItem("token")
+					}
+				};
 				const response = await fetch(url, options);
 				if (response.ok) {
 					const data = await response.json()
