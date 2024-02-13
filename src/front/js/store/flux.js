@@ -49,14 +49,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 						setStore({
 							isAdmin: true,
 						})
-						actions.getProfessors()
-						actions.getParents()
-						actions.getStudents()
+						await actions.getProfessors()
+						await actions.getParents()
+						await actions.getStudents()
 					}
-					if (getStore().isProfessor) {
-						// Es prof, por lo tanto ..  
-						//Falta completar con el action 
+					if (getStore().profile.isProfessor) {
+						setStore({ isProfessor: getStore().profile.is_professor })
+						actions.getProfessors()  // CERO SEGURA DE ESTO
 					} else {
+						console.log("soy un padre")
+						console.log(getStore().profile.childs)
+						const largo = getStore().profile.childs.length
+							console.log(largo)
+						for (let i=0; i<largo; i++) {
+							
+							console.log("algo", getStore().profile.childs[i])
+							console.log("soy un hijo")
+							
+							actions.getNotifications(getStore().profile.childs[i].id)
+							//console.log(item,typeof(item))
+						}
+						// setStore({
+						// 	professorGroups: dataNewNotification.data[0].id
+						// })
+						//ni de esto
 						// Es padre, por lo tanto traemos las notif.  
 						//Falta completar con el action 
 					}
@@ -156,6 +172,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("error-----> ", error)
 				}
 
+			},
+			getNotifications: async (idStudent) => {
+				const url=process.env.BACKEND_URL + '/api/notifications/parents/' + idStudent
+				const opt = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + localStorage.getItem("token")
+					}
+				}
+				const response = await fetch(url, opt)
+				if (!response.ok) {
+					console.log("error:", response.status, response.statusText)
+					return
+				}
+				const data= await response.json()
+				console.log(data)
+				console.log(JSON.stringify(data))
+				setStore({ notifications: [...getStore().notifications, data] })
 			},
 
 			newNotification: async (sleep, food, hygiene, notif, student) => {
