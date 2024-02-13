@@ -22,7 +22,7 @@ import { Footer } from "./component/Footer.jsx";
 // import { Cards } from "./component/Cards.jsx";
 import { Login } from "./pages/Login.jsx";
 
-import { Profesores } from "./pages/Profesores.jsx";
+
 import { StudentsAdmin } from "./pages/StudentsAdmin.jsx";
 import { ProfessorsDetails } from "./pages/ProfessorsDetails.jsx";
 import { StudentsDetails } from "./pages/StudentsDetails.jsx";

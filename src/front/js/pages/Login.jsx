@@ -11,17 +11,15 @@ export const Login = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const navigate = useNavigate()
-
-    const login = (e) => {
+    const login = async (e) => {
         e.preventDefault();
-        actions.login(email, password)
-        if (!store.profile.is_admin == true) {
+        await actions.login(email, password)
+        if (store.isAdmin ) {
             navigate('/homeadmin');
-        } else if (store.user.is_professor) {
-            navigate('/');
+        } else if (store.isProfessor) {
+            navigate('/professors_1');
         } else {
-            navigate('/')
+            navigate('/parents_1')
         }
     };
 
@@ -29,7 +27,7 @@ export const Login = () => {
         <div className="wrapper">
             <div className="login-box" >
                 <div className="login-header" >
-                    <img className = "" src={LogoURL} />
+                    <img className="" src={LogoURL} />
                 </div>
                 <form onSubmit={e => login(e)}>
                     <div className="input-box">
@@ -49,7 +47,7 @@ export const Login = () => {
                     </div>
 
                 </form>
-                <button onClick={()=>navigate("/professors_1")}>professors</button>
+                <button onClick={() => navigate("/professors_1")}>professors</button>
             </div>
 
         </div>
