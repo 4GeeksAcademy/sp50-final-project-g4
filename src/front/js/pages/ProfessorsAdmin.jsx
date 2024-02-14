@@ -10,11 +10,12 @@ import { Link } from "react-router-dom";
 export const ProfessorsAdmin = () => {
     const { store, actions } = useContext(Context);
     const professors = store.professors;
+    const user = store.user;
     const navigate = useNavigate();
 
-    const handleDeleteProfessor = (id) => {
-        actions.deleteProfessor(id);
-    }
+    // const handleDeleteProfessor = (id) => {
+    //     actions.deleteProfessor(id);
+    // }
 
     const handleEdit = (item) => {
         actions.setCurrentProfessor(item)
@@ -41,11 +42,11 @@ export const ProfessorsAdmin = () => {
                                         style={{ cursor: "pointer" }}
                                         onClick={() => handleEdit(item)}>
                                     </span>
-                                    <span
+                                    {/* <span
                                         className="fas fa-trash-alt"
                                         style={{ cursor: "pointer" }}
                                         onClick={() => handleDeleteProfessor(item.id)}>
-                                    </span>
+                                    </span> */}
                                     <div>
                                         <Link to={`/professors/${item.id}`} className="btn btn btn-outline-secondary border-0 mt-5 float-end">
                                             <>+detalles</>

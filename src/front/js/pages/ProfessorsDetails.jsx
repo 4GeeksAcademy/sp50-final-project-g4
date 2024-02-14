@@ -12,6 +12,8 @@ export const ProfessorsDetails = () => {
 	const subindice = params.idProfessor;
 	const professor = store.professors[subindice];
 
+	
+	
 	useEffect(() => {
 			actions.getprofessorDetails(subindice);
 	}, [])

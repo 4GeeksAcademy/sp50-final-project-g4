@@ -10,6 +10,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			profile: {},
 			professors: [],
 			currentProfessor: null,
+			currentParent: null,
+			currentStudent: null,
 			parents: [],
 			students: [],
 			notifications: [], // agregar al login y logout
@@ -50,10 +52,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 						setStore({
 							isAdmin: true,
 						})
-            await actions.getProfessors()
-						await actions.getParents()
-						await actions.getStudents()
-						await actions.getUsers()
+            			actions.getProfessors()
+						actions.getParents()
+						actions.getStudents()
+						actions.getUsers()
 					}
 					if (getStore().profile.isProfessor) {
 						setStore({ isProfessor: getStore().profile.is_professor })
@@ -299,14 +301,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const response = await fetch(url, options);
 				if (response.ok) {
 					const data = await response.json();
-					console.log({ 'user': data.users });
-					setStore({ user: data.users });
+					console.log({ 'user': data.user });
+					setStore({ users: data.user });
 				} else {
 					console.log('Error: ', response.status, response.statusText)
 				}
 			},
 			createProfessor: async (newProfessor, newUser) => {
 				const actions = getActions();
+				const store = getStore();
 				const opt = {
 					method: 'POST',
 					headers: {
@@ -403,7 +406,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log('Error: ', response.status, response.statusText)
 				}
 			},
-			setCurrentProfessor: (item) => { setStore({ currentProfessor: item }) }
+			getParentsDetails: async (id) => {
+				const store = getStore();
+				const url = process.env.BACKEND_URL + 'api/parents/' + id;
+				const options = {
+					method: 'GET',
+					headers: {
+						"Content-Type": "application/json",
+						'Authorization': "Bearer " + localStorage.getItem("token")
+					}
+				};
+				const response = await fetch(url, options);
+				if (response.ok) {
+					const data = await response.json()
+					console.log(data);
+					setStore({ currentParent: data })
+				} else {
+					console.log('Error: ', response.status, response.statusText)
+				}
+			},
+			setCurrentProfessor: (item) => { setStore({ currentProfessor: item }) },
+			setCurrentParent: (item) => { setStore({ currentParent: item }) },
+			setCurrentStudent: (item) => { setStore({ currentStudent: item }) },
 		}
 	};
 };

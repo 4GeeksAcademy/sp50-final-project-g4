@@ -257,7 +257,8 @@ def create_professor():
                                        lastname=data['lastname'],
                                        address=data['address'],
                                        phone=data['phone'],
-                                       is_admin=data['is_admin'])
+                                       is_admin=data['is_admin'],
+                                       user_id=data['user_id'])
             db.session.add(new_professor)
             db.session.commit()
             return jsonify({"message": "Profesor creado correctamente", "professor": new_professor.serialize()}), 201

@@ -72,8 +72,9 @@ export const FormProfessors = () => {
         setPassword('')
         setPhone('')
         setAddress('')
-        setGroup('')
+        // setGroup('')
         setIsAdmin('')
+        
         //crear un action donde resetee el currentprofesor como un objeto vacio. El action debe tener el currentProfessor en null
         //llamar el actions 
     };

@@ -6,32 +6,44 @@ import { Card, Col, Container, Row } from "react-bootstrap";
 
 export const ParentsDetails = () => {
 	const { store, actions } = useContext(Context);
-	// const currentParent = store.currentParent;
+	const students = store.students;
+	console.log(students);
+	// const parents = store.parents;
+	const parent = store.currentParent;
+	console.log(parent);
 	// const params = useParams();
 	// const subindice = params.idParent;
-	// const person = store.parents[subindice - 1];
+	// const person = store.parents[subindice];
 	// const ParentsDetails = actions.getParentsDetails();
+	const users = store.users;
+	
 
-	useEffect(() => {
-		// actions.getCharactersDetails(subindice)
-	}, [])
+	const filterUser = users.filter(user => user.id == parent.user_id)
+	const filterStudents = students.filter(student => student.parent_id == parent.id)
+	console.log(filterStudents);
+
+	// useEffect(async () => {
+	// 	// await actions.getParentsDetails(subindice)
+	// }, [])
 
 	return (
 		<Container fluid className="w-75">
 			<Container className="w-75">
 				<Card className="text-light border-0 my-5">
-					<Row>
+					<Row>{!filterStudents ? <p>Leyendo datos</p> : 
 						<Col className="card-parent-details">
 							<Card.Body>
-								<Card.Title>Pedro Garcia</Card.Title>
-								<Card.Text>Email:</Card.Text>
+								<Card.Title>{parent.name}</Card.Title>
+								<Card.Text>Email: {filterUser[0].email}</Card.Text>
 								<Card.Text>Dirección:</Card.Text>
 								<Card.Text>Teléfono:</Card.Text>
 								<Card.Text>Hijos:</Card.Text>
-								<Card.Text>hijo 1</Card.Text>
-								<Card.Text>hijo 2</Card.Text>
+								{filterStudents.map((item) => 
+								<Card.Text key={item.id}>{item.name}</Card.Text>
+								)}
 							</Card.Body>
 						</Col>
+						}
 					</Row>
 				</Card>
 			</Container>
