@@ -69,12 +69,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							actions.getNotifications(getStore().profile.childs[i].id)
 							//console.log(item,typeof(item))
 						}
-						// setStore({
-						// 	professorGroups: dataNewNotification.data[0].id
-						// })
-						//ni de esto
-						// Es padre, por lo tanto traemos las notif.  
-						//Falta completar con el action 
+						
 					}
 					console.log(getStore().user)
 					return data

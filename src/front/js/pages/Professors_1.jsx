@@ -23,21 +23,11 @@ export const Professors_1 = () => {
         console.log(food)
         console.log(hygiene)
         console.log(notif)
-        
+
         actions.newNotification(sleep, food, hygiene, notif, selected)
-       }
+    }
 
-    // let handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     console.log(food)
-    // }
-
-    // let handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     console.log(hygiene)
-    // }
-
-    return (
+       return (
         <div className="Container-a">
             <div className="SubContainer-a">
                 <div className="Title">
@@ -46,10 +36,9 @@ export const Professors_1 = () => {
             </div>
             <div className="CardsProfessors">
                 <div className="card_StudentsList">
-                    <img src="..." className="card-img-top" alt="..." />
+                <span><i class="fa-solid fa-children"></i><i class="fa-solid fa-children"></i><i class="fa-solid fa-children"></i></span>
                     <div className="cardList">
                         <h2>ALUMNOS DEL GRUPO</h2>
-                        <p className="card-text">De aquí me traigo la lista de alumnos</p>
                         <ul className="list-group">
                             {store.studentInGroup && store.studentInGroup.map(el =>
                                 <li id={el.id} key={el.id}
@@ -74,23 +63,23 @@ export const Professors_1 = () => {
                                 <input className="form-check-input" type="radio" name="Come" id="flexRadioDefaultFood"
                                     onChange={(e) => setFood('Comió bien')} />
                                 <label className="form-check-label" for="flexRadioDefaultfood">
-                                Comió bien
+                                    Comió bien
                                 </label>
 
                             </div>
                             <div className="form-check">
                                 <input className="form-check-input" type="radio" name="Come" id="flexRadioDefaultFood"
-                                onChange={(e) => setFood('Comió poco')} />
+                                    onChange={(e) => setFood('Comió poco')} />
                                 <label className="form-check-label" for="flexRadioDefaultFood">
-                                Comió poco
+                                    Comió poco
                                 </label>
 
                             </div>
                             <div className="form-check">
-                                <input className="form-check-input" type="radio" name="Come" id="flexRadioDefaultc" 
-                                onChange={(e) => setFood('No comió')} />
+                                <input className="form-check-input" type="radio" name="Come" id="flexRadioDefaultc"
+                                    onChange={(e) => setFood('No comió')} />
                                 <label className="form-check-label" for="flexRadioDefaultc">
-                                No comió
+                                    No comió
                                 </label>
 
                             </div>
@@ -98,14 +87,14 @@ export const Professors_1 = () => {
                     </div>
                     <div className="Sleep">
                         <h2 className="sleep-header">
-                            Notificaciones Sueño <span className="notif_icons"><i className="fa-solid fa-utensils"></i></span>
+                            Notificaciones Sueño <span className="notif_icons"><i class="fa-solid fa-bed"></i></span>
                         </h2>
                         <div className="SleepCheck">
                             <div className="form-check">
                                 <input className="form-check-input" type="radio" name="Duerme" id="flexRadioDefaultSleep"
                                     onChange={(e) => setSleep('Durmió bien')} />
                                 <label className="form-check-label" for="flexRadioDefaultSleep">
-                                Durmió bien
+                                    Durmió bien
                                 </label>
 
                             </div>
@@ -113,7 +102,7 @@ export const Professors_1 = () => {
                                 <input className="form-check-input" type="radio" name="Duerme" id="flexRadioDefaultSleep"
                                     onChange={(e) => setSleep('Durmió poco')} />
                                 <label className="form-check-label" for="flexRadioDefaultSleep">
-                                Durmió bien
+                                    Durmió bien
                                 </label>
 
                             </div>
@@ -121,7 +110,7 @@ export const Professors_1 = () => {
                                 <input className="form-check-input" type="radio" name="Duerme" id="flexRadioDefaultSleep"
                                     onChange={(e) => setSleep('no Durmió')} />
                                 <label className="form-check-label" for="flexRadioDefaultSleep">
-                                no Durmió
+                                    no Durmió
                                 </label>
 
                             </div>
@@ -134,7 +123,7 @@ export const Professors_1 = () => {
                         <div className="HygieneCheck">
                             <div className="form-check">
                                 <input className="form-check-input" type="radio" name="Higiene" id="flexRadioDefaultHygiene"
-                                onChange={(e) => setHygiene('Cambio')} />
+                                    onChange={(e) => setHygiene('Cambio')} />
                                 <label className="form-check-label" for="flexRadioDefaultHygiene">
                                     Cambio
                                 </label>
@@ -142,7 +131,7 @@ export const Professors_1 = () => {
                             </div>
                             <div className="form-check">
                                 <input className="form-check-input" type="radio" name="" id="flexRadioDefaultHygiene"
-                                onChange={(e) => setHygiene('No cambio')} />
+                                    onChange={(e) => setHygiene('No cambio')} />
                                 <label className="form-check-label" for="flexRadioDefaultHygiene">
                                     No cambio
                                 </label>
@@ -156,12 +145,12 @@ export const Professors_1 = () => {
                             Comentarios
                         </h2>
                         <label for="floatingTextarea">Comentarios extras</label>
-                        <textarea className="form-control" placeholder="Escribe aqui comentarios extra para los padres" 
-                        id="floatingTextarea" onChange={(e) => setNotif(e.target.value)}></textarea>
+                        <textarea className="form-control" placeholder="Escribe aqui comentarios extra para los padres"
+                            id="floatingTextarea" onChange={(e) => setNotif(e.target.value)}></textarea>
 
                     </div>
                     <div className="Boton_Enviar">
-                        <input type="submit" className="btn btn-primary" value="Enviar" />
+                        <input type="submit" className="btn btn-primary boton-enviar" value="Enviar" />
                     </div>
                 </form>
 

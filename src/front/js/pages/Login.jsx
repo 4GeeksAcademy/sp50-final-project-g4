@@ -4,26 +4,25 @@ import LogoURL from '../../img/Babysteps.png';
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 
-
 export const Login = () => {
     const { store, actions } = useContext(Context)
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
-
     const login = async (e) => {
         e.preventDefault();
         await actions.login(email, password)
-        if (store.isAdmin ) {
+        if (store.isAdmin) {
             navigate('/homeadmin');
         } else if (store.isProfessor) {
             navigate('/professors_1');
         } else {
-            navigate('/parents_1')
+            navigate('/parents_1') // poner el store para que solo me traiga al padre rig
         }
     };
 
     return (
+
         <div className="wrapper">
             <div className="login-box" >
                 <div className="login-header" >
@@ -32,8 +31,6 @@ export const Login = () => {
                 <form onSubmit={e => login(e)}>
                     <div className="input-box">
                         <input type="text" id="user" className="input-field" onChange={e => setEmail(e.target.value)} placeholder="email" required />
-
-
                         <i className="bx bx-user icon"></i>
                     </div>
                     <div className="input-box">
@@ -41,15 +38,11 @@ export const Login = () => {
                         <i className="bx bx-lock-alt icon" id="show-password">
                         </i>
                     </div>
-
                     <div className="input-box">
                         <input type="submit" className="input-submit" value="Accede" style={{ backgroundColor: "#086972" }} />
                     </div>
-
                 </form>
-                <button onClick={() => navigate("/professors_1")}>professors</button>
             </div>
-
         </div>
     );
 };
