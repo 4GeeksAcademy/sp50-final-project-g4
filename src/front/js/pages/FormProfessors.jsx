@@ -16,53 +16,53 @@ export const FormProfessors = () => {
     const [phone, setPhone] = useState("");
     const [group, setGroup] = useState("");
     const [isAdmin, setIsAdmin] = useState(false)
+    const [isProfessor, setIsProfessor] = useState(true)
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (idProfessor && idProfessor !== 'new') {
-            const professorToEdit = store.professors.find(professors => professors.id === parseInt(idProfessor));
-            if (professorToEdit) {
-              setName(professorToEdit.name);
-              setLastname(professorToEdit.lastname);
-              setAddress(professorToEdit.address);
-              setPhone(professorToEdit.phone);
-              setGroup(professorToEdit.group);
-              setIsAdmin(professorToEdit.isAdmin);
-            }
-          }
-    }, [idProfessor, store.professors])
+        const professorToEdit = store.currentProfessor;
+        if (professorToEdit) {
+            setName(professorToEdit.name);
+            setLastname(professorToEdit.lastname);
+            setAddress(professorToEdit.address);
+            setPhone(professorToEdit.phone);
+            setGroup(professorToEdit.group);
+            setIsAdmin(professorToEdit.isAdmin);
+        }
+    }, [])
 
     const handleSubmit = (e) => {
         e.preventDefault();
         // (alert(("All fields must be filled")));
-          const newProfessor = {
+        const newUser = {
+            email: email,
+            password: password,
+            is_professor: isProfessor
+        }
+        const newProfessor = {
             name: name,
             lastname: lastname,
-            email: email,
             address: address,
             phone: phone,
-            group: group,
-            isAdmin: isAdmin
-          };
-          const editedProfessor = {
+            is_admin: isAdmin
+        };
+        const editedProfessor = {
             name: name,
             lastname: lastname,
-            email: email,
             address: address,
             phone: phone,
-            group: group,
-            isAdmin: isAdmin
-          };
-        
+            is_admin: isAdmin
+        };
+
         if (idProfessor && idProfessor !== 'new') {
-          actions.updateContact(idProfessor, editedProfessor);
-    
+            actions.updateContact(idProfessor, editedProfessor);
+
         } else {
-          console.log("Creating new contact");
-          actions.createProfessor(newProfessor);
+            console.log("Creating new contact");
+            actions.createProfessor(newProfessor, newUser);
         }
         navigate("/professors");
-      };
+    };
 
     const handleReset = () => {
         setName('')
@@ -73,9 +73,12 @@ export const FormProfessors = () => {
         setAddress('')
         setGroup('')
         setIsAdmin('')
+        //crear un action donde resetee el currentprofesor como un objeto vacio. El action debe tener el currentProfessor en null
+        //llamar el actions 
     };
 
     const handleGetBack = () => {
+        handleReset()
         navigate(-1)
     }
 
@@ -206,8 +209,8 @@ export const FormProfessors = () => {
                                         <input type="submit" name="submit" value="Continue" />
                                     </div>
                                     <div className="field d-flex justify-content-center gap-2">
-                                            <button className="btn btn-success input submit" type='reset' style={{ backgroundColor: "#086972" }} onClick={handleReset}>Reset</button>
-                                            <button className="btn btn-danger input submit" onClick={handleGetBack}>Atrás</button>
+                                        <button className="btn btn-success input submit" type='reset' style={{ backgroundColor: "#086972" }} onClick={handleReset}>Reset</button>
+                                        <button className="btn btn-danger input submit" onClick={handleGetBack}>Atrás</button>
                                     </div>
                                 </form>
                             </div>

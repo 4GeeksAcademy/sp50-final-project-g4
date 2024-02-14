@@ -11,17 +11,20 @@ export const Login = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const navigate = useNavigate()
 
-    const login = (e) => {
+    const login = async (e) => {
         e.preventDefault();
-        actions.login(email, password)
-        if (!store.profile.is_admin == true) {
+        await actions.login(email, password)
+        if (!store.isLogged) {
+            // Mostrar el login y dentro del login un msj de error
+            return
+        }
+        if (store.isAdmin == true) {
             navigate('/homeadmin');
-        } else if (store.user.is_professor) {
-            navigate('/');
+        } else if (store.isProfessor) {
+            navigate('/'); // Cambiar navigate al home de profesores
         } else {
-            navigate('/')
+            navigate('/'); // Cambiar navigate al home de padres
         }
     };
 
@@ -31,7 +34,7 @@ export const Login = () => {
                 <div className="login-header" >
                     <img className = "" src={LogoURL} />
                 </div>
-                <form onSubmit={e => login(e)}>
+                <form onSubmit={login}>
                     <div className="input-box">
                         <input type="text" id="user" className="input-field" onChange={e => setEmail(e.target.value)} placeholder="email" required />
 
@@ -49,7 +52,6 @@ export const Login = () => {
                     </div>
 
                 </form>
-                <button onClick={()=>navigate("/professors_1")}>professors</button>
             </div>
 
         </div>

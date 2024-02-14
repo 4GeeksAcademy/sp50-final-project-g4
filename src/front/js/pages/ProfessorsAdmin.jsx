@@ -16,6 +16,10 @@ export const ProfessorsAdmin = () => {
         actions.deleteProfessor(id);
     }
 
+    const handleEdit = (item) => {
+        actions.setCurrentProfessor(item)
+        navigate(`/formprofessors`)
+    }
 
     return (
         <div className="container">
@@ -35,7 +39,7 @@ export const ProfessorsAdmin = () => {
                                     <span
                                         className="fas fa-pencil-alt"
                                         style={{ cursor: "pointer" }}
-                                        onClick={() => navigate(`/professors/${item.id}`)}>
+                                        onClick={() => handleEdit(item)}>
                                     </span>
                                     <span
                                         className="fas fa-trash-alt"

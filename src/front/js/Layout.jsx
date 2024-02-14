@@ -27,7 +27,6 @@ import { StudentsAdmin } from "./pages/StudentsAdmin.jsx";
 import { ProfessorsDetails } from "./pages/ProfessorsDetails.jsx";
 import { StudentsDetails } from "./pages/StudentsDetails.jsx";
 import {Professors_1} from "./pages/Professors_1.jsx";
-import { Profesores } from "./pages/Profesores.jsx";
 import { Parents_1 } from "./pages/Parents_1.jsx";
 
 
@@ -48,12 +47,10 @@ const Layout = () => {
                     <Routes>
                         <Route index element={<Login />} />
                         <Route element={<Login />} path="/login" />
-
-
-                        {/*
                         <Route element={<HomeAdmin />} path="/homeadmin" />
                         <Route element={<FormParents />} path="/formparents" />
                         <Route element={<FormProfessors />} path="/formprofessors" />
+                        <Route element={<FormProfessors />} path="/formprofessors/:idProfessor" />
                         <Route element={<FormStudents />} path="/formstudents" />
                         <Route element={<ProfessorsAdmin />} path="/professors" />
                         <Route element={<ParentsAdmin />} path="/parentsadmin" />
@@ -63,10 +60,6 @@ const Layout = () => {
                         <Route element={<StudentsDetails />} path="/studentsdetails" />
                         <Route element={<Profesores />} path="/profesores" />
                         <Route element={<Single />} path="/single/:theid" />
-                        */}
-
-                        <Route element={<ParentsDetails />} path="/parentsdetails" />
-
                         <Route element={<h1>Not found!</h1>} path="*"/>
                         {/* <Route element={<Cards />} path="/card" /> */}
                         <Route element={<Professors_1 />} path="/professors_1" />
