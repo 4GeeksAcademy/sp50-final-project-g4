@@ -6,15 +6,15 @@ import { Context } from "../store/appContext";
 
 
 export const FormProfessors = () => {
-    const { store, actions } = useContext(Context);
     const { idProfessor } = useParams();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const { store, actions } = useContext(Context);
     const [name, setName] = useState("");
     const [lastname, setLastname] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [address, setAddress] = useState("");
     const [phone, setPhone] = useState("");
-    const [group, setGroup] = useState("");
+    // const [group, setGroup] = useState("");
     const [isAdmin, setIsAdmin] = useState(false)
     const [isProfessor, setIsProfessor] = useState(true)
     const navigate = useNavigate();
@@ -24,9 +24,10 @@ export const FormProfessors = () => {
         if (professorToEdit) {
             setName(professorToEdit.name);
             setLastname(professorToEdit.lastname);
+            setEmail(professorToEdit.email);
+            setPassword(professorToEdit.password);
             setAddress(professorToEdit.address);
             setPhone(professorToEdit.phone);
-            setGroup(professorToEdit.group);
             setIsAdmin(professorToEdit.isAdmin);
         }
     }, [])
@@ -58,7 +59,7 @@ export const FormProfessors = () => {
             actions.updateContact(idProfessor, editedProfessor);
 
         } else {
-            console.log("Creating new contact");
+            console.log("Creating new Professor");
             actions.createProfessor(newProfessor, newUser);
         }
         navigate("/professors");
@@ -172,7 +173,7 @@ export const FormProfessors = () => {
                                                 onChange={(e) => setPhone(e.target.value)}
                                             />
                                         </div>
-                                        <div className="field col">
+                                        {/* <div className="field col">
                                             <div className="grid--50-50">
                                                 <label htmlFor="address">Grupo</label>
                                             </div>
@@ -192,7 +193,7 @@ export const FormProfessors = () => {
                                                     </select>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </div>
                                     <div className="field-checkbox flex-flex align-center">
                                         <label htmlFor="checkbox">
