@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext useState useEffect} from "react";
 import { Context } from "../store/appContext";
 // import basics from "../../styles/basics.css"
 import MenuURL from "../../img/MenuBS.jpg"
@@ -12,24 +12,16 @@ export const Parents_1 = () => {
         <div className="Container-fr">
             <div className="SubContainer-frrf">
                 <div className="Title">
-                    <h2>Bienvenido "store.user.name"</h2>
+                    <h2>Bienvenido {store.profile ? store.profile.name : "usuario"}</h2>
                 </div>
             </div>
             <div className="TabsMenuCalendar" style={{ display: "grid" }}>
-                {/* <ul class="nav justify-content-center">
-                    <li class="nav-item-calendar">
-                        <a class="nav-link active" aria-current="page" href="#">Calendario Escolar</a>
-                    </li>
-                    <li class="nav-item-menu">
-                        <a class="nav-link" href="#">Menú Mensual</a>
-                    </li>
-                </ul> */}
 
                 {/* Boton 1 Calendario  */}
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style={{
-    marginRight: "10px",
-    marginLeft: "10px",
-  }}>
+                    marginRight: "10px",
+                    marginLeft: "10px",
+                }}>
                     Calendario
                 </button>
                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -55,9 +47,9 @@ export const Parents_1 = () => {
                 </div>
                 {/* Boton 2 Menú   */}
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style={{
-    marginRight: "10px",
-    marginLeft: "10px",
-  }}>
+                    marginRight: "10px",
+                    marginLeft: "10px",
+                }}>
                     Menú Mensual
                 </button>
                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -87,7 +79,10 @@ export const Parents_1 = () => {
                     <div class="card-body">
                         <h5 class="card-title">"store.student.name"</h5>
                         <h6 class="card-subtitle mb-2 text-body-secondary">Notificaciones del día</h6>
-                        <p class="card-text">Aquí nos traemos las notif del back</p>
+                        <p class="card-text">Notificaciones</p>
+                            {/* {store.getNotifications && store.getNotifications.map(el =>
+                               )} */}
+                               {/* Revisar el map de las notificaciones */}
                     </div>
                 </div>
             </div>
