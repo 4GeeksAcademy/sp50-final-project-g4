@@ -12,12 +12,16 @@ export const Login = () => {
     const login = async (e) => {
         e.preventDefault();
         await actions.login(email, password)
+        if (!store.isLogged) {
+            // Mostrar el login y dentro del login un msj de error
+            return
+        }
         if (store.isAdmin) {
             navigate('/homeadmin');
         } else if (store.isProfessor) {
             navigate('/professors_1');
         } else {
-            navigate('/parents_1') // poner el store para que solo me traiga al padre rig
+            navigate('/parents_1')
         }
     };
 
@@ -28,7 +32,7 @@ export const Login = () => {
                 <div className="login-header" >
                     <img className="" src={LogoURL} />
                 </div>
-                <form onSubmit={e => login(e)}>
+                <form onSubmit={login}>
                     <div className="input-box">
                         <input type="text" id="user" className="input-field" onChange={e => setEmail(e.target.value)} placeholder="email" required />
                         <i className="bx bx-user icon"></i>
