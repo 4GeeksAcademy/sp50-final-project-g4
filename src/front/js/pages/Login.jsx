@@ -11,15 +11,21 @@ export const Login = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
+
     const login = async (e) => {
         e.preventDefault();
         await actions.login(email, password)
+        if (!store.isLogged) {
+            // Mostrar el login y dentro del login un msj de error
+            return
+        }
         if (store.isAdmin ) {
             navigate('/homeadmin');
         } else if (store.isProfessor) {
             navigate('/professors_1');
         } else {
             navigate('/parents_1')
+
         }
     };
 
@@ -29,7 +35,7 @@ export const Login = () => {
                 <div className="login-header" >
                     <img className="" src={LogoURL} />
                 </div>
-                <form onSubmit={e => login(e)}>
+                <form onSubmit={login}>
                     <div className="input-box">
                         <input type="text" id="user" className="input-field" onChange={e => setEmail(e.target.value)} placeholder="email" required />
 
@@ -45,11 +51,8 @@ export const Login = () => {
                     <div className="input-box">
                         <input type="submit" className="input-submit" value="Accede" style={{ backgroundColor: "#086972" }} />
                     </div>
-
                 </form>
-                <button onClick={() => navigate("/professors_1")}>professors</button>
             </div>
-
         </div>
     );
 };

@@ -15,13 +15,13 @@ export const HomeAdmin = () => {
     const person = store.profile;
     
 
-    useEffect(() => {
-        if (store.profile.is_admin) {
-            actions.getProfessors()
-            actions.getParents()
-            actions.getStudents()
-        }
-	}, [])
+    // useEffect(() => {
+    //     if (store.profile.is_admin) {
+    //         actions.getProfessors()
+    //         actions.getParents()
+    //         actions.getStudents()
+    //     }
+	// }, [])
 
 
     return (

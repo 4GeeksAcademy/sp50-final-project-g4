@@ -6,9 +6,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			isProfessor: false,
 			token: "",
 			user: {},
+			users: [],
 			profile: {},
 			professors: [],
-			currentProfessor: {},
+			currentProfessor: null,
 			parents: [],
 			students: [],
 			notifications: [], // agregar al login y logout
@@ -29,7 +30,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(process.env.BACKEND_URL + "api/login", opt)
 					if (!resp.ok) {
-						console.log("error:", resp.status, resp.statusText)
+						console.log('Error: ', resp.status, resp.statusText)
 						return  // TODO: aca hay que enviar un mje de que los datos de acceso son incorrectos
 					}
 					const data = await resp.json()
@@ -49,9 +50,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 						setStore({
 							isAdmin: true,
 						})
-						await actions.getProfessors()
+            await actions.getProfessors()
 						await actions.getParents()
 						await actions.getStudents()
+						await actions.getUsers()
 					}
 					if (getStore().profile.isProfessor) {
 						setStore({ isProfessor: getStore().profile.is_professor })
@@ -284,26 +286,62 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log('Error: ', response.status, response.statusText)
 				}
 			},
-			createProfessor: async (newProfessor) => {
+			getUsers: async () => {
 				const store = getStore();
-
-				const url = process.env.BACKEND_URL + 'api/professors';
+				const url = process.env.BACKEND_URL + 'api/users';
 				const options = {
-					method: 'POST',
+					method: 'GET',
 					headers: {
+						"Content-Type": "application/json",
 						'Authorization': "Bearer " + localStorage.getItem("token")
-					},
-					body: JSON.stringify(newProfessor)
-				}
+					}
+				};
 				const response = await fetch(url, options);
 				if (response.ok) {
-					console.log(response);
 					const data = await response.json();
-					console.log({ "professors": data });
-					getActions().getProfessors();
-					// setStore({ "professors": [...store.professors, data] })
+					console.log({ 'user': data.users });
+					setStore({ user: data.users });
 				} else {
 					console.log('Error: ', response.status, response.statusText)
+				}
+			},
+			createProfessor: async (newProfessor, newUser) => {
+				const actions = getActions();
+				const opt = {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': "Bearer " + localStorage.getItem("token")
+					},
+					body: JSON.stringify(newUser)
+				}
+				const urlNewUser = process.env.BACKEND_URL + 'api/users';
+				const newUserFetch = await fetch(urlNewUser, opt);
+				if (newUserFetch.ok) {
+					const newUserData = await newUserFetch.json();
+					// actions.getUsers();
+					const url = process.env.BACKEND_URL + 'api/professors';
+					const dataToSend = {...newProfessor, user_id: newUserData.usuario.id}
+					const options = {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							'Authorization': "Bearer " + localStorage.getItem("token")
+						},
+						body: JSON.stringify(dataToSend)
+					}
+					const response = await fetch(url, options);
+					if (response.ok) {
+						console.log(response);
+						const data = await response.json();
+						console.log({ "professors": data });
+						actions.getProfessors();
+						// setStore({ "professors": [...store.professors, data] })
+					} else {
+						console.log('Error: ', response.status, response.statusText)
+					}
+				} else {
+					console.log('Error newuser:', newUserFetch.status, newUserFetch.statusText);
 				}
 			},
 			updateProfessor: async (id, editedProfessor) => {
@@ -365,6 +403,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log('Error: ', response.status, response.statusText)
 				}
 			},
+			setCurrentProfessor: (item) => { setStore({ currentProfessor: item }) }
 		}
 	};
 };
