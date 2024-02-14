@@ -1,34 +1,27 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { Context } from "../store/appContext";
 
 export const Navbar = () => {
-    const { store, actions } = useContext(Context)
-
-	useEffect(() => {
-		actions.isLogged();
-	}, [])
-
 	return (
 		<>
-					<nav className="container-fluid navbar navbar-light bg-light">
-						<div className="container">
-							<Link to="/">
-								<span className="navbar-brand mb-0 h1">BabySteps</span>
+		{
+			localStorage.getItem("token") ?
+		
+				<nav className="navbar navbar-light bg-light">
+					<div className="container">
+						<Link to="/">
+							<span className="navbar-brand mb-0 h1">BabySteps</span>
+						</Link>
+						<div className="ml-auto">
+							<Link to="/demo">
+								<button className="btn btn-primary" style={{ backgroundColor: "#086972" }}>Cerrar Sesión</button>
 							</Link>
-			{
-				localStorage.getItem("token")/* actions.isLogged() */ ?
-
-							<div className="ml-auto">
-								<Link to="/login">
-									<button className="btn btn-primary" style={{ backgroundColor: "#086972" }} onClick={()=>actions.logOut()}>Cerrar Sesión</button>
-								</Link>
-							</div>
-					:
-					""
-				}
-				</div>
-			</nav>
-		</>
+						</div>
+					</div>
+				</nav>
+				:
+				""
+		}
+	</>
 	)
 };

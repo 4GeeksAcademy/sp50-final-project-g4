@@ -9,13 +9,13 @@ export const Profesores = () => {
 
 
     return (
-
         <div className="Container-1">
             <div className="SubContainer-1">
                 <div className="Title">
                     <h1>Bienvenido "store.user.name"</h1>
                 </div>
                 <form>
+
                     <div class="accordion" id="Acciones profe">
                         <div class="accordion-item">
                             <h2 class="accordion-header">
@@ -49,6 +49,7 @@ export const Profesores = () => {
                                         <label class="form-check-label" for="flexRadioDefaultb">
                                             Come poco
                                         </label>
+
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="Come" id="flexRadioDefaultc" />
@@ -131,6 +132,7 @@ export const Profesores = () => {
                             </div>
                         </div>
                     </div>
+
                     <div class="Extra-Comments">
                         <label for="floatingTextarea">Comentarios extras</label>
                         <textarea class="form-control" placeholder="Escribe aqui comentarios extra para los padres" id="floatingTextarea"></textarea>
