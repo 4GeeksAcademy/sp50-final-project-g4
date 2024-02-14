@@ -19,12 +19,13 @@ export const Login = () => {
             // Mostrar el login y dentro del login un msj de error
             return
         }
-        if (store.isAdmin == true) {
+        if (store.isAdmin ) {
             navigate('/homeadmin');
         } else if (store.isProfessor) {
-            navigate('/'); // Cambiar navigate al home de profesores
+            navigate('/professors_1');
         } else {
-            navigate('/'); // Cambiar navigate al home de padres
+            navigate('/parents_1')
+
         }
     };
 
@@ -32,7 +33,7 @@ export const Login = () => {
         <div className="wrapper">
             <div className="login-box" >
                 <div className="login-header" >
-                    <img className = "" src={LogoURL} />
+                    <img className="" src={LogoURL} />
                 </div>
                 <form onSubmit={login}>
                     <div className="input-box">
@@ -50,10 +51,8 @@ export const Login = () => {
                     <div className="input-box">
                         <input type="submit" className="input-submit" value="Accede" style={{ backgroundColor: "#086972" }} />
                     </div>
-
                 </form>
             </div>
-
         </div>
     );
 };

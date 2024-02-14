@@ -31,7 +31,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const resp = await fetch(process.env.BACKEND_URL + "api/login", opt)
 					if (!resp.ok) {
 						console.log('Error: ', resp.status, resp.statusText)
-						return
+						return  // TODO: aca hay que enviar un mje de que los datos de acceso son incorrectos
 					}
 					const data = await resp.json()
 					localStorage.setItem('token', data.access_token)
@@ -50,10 +50,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 						setStore({
 							isAdmin: true,
 						})
-						actions.getProfessors()
-						actions.getParents()
-						actions.getStudents()
-						actions.getUsers()
+            await actions.getProfessors()
+						await actions.getParents()
+						await actions.getStudents()
+						await actions.getUsers()
+					}
+					if (getStore().profile.isProfessor) {
+						setStore({ isProfessor: getStore().profile.is_professor })
+						actions.getProfessors()  // CERO SEGURA DE ESTO
+					} else {
+						console.log("soy un padre")
+						console.log(getStore().profile.childs)
+						const largo = getStore().profile.childs.length
+							console.log(largo)
+						for (let i=0; i<largo; i++) {
+							
+							console.log("algo", getStore().profile.childs[i])
+							console.log("soy un hijo")
+							
+							actions.getNotifications(getStore().profile.childs[i].id)
+							//console.log(item,typeof(item))
+						}
+						// setStore({
+						// 	professorGroups: dataNewNotification.data[0].id
+						// })
+						//ni de esto
+						// Es padre, por lo tanto traemos las notif.  
+						//Falta completar con el action 
 					}
 					console.log(getStore().user)
 					return data
@@ -151,6 +174,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("error-----> ", error)
 				}
 
+			},
+			getNotifications: async (idStudent) => {
+				const url=process.env.BACKEND_URL + '/api/notifications/parents/' + idStudent
+				const opt = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + localStorage.getItem("token")
+					}
+				}
+				const response = await fetch(url, opt)
+				if (!response.ok) {
+					console.log("error:", response.status, response.statusText)
+					return
+				}
+				const data= await response.json()
+				console.log(data)
+				console.log(JSON.stringify(data))
+				setStore({ notifications: [...getStore().notifications, data] })
 			},
 
 			newNotification: async (sleep, food, hygiene, notif, student) => {
