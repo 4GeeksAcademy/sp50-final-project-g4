@@ -1,20 +1,79 @@
-import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import test from '../../styles/test.css'
-import Babysteps from '../../img/Babysteps.png'
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import '../../styles/test.css'
+import '../../img/Babysteps.png'
+import { Context } from "../store/appContext";
 
     
-
 export const FormParents = () => {
+    const { idParent } = useParams();
+    const { store, actions } = useContext(Context);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
     const [lastname, setLastname] = useState("");
     const [address, setAddress] = useState("");
     const [phone, setPhone] = useState("");
-    const [group, setGroup] = useState("");
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const parentToEdit = store.currentParent;
+        if (parentToEdit) {
+            setName(parentToEdit.name);
+            setLastname(parentToEdit.lastname);
+            setEmail(parentToEdit.email);
+            setPassword(parentToEdit.password);
+            setAddress(parentToEdit.address);
+            setPhone(parentToEdit.phone);
+        }
+    }, [])
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // (alert(("All fields must be filled")));
+        const newUser = {
+            email: email,
+            password: password,
+            is_professor: false
+        }
+        const newParent = {
+            name: name,
+            lastname: lastname,
+            address: address,
+            phone: phone,
+            is_admin: false
+        };
+        const editedParent = {
+            name: name,
+            lastname: lastname,
+            address: address,
+            phone: phone,
+            is_admin: false
+        };
+
+        if (idParent && idParent !== 'new') {
+            actions.updateContact(idParent, editedParent);
+        } else {
+            console.log("Creating new Parent");
+            actions.createParent(newParent, newUser);
+        }
+        navigate("/parents");
+    };
+
+    const handleReset = () => {
+        setName('')
+        setLastname('')
+        setEmail('')
+        setPassword('')
+        setPhone('')
+        setAddress('')
+        actions.setCurrentParent();
+    };
+
+    const handleGetBack = () => {
+        handleReset()
+        navigate(-1)
+    }
 
     const handleSelectGruop = (e) => {
         setGroup(e.target.value);
@@ -32,7 +91,7 @@ export const FormParents = () => {
                         <div className="formbg">
                             <div className="formbg-inner padding-horizontal--48">
                                 <span className="padding-bottom--15"><img src="Babysteps.png" className="card-img-top" alt="..." /></span>
-                                <form id="stripe-login">
+                                <form id="stripe-login" onSubmit={handleSubmit}>
                                     <div className="row row-cols-1 row-cols-md-2">
                                         <div className="field col">
                                             <label htmlFor="name">Nombre</label>
@@ -103,10 +162,33 @@ export const FormParents = () => {
                                             onChange={(e) => setPhone(e.target.value)}
                                         />
                                     </div>
+                                    {/* <div className="field col">
+                                            <div className="grid--50-50">
+                                                <label htmlFor="address">Grupo</label>
+                                            </div>
+                                            <div>
+                                                <div className="input padding-bottom--15">
+                                                    <select
+                                                        className="form-select"
+                                                        aria-label="select rol"
+                                                        required
+                                                        value={group}
+                                                        onChange={(e) => setGroup(e.target.value)}
+                                                        placeholder=""
+                                                    >
+                                                        <option value="" disabled>Seleccionar Grupo</option>
+                                                        <option value="1">Grupo 1</option>
+                                                        <option value="2">Grupo 2</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div> */}
                                     <div className="field padding-top--24">
                                         <input type="submit" name="submit" value="Continue" />
                                     </div>
-                                    <div className="field">
+                                    <div className="field d-flex justify-content-center gap-2">
+                                        <button className="btn btn-success input submit" type='reset' style={{ backgroundColor: "#086972" }} onClick={handleReset}>Reset</button>
+                                        <button className="btn btn-danger input submit" onClick={handleGetBack}>Cancel</button>
                                     </div>
                                 </form>
                             </div>

@@ -6,28 +6,34 @@ import { Card, Col, Container, Row } from "react-bootstrap";
 
 export const ProfessorsDetails = () => {
 	const { store, actions } = useContext(Context);
-	const navigate = useNavigate();
-	const currentProfessor = store.currentProfessor;
+	// const groups = store.groups;
+	const professor = store.currentProfessor;
+	console.log(professor);
+	const users = store.users;
 	const params = useParams();
-	const subindice = params.idProfessor;
-	const professor = store.professors[subindice];
+	// const subindice = params.idProfessor;
+	// const professor = store.professors[subindice];
 
-	useEffect(() => {
-			actions.getprofessorDetails(subindice);
-	}, [])
+	
+	const filterUser = users.filter(user => user.id == professor.user_id)
+	// const filterGroups = groups.filter(group => group.professor_id == professor.id)
+	console.log(filterUser);
+	// useEffect(() => {
+	// 		actions.getprofessorDetails(subindice);
+	// }, [])
 
 	return (
 		<Container fluid className="w-75">
 			<Container className="w-75">
-				<Card className="text-light border-0 my-5">
+				<Card className="text-light border-0 my-5 pb-2">
 					<Row>
 						<Col className="card-parent-details">
 							<Card.Body>
-								<Card.Title>{currentProfessor?.name} {currentProfessor?.lastname}</Card.Title>
-								<Card.Text>Email:</Card.Text>
-								<Card.Text>Dirección: {currentProfessor?.address}</Card.Text>
-								<Card.Text>Teléfono: {currentProfessor?.phone}</Card.Text>
-								<Card.Text>Hijos:</Card.Text>
+								<Card.Title className="py-2">{professor.name} {professor.lastname}</Card.Title>
+								<Card.Text>Email: {filterUser[0].email}</Card.Text>
+								<Card.Text>Dirección: {professor?.address}</Card.Text>
+								<Card.Text className="pb-2">Teléfono: {professor?.phone}</Card.Text>
+								{/* <Card.Text>Grupo:</Card.Text> */}
 							</Card.Body>
 						</Col>
 					</Row>

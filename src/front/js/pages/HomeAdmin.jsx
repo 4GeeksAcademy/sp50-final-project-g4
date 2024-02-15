@@ -13,7 +13,7 @@ export const HomeAdmin = () => {
     const { store, actions } = useContext(Context)
     const navigate = useNavigate();
     const person = store.profile;
-    
+
 
     // useEffect(() => {
     //     if (store.profile.is_admin) {
@@ -21,8 +21,13 @@ export const HomeAdmin = () => {
     //         actions.getParents()
     //         actions.getStudents()
     //     }
-	// }, [])
+    // }, [])
 
+    const handleClick = () => {
+        actions.setCurrentParent();
+        actions.setCurrentProfessor();
+        actions.setCurrentStudent();
+    }
 
     return (
         <div>
@@ -33,7 +38,7 @@ export const HomeAdmin = () => {
                 <form id="stripe-login">
                     <div className="field">
                         <div className="container-fluid text-center">
-                            <div className="row g-5 h6">
+                            <div className="row g-5 h6 mb-4">
                                 <div className="col">
                                     <Link to='/professors'>
                                         <div className="cards-admin text-center pt-4">
@@ -42,7 +47,7 @@ export const HomeAdmin = () => {
                                                 <span className="fa-10x"><FontAwesomeIcon className="icon" icon="fa-solid fa-chalkboard-user" /></span>
                                             </div>
                                             <div className="card-footer">
-                                                <Link to='/formprofessors' className="btn btn-outline-secondary border-0">
+                                                <Link to='/formprofessors' className="btn btn-outline-secondary border-0" onClick={handleClick}>
                                                     +Profesor
                                                 </Link>
                                             </div>
@@ -50,14 +55,14 @@ export const HomeAdmin = () => {
                                     </Link>
                                 </div>
                                 <div className="col">
-                                    <Link to='/parentsadmin'>
+                                    <Link to='/parents'>
                                         <div className="cards-admin text-center pt-4">
                                             <h3>Padres</h3>
                                             <div className="card-body">
                                                 <span className="fa-10x"><FontAwesomeIcon icon="fa fa-users" /></span>
                                             </div>
                                             <div className="card-footer">
-                                                <Link to='/formparents' className="btn btn-outline-secondary border-0">
+                                                <Link to='/formparents' className="btn btn-outline-secondary border-0" onClick={handleClick}>
                                                     +Padre
                                                 </Link>
                                             </div>
@@ -65,21 +70,29 @@ export const HomeAdmin = () => {
                                     </Link>
                                 </div>
                                 <div className="col">
-                                    <Link to="/studentsadmin">
+                                    <Link to="/students">
                                         <div className="cards-admin text-center pt-4">
                                             <h3>Estudiantes</h3>
                                             <div className="card-body">
                                                 <span className="fa-10x"><FontAwesomeIcon icon="fa fa-children" /></span>
                                             </div>
                                             <div className="card-footer">
-                                                <Link to='/students' className="btn btn-outline-secondary border-0">
-                                                    Estudiantes {store.students && `${store.students.length}`}
+                                                <Link to='/formstudents' className="btn btn-outline-secondary border-0" onClick={handleClick}>
+                                                    +Estudiantes {/* {store.students && `${store.students.length}` */}
                                                 </Link>
                                             </div>
                                         </div>
                                     </Link>
                                 </div>
                             </div>
+                            <Link to='/groups'>
+                                <div className="cards-admin d-flex text-center mt-2" style={{ width: "14rem" }}>
+                                    <div className="card-body">
+                                        <h5 className="card-title">Grupos</h5>
+                                        <Link to='/formgroups' className="btn btn-outline-secondary border-0">Crear grupo</Link>
+                                    </div>
+                                </div>
+                            </Link>
                         </div>
                     </div>
                 </form>
