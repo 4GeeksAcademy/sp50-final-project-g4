@@ -7,7 +7,8 @@ import { Context } from "../store/appContext";
 export const FormGroups = () => {
     const { store, actions } = useContext(Context);
     const [name, setName] = useState("");
-    const [ professor, setProfessor] = useState("");
+    const [group, setGroup] = useState("");
+    const [professor, setProfessor] = useState("");
     // const groups = store.groups;
     const professors = store.professors
     // const simplifiedDate = date.toISOString().slice(0, 10);
@@ -30,10 +31,18 @@ export const FormGroups = () => {
 
     }
 
+
+    const handleGetBack = () => {
+        setName('')
+        setProfessor('')
+        navigate(-1)
+    }
+
     useEffect(() => {
         if (store.profile.is_admin) {
             actions.getGroups();
             actions.getProfessors();
+            actions.getStudents();
         }
     }, [])
 
@@ -72,8 +81,9 @@ export const FormGroups = () => {
                                                 aria-label="select grprofessoroup"
                                                 value={professor}
                                                 onChange={handleSelectProfessor}
-                                                placeholder="Professor"
+                                                defaultValue="Seleccionar Profesor"
                                             >
+                                                <option value="" selected disabled hidden>Seleccionar Profesor</option>
                                                 {professors.map(item => (
                                                     <option key={item.id} value={item.id}>{item.name} {item.lastname} </option>
                                                 ))}
@@ -84,6 +94,9 @@ export const FormGroups = () => {
                                         <input type="submit" name="submit" value="Continue" />
                                     </div>
                                     <div className="field">
+                                    </div>
+                                    <div className="field d-flex justify-content-center">
+                                        <button className="btn btn-danger input" type="button" onClick={handleGetBack}>Cancel</button>
                                     </div>
                                 </form>
                             </div>

@@ -10,14 +10,16 @@ export const ProfessorsDetails = () => {
 	const professor = store.currentProfessor;
 	console.log(professor);
 	const users = store.users;
+	const groups = store.groups;
 	const params = useParams();
 	// const subindice = params.idProfessor;
 	// const professor = store.professors[subindice];
 
 	
 	const filterUser = users.filter(user => user.id == professor.user_id)
-	// const filterGroups = groups.filter(group => group.professor_id == professor.id)
-	console.log(filterUser);
+	const filterGroups = groups.filter(group => group.professor_id == professor.id)
+
+	console.log(filterGroups);
 	// useEffect(() => {
 	// 		actions.getprofessorDetails(subindice);
 	// }, [])
@@ -29,11 +31,11 @@ export const ProfessorsDetails = () => {
 					<Row>
 						<Col className="card-parent-details">
 							<Card.Body>
-								<Card.Title className="py-2">{professor.name} {professor.lastname}</Card.Title>
-								<Card.Text>Email: {filterUser[0].email}</Card.Text>
+								<Card.Title className="py-2">{professor?.name} {professor?.lastname}</Card.Title>
+								<Card.Text>Email: {filterUser[0]?.email}</Card.Text>
 								<Card.Text>Dirección: {professor?.address}</Card.Text>
 								<Card.Text className="pb-2">Teléfono: {professor?.phone}</Card.Text>
-								{/* <Card.Text>Grupo:</Card.Text> */}
+								<Card.Text>Grupo: {filterGroups[0]?.name}</Card.Text>
 							</Card.Body>
 						</Col>
 					</Row>

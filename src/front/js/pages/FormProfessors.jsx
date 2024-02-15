@@ -6,8 +6,8 @@ import { Context } from "../store/appContext";
 
 
 export const FormProfessors = () => {
-    const { idProfessor } = useParams();
     const { store, actions } = useContext(Context);
+    const [ idProfessor, setIdProfessor ] = useState('new');
     const [name, setName] = useState("");
     const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("");
@@ -17,25 +17,28 @@ export const FormProfessors = () => {
     const [group, setGroup] = useState("");
     const [isAdmin, setIsAdmin] = useState(false)
     const [isProfessor, setIsProfessor] = useState(true)
+    const groups = store.groups;
     const navigate = useNavigate();
 
     useEffect(() => {
         const professorToEdit = store.currentProfessor;
+        // console.log(professorToEdit.is_admin);
         if (professorToEdit) {
+            setIdProfessor(professorToEdit.id);
             setName(professorToEdit.name);
             setLastname(professorToEdit.lastname);
             setEmail(professorToEdit.email);
             setPassword(professorToEdit.password);
             setAddress(professorToEdit.address);
             setPhone(professorToEdit.phone);
-            setIsAdmin(professorToEdit.isAdmin);
+            setIsAdmin(store.currentProfessor.is_admin);
             setGroup(professorToEdit.group);
         }
     }, [])
 
-    // const handleSelectGroup = (e) => {
-    //     setGroup(e.target.value);
-    // }
+    const handleSelectGroup = (e) => {
+        setGroup(e.target.value);
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -63,13 +66,17 @@ export const FormProfessors = () => {
         };
 
         if (idProfessor && idProfessor !== 'new') {
-            actions.updateContact(idProfessor, editedProfessor);
+            actions.updateProfessor(idProfessor, editedProfessor);
         } else {
             console.log("Creating new Professor");
             actions.createProfessor(newProfessor, newUser);
         }
         navigate("/professors");
     };
+
+    const handleChecked = (e) => {
+        setIsAdmin(e.target.checked)
+    }
 
     const handleReset = () => {
         setName('')
@@ -177,7 +184,7 @@ export const FormProfessors = () => {
                                                 onChange={(e) => setPhone(e.target.value)}
                                             />
                                         </div>
-                                        {/* <div className="field col">
+                                        <div className="field col">
                                             <div className="grid--50-50">
                                                 <label htmlFor="address">Grupo</label>
                                             </div>
@@ -188,33 +195,33 @@ export const FormProfessors = () => {
                                                         aria-label="select group"
                                                         value={group}
                                                         onChange={handleSelectGroup}
-                                                        placeholder="Grupo"
+                                                        defaultValue="Seleccionar Grupo"
                                                     >
+                                                        <option value="" selected disabled hidden>Seleccionar Grupo</option>                                                        
                                                         {groups.map(item => (
                                                             <option key={item.id} value={item.id}>{item.name}</option>
                                                         ))}
                                                     </select>
                                                 </div>
                                             </div>
-                                        </div> */}
+                                        </div>
                                     </div>
                                     <div className="field-checkbox flex-flex align-center">
-                                        <label htmlFor="checkbox">
+                                        <span>
                                             <input
                                                 type="checkbox"
-                                                name="checkbox"
                                                 checked={isAdmin}
-                                                onChange={(e) => setIsAdmin(e.target.checked)}
+                                                onChange={handleChecked}
                                             />
                                             Es Admin
-                                        </label>
+                                        </span>
                                     </div>
                                     <div className="field padding-top--24">
                                         <input type="submit" name="submit" value="Continue" />
                                     </div>
                                     <div className="field d-flex justify-content-center gap-2">
                                         <button className="btn btn-success input submit" type='reset' style={{ backgroundColor: "#086972" }} onClick={handleReset}>Reset</button>
-                                        <button className="btn btn-danger input submit" onClick={handleGetBack}>Cancel</button>
+                                        <button className="btn btn-danger input submit" type="button" onClick={handleGetBack}>Cancel</button>
                                     </div>
                                 </form>
                             </div>

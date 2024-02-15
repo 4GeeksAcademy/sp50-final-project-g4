@@ -26,6 +26,7 @@ export const ProfessorsAdmin = () => {
         navigate('/formprofessors')
     }
 
+
     return (
         <div className="container">
 

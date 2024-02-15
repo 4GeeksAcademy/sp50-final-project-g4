@@ -361,9 +361,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log('Error newuser:', newUserFetch.status, newUserFetch.statusText);
 				}
 			},
-			updateProfessor: async (id, editedProfessor) => {
+			updateProfessor: async (idProfessor, editedProfessor) => {
 				const store = getStore();
-				const base_url = process.env.BACKEND_URL + 'api/professors/' + id;
+				const url = process.env.BACKEND_URL + 'api/professors/' + idProfessor;
+				console.log(editedProfessor);
 				const options = {
 					method: 'PUT',
 					headers: {

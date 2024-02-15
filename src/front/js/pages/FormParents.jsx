@@ -52,7 +52,7 @@ export const FormParents = () => {
         };
 
         if (idParent && idParent !== 'new') {
-            actions.updateContact(idParent, editedParent);
+            actions.updateParent(idParent, editedParent);
         } else {
             console.log("Creating new Parent");
             actions.createParent(newParent, newUser);
@@ -187,8 +187,8 @@ export const FormParents = () => {
                                         <input type="submit" name="submit" value="Continue" />
                                     </div>
                                     <div className="field d-flex justify-content-center gap-2">
-                                        <button className="btn btn-success input submit" type='reset' style={{ backgroundColor: "#086972" }} onClick={handleReset}>Reset</button>
-                                        <button className="btn btn-danger input submit" onClick={handleGetBack}>Cancel</button>
+                                        <button className="btn btn-success input" type='reset' style={{ backgroundColor: "#086972" }} onClick={handleReset}>Reset</button>
+                                        <button className="btn btn-danger input" type="button" onClick={handleGetBack}>Cancel</button>
                                     </div>
                                 </form>
                             </div>
