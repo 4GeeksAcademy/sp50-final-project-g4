@@ -1,23 +1,62 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import test from '../../styles/test.css'
-
+import { Context } from "../store/appContext";
 
 
 export const FormStudents = () => {
+    const { store, actions } = useContext(Context);
     const [name, setName] = useState("");
     const [lastname, setLastname] = useState("");
     const [dateOfBirth, setDateOfBirth] = useState("");
     const [group, setGroup] = useState("");
+    const [parent, setParent] = useState("");
+    const groups = store.groups;
+    const parents = store.parents
+    // const simplifiedDate = date.toISOString().slice(0, 10);
     const navigate = useNavigate();
+
+
+    const handleSelectGroup = (e) => {
+        setGroup(e.target.value);
+    }
+    const handleSelectParent = (e) => {
+        setParent(e.target.value);
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-    }
-    const handleSelectGruop = (e) => {
-        setGroup(e.target.value);
+        const newStudent = {
+            name: name,
+            lastname: lastname,
+            date_of_birth: dateOfBirth,
+            parent_id: parent,
+            group_id: group
+        };
+        actions.createStudent(newStudent);
+        navigate("/students");
     }
 
+    const handleReset = () => {
+        setName('')
+        setLastname('')
+        setDateOfBirth('')
+        setGroup('')
+        setParent('')
+        actions.setCurrentStudent();
+    };
+
+    const handleGetBack = () => {
+        handleReset();
+        navigate(-1);
+    }
+
+    useEffect(() => {
+        if (store.profile.is_admin) {
+            actions.getGroups();
+            actions.getParents();
+        }
+    }, [])
 
     return (
         <div className="login-root pb-4">
@@ -30,7 +69,7 @@ export const FormStudents = () => {
                         <div className="formbg">
                             <div className="formbg-inner padding-horizontal--48">
                                 <span className="padding-bottom--15"><img src="Babysteps.png" className="card-img-top" alt="..." /></span>
-                                <form id="stripe-login">
+                                <form id="stripe-login" onSubmit={handleSubmit}>
                                     <div className="fullname row row-cols-1 row-cols-md-2">
                                         <div className="field col">
                                             <label htmlFor="name">Nombre</label>
@@ -67,19 +106,37 @@ export const FormStudents = () => {
                                     </div>
                                     <div className="field">
                                         <div className="grid--50-50">
-                                            <label htmlFor="Grupo">Grupo</label>
+                                            <label htmlFor="Grupo">Padre</label>
                                         </div>
                                         <div className="input padding-bottom--15">
                                             <select
                                                 className="form-select"
-                                                aria-label="select rol"
-                                                value={group}
-                                                onChange={handleSelectGruop}
-                                                placeholder="Dirección"
+                                                aria-label="select parent"
+                                                value={parent}
+                                                onChange={handleSelectParent}
+                                                placeholder="Padre"
                                             >
-                                                <option value="" disabled>Seleccionar Grupo</option>
-                                                <option value="1">Grupo 1</option>
-                                                <option value="2">Grupo 2</option>
+                                                {parents.map(item => (
+                                                    <option key={item.id} value={item.id}>{item.name} {item.lastname}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="field">
+                                        <div className="grid--50-50">
+                                            <label htmlFor="Grupo">grupo</label>
+                                        </div>
+                                        <div className="input padding-bottom--15">
+                                            <select
+                                                className="form-select"
+                                                aria-label="select group"
+                                                value={group}
+                                                onChange={handleSelectGroup}
+                                                placeholder="Grupo"
+                                            >
+                                                {groups.map(item => (
+                                                    <option key={item.id} value={item.id}>{item.name}</option>
+                                                ))}
                                             </select>
                                         </div>
                                     </div>
@@ -88,12 +145,11 @@ export const FormStudents = () => {
                                     </div>
                                     <div className="field">
                                     </div>
+                                    <div className="field d-flex justify-content-center gap-2">
+                                        <button className="btn btn-success input submit" type='reset' style={{ backgroundColor: "#086972" }} onClick={handleReset}>Reset</button>
+                                        <button className="btn btn-danger input submit" onClick={handleGetBack}>Cancel</button>
+                                    </div>
                                 </form>
-                            </div>
-                        </div>
-                        <div className="footer-link padding-top--24">
-                            <div className="listing padding-top--24 flex-flex center-center">
-                                <span><a href="#"></a></span>
                             </div>
                         </div>
                     </div>

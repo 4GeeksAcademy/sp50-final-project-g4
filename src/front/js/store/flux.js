@@ -14,6 +14,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			currentStudent: null,
 			parents: [],
 			students: [],
+			groups: [],
 			notifications: [], // agregar al login y logout
 			globalNotifications: [] // agregar al login y logout
 			// Falta mas 
@@ -56,6 +57,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						actions.getParents()
 						actions.getStudents()
 						actions.getUsers()
+						actions.getGroups()
 					}
 					if (getStore().profile.isProfessor) {
 						setStore({ isProfessor: getStore().profile.is_professor })
@@ -175,7 +177,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.error("error-----> ", error)
 				}
-
 			},
 			getNotifications: async (idStudent) => {
 				const url=process.env.BACKEND_URL + '/api/notifications/parents/' + idStudent
@@ -307,9 +308,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log('Error: ', response.status, response.statusText)
 				}
 			},
+			getGroups: async () => {
+				const store = getStore();
+				const url = process.env.BACKEND_URL + 'api/groups';
+				const options = {
+					method: 'GET',
+					headers: {
+						"Content-Type": "application/json",
+						'Authorization': "Bearer " + localStorage.getItem("token")
+					}
+				};
+				const response = await fetch(url, options);
+				if (response.ok) {
+					const data = await response.json();
+					console.log({ 'groups': data.groups });
+					setStore({ groups: data.groups });
+				} else {
+					console.log('Error: ', response.status, response.statusText)
+				}
+			},
 			createProfessor: async (newProfessor, newUser) => {
 				const actions = getActions();
-				const store = getStore();
 				const opt = {
 					method: 'POST',
 					headers: {
@@ -406,6 +425,86 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log('Error: ', response.status, response.statusText)
 				}
 			},
+			createParent: async (newParent, newUser) => {
+				const actions = getActions();
+				const opt = {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': "Bearer " + localStorage.getItem("token")
+					},
+					body: JSON.stringify(newUser)
+				}
+				const urlNewUser = process.env.BACKEND_URL + 'api/users';
+				const newUserFetch = await fetch(urlNewUser, opt);
+				if (newUserFetch.ok) {
+					const newUserData = await newUserFetch.json();
+					// actions.getUsers();
+					const url = process.env.BACKEND_URL + 'api/parents';
+					const dataToSend = {...newParent, user_id: newUserData.usuario.id}
+					const options = {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							'Authorization': "Bearer " + localStorage.getItem("token")
+						},
+						body: JSON.stringify(dataToSend)
+					}
+					const response = await fetch(url, options);
+					if (response.ok) {
+						console.log(response);
+						const data = await response.json();
+						console.log({ "parents": data });
+						actions.getParents();
+					} else {
+						console.log('Error: ', response.status, response.statusText)
+					}
+				} else {
+					console.log('Error newuser:', newUserFetch.status, newUserFetch.statusText);
+				}
+			},
+			createStudent: async (newStudent) => {
+				const actions = getActions();
+				const opt = {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': "Bearer " + localStorage.getItem("token")
+					},
+					body: JSON.stringify(newStudent)
+				}
+				const url = process.env.BACKEND_URL + 'api/students';
+				const response = await fetch(url, opt);
+				if (response.ok) {
+					console.log(response);
+					const data = await response.json();
+					console.log({ "students": data.Representate });
+					actions.getParents();
+				} else {
+					console.log('Error: ', response.status, response.statusText)
+				}
+			},
+			createGroup: async (newGroup) => {
+				const actions = getActions();
+				const opt = {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': "Bearer " + localStorage.getItem("token")
+					},
+					body: JSON.stringify(newGroup)
+				}
+				const url = process.env.BACKEND_URL + 'api/admin/group/create';
+				const response = await fetch(url, opt);
+				if (response.ok) {
+					console.log(response);
+					const data = await response.json();
+					console.log({ "Groups": data.Grupo });
+					actions.getParents();
+				} else {
+					console.log('Error: ', response.status, response.statusText)
+				}
+			},
 			getParentsDetails: async (id) => {
 				const store = getStore();
 				const url = process.env.BACKEND_URL + 'api/parents/' + id;
@@ -427,7 +526,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			setCurrentProfessor: (item) => { setStore({ currentProfessor: item }) },
 			setCurrentParent: (item) => { setStore({ currentParent: item }) },
-			setCurrentStudent: (item) => { setStore({ currentStudent: item }) },
+			setCurrentStudent: (item) => { setStore({ currentStudent: item }) }
 		}
 	};
 };

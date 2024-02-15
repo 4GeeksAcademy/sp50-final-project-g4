@@ -24,6 +24,11 @@ export const ParentsAdmin = () => {
         actions.setCurrentParent(item);
         navigate(`/parents/${item.id}`);
     }
+    const handleEdit = (item) => {
+        actions.setCurrentParent(item);
+        navigate('/formparents');
+    }
+
 
 
     return (
@@ -38,24 +43,22 @@ export const ParentsAdmin = () => {
                                 <h4>{item.name} {item.lastname}</h4>
                                 <h5 className="text-secondary mt-3"><i className="fas fa-map-marker-alt me-3"></i>{item.address}</h5>
                                 <p className="text-secondary my-1"><i className="fas fa-phone me-3"></i>{item.phone}</p>
-                                <p className="text-secondary"><i className="fas fa-envelope me-3"></i>{item.email}</p>
+                                {/* <p className="text-secondary"><i className="fas fa-envelope me-3"></i>{item.email}</p> */}
                             </Col>
                             <Col xs={1} md={1} className="mt-2">
                                 <span
                                     className="fas fa-pencil-alt"
                                     style={{ cursor: "pointer" }}
-                                    onClick={() => navigate(`/${item.id}`)}>
+                                    onClick={() => handleEdit(item)}>
                                 </span>
-                                <span
+                                {/* <span
                                     className="fas fa-trash-alt"
                                     style={{ cursor: "pointer" }}
                                     onClick={() => handleDeleteContact(item.id)}>
-                                </span>
+                                </span> */}
                                 <div>
-                                    <Link to={`/parents/${item.id}`} className="border-0 float-end">
-                                        <button className="btn btn btn-outline-secondary border-0 mt-5 float-end" type="button" onClick={() => handleDetails(item)}>
+                                    <Link to={`/parents/${item.id}`} className="btn btn btn-outline-secondary border-0 mt-5 float-end" onClick={() => handleDetails(item)}>
                                             +detalles
-                                        </button>
                                     </Link>
                                 </div>
                             </Col>

@@ -330,7 +330,8 @@ def create_parent():
             new_parent = Parents(name=data['name'],
                                  lastname=data['lastname'],
                                  address=data['address'],
-                                 phone=data['phone'])
+                                 phone=data['phone'],
+                                 user_id=data['user_id'])
             db.session.add(new_parent)
             db.session.commit()
             return jsonify({"message": "Representante creado correctamente", "Representate": new_parent.serialize()}), 201

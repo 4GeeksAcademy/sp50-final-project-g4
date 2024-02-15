@@ -5,11 +5,14 @@ import injectContext from "./store/appContext";
 import { Home } from "./pages/Home.jsx";
 import { Single } from "./pages/Single.jsx";
 
-import { FormParents } from "./pages/FormParents.jsx";
 import { HomeAdmin } from "./pages/HomeAdmin.jsx";
+import { FormParents } from "./pages/FormParents.jsx";
 import { FormProfessors } from "./pages/FormProfessors.jsx";
 import { FormStudents } from "./pages/FormStudents.jsx";
+import { FormGroups } from "./pages/FormGroups.jsx";
+import { StudentsAdmin } from "./pages/StudentsAdmin.jsx";
 import { ProfessorsAdmin } from "./pages/ProfessorsAdmin.jsx";
+import { StudentsDetails } from "./pages/StudentsDetails.jsx";
 import { ParentsAdmin } from "./pages/ParentsAdmin.jsx";
 import { ParentsDetails } from "./pages/ParentsDetails.jsx";
 
@@ -23,11 +26,10 @@ import { Footer } from "./component/Footer.jsx";
 import { Login } from "./pages/Login.jsx";
 
 
-import { StudentsAdmin } from "./pages/StudentsAdmin.jsx";
 import { ProfessorsDetails } from "./pages/ProfessorsDetails.jsx";
-import { StudentsDetails } from "./pages/StudentsDetails.jsx";
 import {Professors_1} from "./pages/Professors_1.jsx";
 import { Parents_1 } from "./pages/Parents_1.jsx";
+import { Groups } from "./pages/Groups.jsx";
 
 
 
@@ -50,14 +52,15 @@ const Layout = () => {
                         <Route element={<HomeAdmin />} path="/homeadmin" />
                         <Route element={<FormParents />} path="/formparents" />
                         <Route element={<FormProfessors />} path="/formprofessors" />
+                        <Route element={<FormGroups />} path="/formgroups" />
                         <Route element={<FormProfessors />} path="/formprofessors/:idProfessor" />
                         <Route element={<FormStudents />} path="/formstudents" />
                         <Route element={<ProfessorsAdmin />} path="/professors" />
-                        <Route element={<ParentsAdmin />} path="/parentsadmin" />
-                        <Route element={<StudentsAdmin />} path="/studentsadmin" />
+                        <Route element={<ParentsAdmin />} path="/parents" />
+                        <Route element={<StudentsAdmin />} path="/students" />
+                        <Route element={<Groups />} path="/groups" />
                         <Route element={<ProfessorsDetails />} path="/professors/:idProfessor" />
                         <Route element={<ParentsDetails />} path="/parents/:idParent" />
-                        {/* <Route element={<ParentsDetails />} path="/parentsdetails" /> */}
                         <Route element={<StudentsDetails />} path="/studentsdetails" />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<h1>Not found!</h1>} path="*"/>

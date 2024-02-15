@@ -16,7 +16,7 @@ export const ParentsDetails = () => {
 	// const person = store.parents[subindice];
 	// const ParentsDetails = actions.getParentsDetails();
 	const users = store.users;
-	
+
 
 	const filterUser = users.filter(user => user.id == parent.user_id)
 	const filterStudents = students.filter(student => student.parent_id == parent.id)
@@ -30,24 +30,33 @@ export const ParentsDetails = () => {
 		<Container fluid className="w-75">
 			<Container className="w-75">
 				<Card className="text-light border-0 my-5">
-					<Row>{!filterStudents ? <p>Leyendo datos</p> : 
+					<Row>
 						<Col className="card-parent-details">
 							<Card.Body>
-								<Card.Title>{parent.name}</Card.Title>
+								<Card.Title>{parent.name} {parent.lastname}</Card.Title>
 								<Card.Text>Email: {filterUser[0].email}</Card.Text>
-								<Card.Text>Dirección:</Card.Text>
-								<Card.Text>Teléfono:</Card.Text>
+								<Card.Text>Dirección: {parent.address}</Card.Text>
+								<Card.Text>Teléfono: {parent.phone}</Card.Text>
+
 								<Card.Text>Hijos:</Card.Text>
-								{filterStudents.map((item) => 
-								<Card.Text key={item.id}>{item.name}</Card.Text>
-								)}
+								{!filterStudents ?
+									<p>No tiene hijos asignado</p>
+									:
+									<>
+										{
+											filterStudents.map((item) =>
+												<Card.Text key={item.id}>- {item.name} {item.lastname}</Card.Text>
+											)
+										}
+									</>
+								}
+
 							</Card.Body>
 						</Col>
-						}
 					</Row>
 				</Card>
 			</Container>
-			<Link to="/parentsadmin">
+			<Link to="/parents">
 				<button className="btn ms-5" type="submit" style={{ marginBottom: "68px", backgroundColor: "#0fc1d1" }} role="button">
 					Atrás
 				</button>

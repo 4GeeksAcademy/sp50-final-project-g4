@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import '../../styles/test.css'
+import '../../img/Babysteps.png'
 import { Context } from "../store/appContext";
-
 
 
 export const FormProfessors = () => {
@@ -14,7 +14,7 @@ export const FormProfessors = () => {
     const [password, setPassword] = useState("");
     const [address, setAddress] = useState("");
     const [phone, setPhone] = useState("");
-    // const [group, setGroup] = useState("");
+    const [group, setGroup] = useState("");
     const [isAdmin, setIsAdmin] = useState(false)
     const [isProfessor, setIsProfessor] = useState(true)
     const navigate = useNavigate();
@@ -29,8 +29,13 @@ export const FormProfessors = () => {
             setAddress(professorToEdit.address);
             setPhone(professorToEdit.phone);
             setIsAdmin(professorToEdit.isAdmin);
+            setGroup(professorToEdit.group);
         }
     }, [])
+
+    // const handleSelectGroup = (e) => {
+    //     setGroup(e.target.value);
+    // }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -45,19 +50,20 @@ export const FormProfessors = () => {
             lastname: lastname,
             address: address,
             phone: phone,
-            is_admin: isAdmin
+            is_admin: isAdmin,
+            group_id: group
         };
         const editedProfessor = {
             name: name,
             lastname: lastname,
             address: address,
             phone: phone,
-            is_admin: isAdmin
+            is_admin: isAdmin,
+            group_id: group
         };
 
         if (idProfessor && idProfessor !== 'new') {
             actions.updateContact(idProfessor, editedProfessor);
-
         } else {
             console.log("Creating new Professor");
             actions.createProfessor(newProfessor, newUser);
@@ -72,11 +78,8 @@ export const FormProfessors = () => {
         setPassword('')
         setPhone('')
         setAddress('')
-        // setGroup('')
         setIsAdmin('')
-        
-        //crear un action donde resetee el currentprofesor como un objeto vacio. El action debe tener el currentProfessor en null
-        //llamar el actions 
+        actions.setCurrentProfessor();
     };
 
     const handleGetBack = () => {
@@ -182,15 +185,14 @@ export const FormProfessors = () => {
                                                 <div className="input padding-bottom--15">
                                                     <select
                                                         className="form-select"
-                                                        aria-label="select rol"
-                                                        required
+                                                        aria-label="select group"
                                                         value={group}
-                                                        onChange={(e) => setGroup(e.target.value)}
-                                                        placeholder=""
+                                                        onChange={handleSelectGroup}
+                                                        placeholder="Grupo"
                                                     >
-                                                        <option value="" disabled>Seleccionar Grupo</option>
-                                                        <option value="1">Grupo 1</option>
-                                                        <option value="2">Grupo 2</option>
+                                                        {groups.map(item => (
+                                                            <option key={item.id} value={item.id}>{item.name}</option>
+                                                        ))}
                                                     </select>
                                                 </div>
                                             </div>
@@ -212,7 +214,7 @@ export const FormProfessors = () => {
                                     </div>
                                     <div className="field d-flex justify-content-center gap-2">
                                         <button className="btn btn-success input submit" type='reset' style={{ backgroundColor: "#086972" }} onClick={handleReset}>Reset</button>
-                                        <button className="btn btn-danger input submit" onClick={handleGetBack}>Atrás</button>
+                                        <button className="btn btn-danger input submit" onClick={handleGetBack}>Cancel</button>
                                     </div>
                                 </form>
                             </div>
