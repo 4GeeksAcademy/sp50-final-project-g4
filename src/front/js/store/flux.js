@@ -53,11 +53,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 						setStore({
 							isAdmin: true,
 						})
-            			actions.getProfessors()
-						actions.getParents()
-						actions.getStudents()
-						actions.getUsers()
-						actions.getGroups()
+            			await actions.getProfessors()
+						await actions.getParents()
+						await actions.getStudents()
+						await actions.getUsers()
+						await actions.getGroups()
 					}
 					if (getStore().profile.isProfessor) {
 						setStore({ isProfessor: getStore().profile.is_professor })
@@ -72,7 +72,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							console.log("algo", getStore().profile.childs[i])
 							console.log("soy un hijo")
 							
-							actions.getNotifications(getStore().profile.childs[i].id)
+							await actions.getNotifications(getStore().profile.childs[i].id)
 							//console.log(item,typeof(item))
 						}
 						
