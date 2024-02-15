@@ -9,7 +9,7 @@ export const Parents_1 = () => {
     const { store, actions } = useContext(Context);
     console.log("hola", store.notifications);
     const students = store.students
-    const filterStudent = students.filter(student => student.id == notifications.student_id)
+    const filterStudent = students.filter(student => student.id == store.notifications.student_id)
     console.log(filterStudent);
 
     const storeChild = store.profile.childs
