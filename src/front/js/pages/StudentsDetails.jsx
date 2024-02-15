@@ -34,7 +34,7 @@ export const StudentsDetails = () => {
 					</Row>
 				</Card>
 			</Container>
-			<Link to="/studentsadmin">
+			<Link to="/students">
 				<button className="btn ms-5" type="submit" style={{ marginBottom: "68px", backgroundColor: "#0fc1d1" }} role="button">
 					Atrás
 				</button>

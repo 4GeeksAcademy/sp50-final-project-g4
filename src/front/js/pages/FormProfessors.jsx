@@ -1,17 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import '../../styles/test.css'
+import '../../img/Babysteps.png'
 import { Context } from "../store/appContext";
 
 
-
 export const FormProfessors = () => {
-    const { store, actions } = useContext(Context);
     const { idProfessor } = useParams();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const { store, actions } = useContext(Context);
     const [name, setName] = useState("");
     const [lastname, setLastname] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [address, setAddress] = useState("");
     const [phone, setPhone] = useState("");
     const [group, setGroup] = useState("");
@@ -24,12 +24,18 @@ export const FormProfessors = () => {
         if (professorToEdit) {
             setName(professorToEdit.name);
             setLastname(professorToEdit.lastname);
+            setEmail(professorToEdit.email);
+            setPassword(professorToEdit.password);
             setAddress(professorToEdit.address);
             setPhone(professorToEdit.phone);
-            setGroup(professorToEdit.group);
             setIsAdmin(professorToEdit.isAdmin);
+            setGroup(professorToEdit.group);
         }
     }, [])
+
+    // const handleSelectGroup = (e) => {
+    //     setGroup(e.target.value);
+    // }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -44,21 +50,22 @@ export const FormProfessors = () => {
             lastname: lastname,
             address: address,
             phone: phone,
-            is_admin: isAdmin
+            is_admin: isAdmin,
+            group_id: group
         };
         const editedProfessor = {
             name: name,
             lastname: lastname,
             address: address,
             phone: phone,
-            is_admin: isAdmin
+            is_admin: isAdmin,
+            group_id: group
         };
 
         if (idProfessor && idProfessor !== 'new') {
             actions.updateContact(idProfessor, editedProfessor);
-
         } else {
-            console.log("Creating new contact");
+            console.log("Creating new Professor");
             actions.createProfessor(newProfessor, newUser);
         }
         navigate("/professors");
@@ -71,10 +78,8 @@ export const FormProfessors = () => {
         setPassword('')
         setPhone('')
         setAddress('')
-        setGroup('')
         setIsAdmin('')
-        //crear un action donde resetee el currentprofesor como un objeto vacio. El action debe tener el currentProfessor en null
-        //llamar el actions 
+        actions.setCurrentProfessor();
     };
 
     const handleGetBack = () => {
@@ -172,7 +177,7 @@ export const FormProfessors = () => {
                                                 onChange={(e) => setPhone(e.target.value)}
                                             />
                                         </div>
-                                        <div className="field col">
+                                        {/* <div className="field col">
                                             <div className="grid--50-50">
                                                 <label htmlFor="address">Grupo</label>
                                             </div>
@@ -180,19 +185,18 @@ export const FormProfessors = () => {
                                                 <div className="input padding-bottom--15">
                                                     <select
                                                         className="form-select"
-                                                        aria-label="select rol"
-                                                        required
+                                                        aria-label="select group"
                                                         value={group}
-                                                        onChange={(e) => setGroup(e.target.value)}
-                                                        placeholder=""
+                                                        onChange={handleSelectGroup}
+                                                        placeholder="Grupo"
                                                     >
-                                                        <option value="" disabled>Seleccionar Grupo</option>
-                                                        <option value="1">Grupo 1</option>
-                                                        <option value="2">Grupo 2</option>
+                                                        {groups.map(item => (
+                                                            <option key={item.id} value={item.id}>{item.name}</option>
+                                                        ))}
                                                     </select>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </div>
                                     <div className="field-checkbox flex-flex align-center">
                                         <label htmlFor="checkbox">
@@ -210,7 +214,7 @@ export const FormProfessors = () => {
                                     </div>
                                     <div className="field d-flex justify-content-center gap-2">
                                         <button className="btn btn-success input submit" type='reset' style={{ backgroundColor: "#086972" }} onClick={handleReset}>Reset</button>
-                                        <button className="btn btn-danger input submit" onClick={handleGetBack}>Atrás</button>
+                                        <button className="btn btn-danger input submit" onClick={handleGetBack}>Cancel</button>
                                     </div>
                                 </form>
                             </div>
