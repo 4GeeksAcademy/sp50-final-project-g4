@@ -114,8 +114,10 @@ export const FormStudents = () => {
                                                 aria-label="select parent"
                                                 value={parent}
                                                 onChange={handleSelectParent}
+                                                defaultValue="Seleccionar Padre"
                                                 placeholder="Padre"
                                             >
+                                                <option value="" selected disabled hidden>Seleccionar Padre</option>
                                                 {parents.map(item => (
                                                     <option key={item.id} value={item.id}>{item.name} {item.lastname}</option>
                                                 ))}
@@ -132,8 +134,9 @@ export const FormStudents = () => {
                                                 aria-label="select group"
                                                 value={group}
                                                 onChange={handleSelectGroup}
-                                                placeholder="Grupo"
+                                                defaultValue="Seleccionar Grupo"
                                             >
+                                                <option value="" selected disabled hidden>Seleccionar Grupo</option>
                                                 {groups.map(item => (
                                                     <option key={item.id} value={item.id}>{item.name}</option>
                                                 ))}
@@ -147,7 +150,7 @@ export const FormStudents = () => {
                                     </div>
                                     <div className="field d-flex justify-content-center gap-2">
                                         <button className="btn btn-success input submit" type='reset' style={{ backgroundColor: "#086972" }} onClick={handleReset}>Reset</button>
-                                        <button className="btn btn-danger input submit" onClick={handleGetBack}>Cancel</button>
+                                        <button className="btn btn-danger input submit" type="button" onClick={handleGetBack}>Cancel</button>
                                     </div>
                                 </form>
                             </div>

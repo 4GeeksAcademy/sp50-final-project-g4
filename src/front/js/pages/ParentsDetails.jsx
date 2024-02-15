@@ -8,7 +8,6 @@ export const ParentsDetails = () => {
 	const { store, actions } = useContext(Context);
 	const students = store.students;
 	console.log(students);
-	// const parents = store.parents;
 	const parent = store.currentParent;
 	console.log(parent);
 	// const params = useParams();

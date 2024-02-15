@@ -30,7 +30,6 @@ export const ParentsAdmin = () => {
     }
 
 
-
     return (
         <div className="container">
 
@@ -54,7 +53,7 @@ export const ParentsAdmin = () => {
                                 {/* <span
                                     className="fas fa-trash-alt"
                                     style={{ cursor: "pointer" }}
-                                    onClick={() => handleDeleteContact(item.id)}>
+                                    onClick={() => handleDelete(item.id)}>
                                 </span> */}
                                 <div>
                                     <Link to={`/parents/${item.id}`} className="btn btn btn-outline-secondary border-0 mt-5 float-end" onClick={() => handleDetails(item)}>

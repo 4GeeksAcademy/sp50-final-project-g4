@@ -6,15 +6,14 @@ import { Card, Col, Container, Row } from "react-bootstrap";
 
 export const StudentsDetails = () => {
 	const { store, actions } = useContext(Context);
-	// const currentParent = store.currentParent;
-	// const params = useParams();
-	// const subindice = params.idParent;
-	// const person = store.parents[subindice - 1];
-	// const ParentsDetails = actions.getParentsDetails();
+	const student = store.currentStudent;
+	const parents = store.parents
+    // const simplifiedDate = date.toISOString().slice(0, 10);
 
-	useEffect(() => {
-		// actions.getCharactersDetails(subindice)
-	}, [])
+
+
+	const filterParents = parents.filter(parent => parent.id == student.parent_id)
+
 
 	return (
 		<Container fluid className="w-75">
@@ -23,12 +22,10 @@ export const StudentsDetails = () => {
 					<Row>
 						<Col className="card-parent-details">
 							<Card.Body>
-								<Card.Title>Estudiante 1</Card.Title>
-								<Card.Text>Nombre: </Card.Text>
-								<Card.Text>Dirección: </Card.Text>
-								<Card.Text>Fecha de Nacimiento: </Card.Text>
-								<Card.Text>Padre: </Card.Text>
-								<Card.Text>Teléfono Padre: </Card.Text>
+								<Card.Title>Nombre: {student.name} {student.lastname}</Card.Title>
+								<Card.Text>Fecha de Nacimiento: {student.date_of_birth.slice(5, 16)} </Card.Text>
+								<Card.Text>Padre: {filterParents[0].name}</Card.Text>
+								<Card.Text>Teléfono Padre: {filterParents[0].phone}</Card.Text>
 							</Card.Body>
 						</Col>
 					</Row>
