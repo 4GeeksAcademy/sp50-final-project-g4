@@ -113,8 +113,13 @@
 
 .card_StudentsList,
 .card_StudentsNotif {
-  flex: 1 1 auto;
+  flex: 1;
   margin: 10px;
+      width: 100%;
+      max-width: 900px;
+      background: white;
+      border-radius: 4px;
+      box-shadow: rgba(48, 65, 128, 0.12) 0px 7px 14px 0px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px;
   border: 1px solid #ccc;
   padding: 10px;
 }
@@ -135,4 +140,12 @@
   .boton-enviar {
     background-color: #086972;
   }
+  
+   .Food,
+  .Sleep,
+  .Hygiene,
+  .Extra-Comments {
+    margin-bottom: 30px; /* Adjust the value as needed */
+  }
+
   
