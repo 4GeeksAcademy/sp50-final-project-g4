@@ -44,9 +44,9 @@ export const Professors_1 = () => {
                                 <li id={el.id} key={el.id}
                                     className={`list-group-item ${selected == el.id ? "active" : ""}`}
                                     onClick={e => setSelected(e.target.id)}
-                                >{el.name}</li>)}
-
-
+                                >{el.name}
+                                </li>)
+                            }
                         </ul>
                     </div>
                 </div>
@@ -146,7 +146,8 @@ export const Professors_1 = () => {
                         </h2>
                         <label for="floatingTextarea">Comentarios extras</label>
                         <textarea className="form-control" placeholder="Escribe aqui comentarios extra para los padres"
-                            id="floatingTextarea" onChange={(e) => setNotif(e.target.value)}></textarea>
+                            id="floatingTextarea"
+                            value={notif} onChange={(e) => setNotif(e.target.value)}></textarea>
 
                     </div>
                     <div className="Boton_Enviar">
