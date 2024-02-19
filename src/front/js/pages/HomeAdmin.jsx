@@ -1,12 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import test from '../../styles/test.css'
+import '../../styles/test.css'
 import { Context } from "../store/appContext";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { fa } from '@fortawesome/free-solid-svg-icons';
-import { ProfessorsAdmin } from "./ProfessorsAdmin.jsx";
-import { ParentsAdmin } from "./ParentsAdmin.jsx";
-import { StudentsAdmin } from "./StudentsAdmin.jsx";
 
 
 export const HomeAdmin = () => {
@@ -15,19 +11,22 @@ export const HomeAdmin = () => {
     const person = store.profile;
 
 
-    // useEffect(() => {
-    //     if (store.profile.is_admin) {
-    //         actions.getProfessors()
-    //         actions.getParents()
-    //         actions.getStudents()
-    //     }
-    // }, [])
-
     const handleClick = () => {
         actions.setCurrentParent();
         actions.setCurrentProfessor();
         actions.setCurrentStudent();
     }
+
+    const handleClickToProfessors = () => {
+        navigate('/professors')
+    }
+    const handleClickToParents = () => {
+        navigate('/parents')
+    }
+    const handleClickToStudents = () => {
+        navigate('/students')
+    }
+
 
     return (
         <div>
@@ -40,52 +39,53 @@ export const HomeAdmin = () => {
                         <div className="container-fluid text-center">
                             <div className="row g-5 h6 mb-4">
                                 <div className="col">
-                                    <Link to='/professors'>
-                                        <div className="cards-admin text-center pt-4">
+                                    <div className="cards-admin text-center pt-4">
+                                        <span onClick={handleClickToProfessors} style={{ cursor: "pointer" }}>
                                             <h3>Profesores</h3>
                                             <div className="card-body content">
                                                 <span className="fa-10x"><FontAwesomeIcon className="icon" icon="fa-solid fa-chalkboard-user" /></span>
                                             </div>
-                                            <div className="card-footer">
-                                                <Link to='/formprofessors' className="btn btn-outline-secondary border-0" onClick={handleClick}>
-                                                    +Profesor
-                                                </Link>
-                                            </div>
+                                        </span>
+                                        <div className="card-footer">
+                                            <Link to='/formprofessors' className="btn btn-outline-secondary border-0" onClick={handleClick}>
+                                                +Profesor
+                                            </Link>
                                         </div>
-                                    </Link>
+                                    </div>
                                 </div>
                                 <div className="col">
-                                    <Link to='/parents'>
-                                        <div className="cards-admin text-center pt-4">
+                                    <div className="cards-admin text-center pt-4">
+                                        <span onClick={handleClickToParents} style={{ cursor: "pointer" }}>
                                             <h3>Padres</h3>
                                             <div className="card-body">
                                                 <span className="fa-10x"><FontAwesomeIcon icon="fa fa-users" /></span>
                                             </div>
-                                            <div className="card-footer">
-                                                <Link to='/formparents' className="btn btn-outline-secondary border-0" onClick={handleClick}>
-                                                    +Padre
-                                                </Link>
-                                            </div>
+                                        </span>
+                                        <div className="card-footer">
+                                            <Link to='/formparents' className="btn btn-outline-secondary border-0" onClick={handleClick}>
+                                                +Padre
+                                            </Link>
                                         </div>
-                                    </Link>
+                                    </div>
                                 </div>
                                 <div className="col">
-                                    <Link to="/students">
-                                        <div className="cards-admin text-center pt-4">
+                                    <div className="cards-admin text-center pt-4">
+                                        <span onClick={handleClickToStudents} style={{ cursor: "pointer" }}>
                                             <h3>Estudiantes</h3>
                                             <div className="card-body">
                                                 <span className="fa-10x"><FontAwesomeIcon icon="fa fa-children" /></span>
                                             </div>
-                                            <div className="card-footer">
-                                                <Link to='/formstudents' className="btn btn-outline-secondary border-0" onClick={handleClick}>
-                                                    +Estudiantes {/* {store.students && `${store.students.length}` */}
-                                                </Link>
-                                            </div>
+                                        </span>
+                                        <div className="card-footer">
+                                            <Link to='/formstudents' className="btn btn-outline-secondary border-0" onClick={handleClick}>
+                                                +Estudiantes
+                                            </Link>
                                         </div>
-                                    </Link>
+                                    </div>
                                 </div>
                             </div>
-                            <Link to='/groups'>
+
+                            <Link to='/groups' style={{ cursor: "pointer" }}>
                                 <div className="cards-admin d-flex text-center mt-2" style={{ width: "14rem" }}>
                                     <div className="card-body">
                                         <h5 className="card-title">Grupos</h5>

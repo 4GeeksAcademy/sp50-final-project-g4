@@ -1,28 +1,20 @@
-import React, { useEffect, useContext } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { Card, Col, Container, Row } from "react-bootstrap";
 
 
 export const ProfessorsDetails = () => {
 	const { store, actions } = useContext(Context);
-	// const groups = store.groups;
 	const professor = store.currentProfessor;
-	console.log(professor);
 	const users = store.users;
 	const groups = store.groups;
-	const params = useParams();
-	// const subindice = params.idProfessor;
-	// const professor = store.professors[subindice];
 
-	
+
 	const filterUser = users.filter(user => user.id == professor.user_id)
 	const filterGroups = groups.filter(group => group.professor_id == professor.id)
-
 	console.log(filterGroups);
-	// useEffect(() => {
-	// 		actions.getprofessorDetails(subindice);
-	// }, [])
+
 
 	return (
 		<Container fluid className="w-75">

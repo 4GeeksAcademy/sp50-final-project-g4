@@ -4,10 +4,10 @@ import '../../styles/test.css'
 import '../../img/Babysteps.png'
 import { Context } from "../store/appContext";
 
-    
+
 export const FormParents = () => {
-    const { idParent } = useParams();
     const { store, actions } = useContext(Context);
+    const [idParent, setIdParent] = useState('new');
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
@@ -19,10 +19,9 @@ export const FormParents = () => {
     useEffect(() => {
         const parentToEdit = store.currentParent;
         if (parentToEdit) {
+            setIdParent(parentToEdit.id);
             setName(parentToEdit.name);
             setLastname(parentToEdit.lastname);
-            setEmail(parentToEdit.email);
-            setPassword(parentToEdit.password);
             setAddress(parentToEdit.address);
             setPhone(parentToEdit.phone);
         }
@@ -30,7 +29,6 @@ export const FormParents = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // (alert(("All fields must be filled")));
         const newUser = {
             email: email,
             password: password,
@@ -75,10 +73,6 @@ export const FormParents = () => {
         navigate(-1)
     }
 
-    const handleSelectGruop = (e) => {
-        setGroup(e.target.value);
-    }
-
 
     return (
         <div className="login-root pb-4">
@@ -114,30 +108,34 @@ export const FormParents = () => {
                                             />
                                         </div>
                                     </div>
-                                    <div className=" row row-cols-1 row-cols-md-2">
-                                        <div className="field col">
-                                            <label htmlFor="email">Email</label>
-                                            <input
-                                                className="input"
-                                                type="email"
-                                                placeholder="Correo electrónico"
-                                                value={email}
-                                                onChange={(e) => setEmail(e.target.value)}
-                                            />
-                                        </div>
-                                        <div className="field col">
-                                            <div className="grid--50-50">
-                                                <label htmlFor="password">Contraseña</label>
+                                    {idParent == 'new' ?
+                                        <div className=" row row-cols-1 row-cols-md-2">
+                                            <div className="field col">
+                                                <label htmlFor="email">Email</label>
+                                                <input
+                                                    className="input"
+                                                    type="email"
+                                                    placeholder="Correo electrónico"
+                                                    value={email}
+                                                    onChange={(e) => setEmail(e.target.value)}
+                                                />
                                             </div>
-                                            <input
-                                                className="input"
-                                                type="password"
-                                                placeholder="Contraseña"
-                                                value={password}
-                                                onChange={(e) => setPassword(e.target.value)}
-                                            />
+                                            <div className="field col">
+                                                <div className="grid--50-50">
+                                                    <label htmlFor="password">Contraseña</label>
+                                                </div>
+                                                <input
+                                                    className="input"
+                                                    type="password"
+                                                    placeholder="Contraseña"
+                                                    value={password}
+                                                    onChange={(e) => setPassword(e.target.value)}
+                                                />
+                                            </div>
                                         </div>
-                                    </div>
+                                        :
+                                        ""
+                                    }
                                     <div className="field">
                                         <div className="grid--50-50">
                                             <label htmlFor="address">Dirección</label>
@@ -162,32 +160,17 @@ export const FormParents = () => {
                                             onChange={(e) => setPhone(e.target.value)}
                                         />
                                     </div>
-                                    {/* <div className="field col">
-                                            <div className="grid--50-50">
-                                                <label htmlFor="address">Grupo</label>
-                                            </div>
-                                            <div>
-                                                <div className="input padding-bottom--15">
-                                                    <select
-                                                        className="form-select"
-                                                        aria-label="select rol"
-                                                        required
-                                                        value={group}
-                                                        onChange={(e) => setGroup(e.target.value)}
-                                                        placeholder=""
-                                                    >
-                                                        <option value="" disabled>Seleccionar Grupo</option>
-                                                        <option value="1">Grupo 1</option>
-                                                        <option value="2">Grupo 2</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div> */}
                                     <div className="field padding-top--24">
                                         <input type="submit" name="submit" value="Continue" />
                                     </div>
                                     <div className="field d-flex justify-content-center gap-2">
-                                        <button className="btn btn-success input" type='reset' style={{ backgroundColor: "#086972" }} onClick={handleReset}>Reset</button>
+                                        <button
+                                            className="btn btn-success input"
+                                            type='reset' style={{ backgroundColor: "#086972" }}
+                                            onClick={handleReset}
+                                        >
+                                            Reset
+                                        </button>
                                         <button className="btn btn-danger input" type="button" onClick={handleGetBack}>Cancel</button>
                                     </div>
                                 </form>

@@ -1,5 +1,5 @@
-import React, { useEffect, useContext } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { Card, Col, Container, Row } from "react-bootstrap";
 
@@ -8,11 +8,11 @@ export const StudentsDetails = () => {
 	const { store, actions } = useContext(Context);
 	const student = store.currentStudent;
 	const parents = store.parents
-    // const simplifiedDate = date.toISOString().slice(0, 10);
-
+	const groups = store.groups;
 
 
 	const filterParents = parents.filter(parent => parent.id == student.parent_id)
+	const filterGroups = groups.filter(group => group.id == student.group_id)
 
 
 	return (
@@ -24,8 +24,9 @@ export const StudentsDetails = () => {
 							<Card.Body>
 								<Card.Title>Nombre: {student.name} {student.lastname}</Card.Title>
 								<Card.Text>Fecha de Nacimiento: {student.date_of_birth.slice(5, 16)} </Card.Text>
-								<Card.Text>Padre: {filterParents[0].name}</Card.Text>
+								<Card.Text>Padre: {filterParents[0].name} {filterParents[0].lastname}</Card.Text>
 								<Card.Text>Teléfono Padre: {filterParents[0].phone}</Card.Text>
+								<Card.Text>Grupo: {filterGroups[0].name}</Card.Text>
 							</Card.Body>
 						</Col>
 					</Row>

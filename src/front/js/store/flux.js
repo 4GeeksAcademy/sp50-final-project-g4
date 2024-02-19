@@ -12,6 +12,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			currentProfessor: null,
 			currentParent: null,
 			currentStudent: null,
+			currentGroup: null,
 			parents: [],
 			students: [],
 			groups: [],
@@ -219,11 +220,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				}
 			},
-
-
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");  // Use getActions() to call a function within a fuction
-			},
 			getProfessors: async () => {
 				const store = getStore();
 				const url = process.env.BACKEND_URL + 'api/professors';
@@ -239,7 +235,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json();
 					console.log({ 'professors': data.professors });
 					setStore({ professors: data.professors });
-					// localStorage.setItem("professors", JSON.stringify(data.professors));
 				} else {
 					console.log('Error: ', response.status, response.statusText)
 				}
@@ -259,7 +254,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json();
 					console.log({ 'parents': data.parents });
 					setStore({ parents: data.parents });
-					// localStorage.setItem("parents", JSON.stringify(data.parents));
 				} else {
 					console.log('Error: ', response.status, response.statusText)
 				}
@@ -279,7 +273,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json();
 					console.log({ 'students': data.students });
 					setStore({ students: data.students });
-					// localStorage.setItem("students", JSON.stringify(data.students));
 				} else {
 					console.log('Error: ', response.status, response.statusText)
 				}
@@ -353,6 +346,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						const data = await response.json();
 						console.log({ "professors": data });
 						actions.getProfessors();
+						actions.getUsers();
 						// setStore({ "professors": [...store.professors, data] })
 					} else {
 						console.log('Error: ', response.status, response.statusText)
@@ -377,7 +371,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.log(response);
 				if (response.ok) {
 					const data = await response.json();
-					console.log({ "professors": data.professors });
+					console.log({ "professors": data });
 					getActions().getProfessors();
 				} else {
 					console.log('Error: ', response.status, response.statusText)
@@ -416,7 +410,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json()
 					console.log(data);
 					setStore({ currentProfessor: data })
-					// localStorage.setItem({'characters': JSON.stringify(data.results)})
 				} else {
 					console.log('Error: ', response.status, response.statusText)
 				}
@@ -452,11 +445,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 						const data = await response.json();
 						console.log({ "parents": data });
 						actions.getParents();
+						actions.getUsers();
 					} else {
 						console.log('Error: ', response.status, response.statusText)
 					}
 				} else {
 					console.log('Error newuser:', newUserFetch.status, newUserFetch.statusText);
+				}
+			},
+			updateParent: async (idParent, editedParent) => {
+				const url = process.env.BACKEND_URL + 'api/parents/' + idParent;
+				console.log(editedParent);
+				const options = {
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': "Bearer " + localStorage.getItem("token")
+					},
+					body: JSON.stringify(editedParent)
+				};
+				const response = await fetch(url, options);
+				console.log(response);
+				if (response.ok) {
+					const data = await response.json();
+					console.log({ "parents": data });
+					getActions().getParents();
+				} else {
+					console.log('Error: ', response.status, response.statusText)
 				}
 			},
 			createStudent: async (newStudent) => {
@@ -476,6 +491,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json();
 					console.log({ "students": data.Representate });
 					actions.getParents();
+					actions.getStudents();
+				} else {
+					console.log('Error: ', response.status, response.statusText)
+				}
+			},
+			updateStudent: async (idStudent, editedStudent) => {
+				const url = process.env.BACKEND_URL + 'api/students/' + idStudent;
+				console.log(editedStudent);
+				const options = {
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': "Bearer " + localStorage.getItem("token")
+					},
+					body: JSON.stringify(editedStudent)
+				};
+				const response = await fetch(url, options);
+				console.log(response);
+				if (response.ok) {
+					const data = await response.json();
+					console.log({ "students": data });
+					getActions().getStudents();
 				} else {
 					console.log('Error: ', response.status, response.statusText)
 				}
@@ -497,6 +534,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json();
 					console.log({ "Groups": data.Grupo });
 					actions.getParents();
+					actions.getGroups();
+				} else {
+					console.log('Error: ', response.status, response.statusText)
+				}
+			},
+			updateGroup: async (idGruop, editedGroup) => {
+				const store = getStore();
+				const url = process.env.BACKEND_URL + 'api/admin/group/assign/' + idGruop;
+				console.log(editedGroup);
+				const options = {
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': "Bearer " + localStorage.getItem("token")
+					},
+					body: JSON.stringify(editedGroup)
+				};
+				const response = await fetch(url, options);
+				console.log(response);
+				if (response.ok) {
+					const data = await response.json();
+					console.log({ "groups": data.groups });
+					getActions().getGroups();
 				} else {
 					console.log('Error: ', response.status, response.statusText)
 				}
@@ -522,7 +582,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			setCurrentProfessor: (item) => { setStore({ currentProfessor: item }) },
 			setCurrentParent: (item) => { setStore({ currentParent: item }) },
-			setCurrentStudent: (item) => { setStore({ currentStudent: item }) }
+			setCurrentStudent: (item) => { setStore({ currentStudent: item }) },
+			setCurrentGroup: (item) => { setStore({ currentGroup: item }) }
 		}
 	};
 };
