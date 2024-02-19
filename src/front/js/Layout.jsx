@@ -30,6 +30,7 @@ import { ProfessorsDetails } from "./pages/ProfessorsDetails.jsx";
 import {Professors_1} from "./pages/Professors_1.jsx";
 import { Parents_1 } from "./pages/Parents_1.jsx";
 import { Groups } from "./pages/Groups.jsx";
+import { FormGroupsUpdate } from "./pages/FormGroupsUpdate.jsx";
 
 
 
@@ -53,6 +54,7 @@ const Layout = () => {
                         <Route element={<FormParents />} path="/formparents" />
                         <Route element={<FormProfessors />} path="/formprofessors" />
                         <Route element={<FormGroups />} path="/formgroups" />
+                        <Route element={<FormGroupsUpdate />} path="/editgroup" />
                         <Route element={<FormProfessors />} path="/formprofessors/:idProfessor" />
                         <Route element={<FormStudents />} path="/formstudents" />
                         <Route element={<ProfessorsAdmin />} path="/professors" />

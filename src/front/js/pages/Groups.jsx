@@ -1,29 +1,22 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 import { Link, useNavigate } from "react-router-dom";
 
 
 export const Groups = () => {
     const { store, actions } = useContext(Context);
-    const professors = store.professors;
     const groups = store.groups;
     const navigate = useNavigate();
-
-
-    const filterProfessor = professors.filter(professor => professor.id == groups.profesor_id)
 
 
     const handleGetBack = () => {
         navigate(-1)
     }
 
-    useEffect(() => {
-        if (store.profile.is_admin) {
-            actions.getGroups();
-            actions.getProfessors();
-            actions.getStudents();
-        }
-    }, [])
+    const handleEdit = (item) => {
+        actions.setCurrentGroup(item)
+        navigate('/editgroup')
+    }
 
 
     return (
@@ -35,16 +28,23 @@ export const Groups = () => {
                     </div>
                     <ul className="list-group list-group-flush" >
                         {groups.map((item, index) =>
-                            <li className="list-group-item" key={index} style={{ height: "41px" }}>{item.name} {/* - {filterProfessor[0].name} {filterProfessor[0].lastname} */}</li>
+                            <li className="list-group-item d-flex justify-content-between" key={index} style={{ height: "41px" }}>
+                                {item.name}
+                                {/* <span
+                                    className="fas fa-pencil-alt"
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => handleEdit(item)}>
+                                </span> */}
+                            </li>
                         )}
                     </ul>
                 </div>
             </div>
             <Link to="/homeadmin" className="btn d-flex justify-content-center align-items-center">
-				<button className="btn" type="button" style={{ marginBottom: "68px", backgroundColor: "#0fc1d1" }} role="button">
-					Atrás
-				</button>
-			</Link>
+                <button className="btn" type="button" style={{ marginBottom: "68px", backgroundColor: "#0fc1d1" }} role="button">
+                    Atrás
+                </button>
+            </Link>
         </div>
     );
 };

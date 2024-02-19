@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import '../../styles/test.css'
 import '../../img/Babysteps.png'
 import { Context } from "../store/appContext";
@@ -7,7 +7,7 @@ import { Context } from "../store/appContext";
 
 export const FormProfessors = () => {
     const { store, actions } = useContext(Context);
-    const [ idProfessor, setIdProfessor ] = useState('new');
+    const [idProfessor, setIdProfessor] = useState('new');
     const [name, setName] = useState("");
     const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("");
@@ -22,13 +22,10 @@ export const FormProfessors = () => {
 
     useEffect(() => {
         const professorToEdit = store.currentProfessor;
-        // console.log(professorToEdit.is_admin);
         if (professorToEdit) {
             setIdProfessor(professorToEdit.id);
             setName(professorToEdit.name);
             setLastname(professorToEdit.lastname);
-            setEmail(professorToEdit.email);
-            setPassword(professorToEdit.password);
             setAddress(professorToEdit.address);
             setPhone(professorToEdit.phone);
             setIsAdmin(store.currentProfessor.is_admin);
@@ -36,13 +33,8 @@ export const FormProfessors = () => {
         }
     }, [])
 
-    const handleSelectGroup = (e) => {
-        setGroup(e.target.value);
-    }
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        // (alert(("All fields must be filled")));
         const newUser = {
             email: email,
             password: password,
@@ -94,6 +86,10 @@ export const FormProfessors = () => {
         navigate(-1)
     }
 
+    const handleSelectGroup = (e) => {
+        setGroup(e.target.value);
+    }
+
 
     return (
         <div className="login-root pb-4">
@@ -131,32 +127,36 @@ export const FormProfessors = () => {
                                             />
                                         </div>
                                     </div>
-                                    <div className="fullname row row-cols-1 row-cols-md-2">
-                                        <div className="field col">
-                                            <label htmlFor="email">Email</label>
-                                            <input
-                                                className="input"
-                                                type="email"
-                                                placeholder="Correo electrónico"
-                                                required
-                                                value={email}
-                                                onChange={(e) => setEmail(e.target.value)}
-                                            />
-                                        </div>
-                                        <div className="field col">
-                                            <div className="grid--50-50">
-                                                <label htmlFor="password">Contraseña</label>
+                                    {idProfessor == 'new' ?
+                                        <div className="fullname row row-cols-1 row-cols-md-2">
+                                            <div className="field col">
+                                                <label htmlFor="email">Email</label>
+                                                <input
+                                                    className="input"
+                                                    type="email"
+                                                    placeholder="Correo electrónico"
+                                                    required
+                                                    value={email}
+                                                    onChange={(e) => setEmail(e.target.value)}
+                                                />
                                             </div>
-                                            <input
-                                                className="input"
-                                                type="password"
-                                                placeholder="Contraseña"
-                                                required
-                                                value={password}
-                                                onChange={(e) => setPassword(e.target.value)}
-                                            />
+                                            <div className="field col">
+                                                <div className="grid--50-50">
+                                                    <label htmlFor="password">Contraseña</label>
+                                                </div>
+                                                <input
+                                                    className="input"
+                                                    type="password"
+                                                    placeholder="Contraseña"
+                                                    required
+                                                    value={password}
+                                                    onChange={(e) => setPassword(e.target.value)}
+                                                />
+                                            </div>
                                         </div>
-                                    </div>
+                                        :
+                                        ""
+                                    }
                                     <div className="field">
                                         <div className="grid--50-50">
                                             <label htmlFor="address">Dirección</label>
@@ -195,9 +195,8 @@ export const FormProfessors = () => {
                                                         aria-label="select group"
                                                         value={group}
                                                         onChange={handleSelectGroup}
-                                                        defaultValue="Seleccionar Grupo"
                                                     >
-                                                        <option value="" selected disabled hidden>Seleccionar Grupo</option>                                                        
+                                                        <option value="" selected disabled hidden>Seleccionar Grupo</option>
                                                         {groups.map(item => (
                                                             <option key={item.id} value={item.id}>{item.name}</option>
                                                         ))}
@@ -220,7 +219,13 @@ export const FormProfessors = () => {
                                         <input type="submit" name="submit" value="Continue" />
                                     </div>
                                     <div className="field d-flex justify-content-center gap-2">
-                                        <button className="btn btn-success input submit" type='reset' style={{ backgroundColor: "#086972" }} onClick={handleReset}>Reset</button>
+                                        <button
+                                            className="btn btn-success input submit"
+                                            type='reset' style={{ backgroundColor: "#086972" }}
+                                            onClick={handleReset}
+                                        >
+                                            Reset
+                                        </button>
                                         <button className="btn btn-danger input submit" type="button" onClick={handleGetBack}>Cancel</button>
                                     </div>
                                 </form>

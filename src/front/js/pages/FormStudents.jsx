@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import test from '../../styles/test.css'
+import '../../img/Babysteps.png'
+import '../../styles/test.css'
 import { Context } from "../store/appContext";
 
 
 export const FormStudents = () => {
     const { store, actions } = useContext(Context);
+    const [idStudent, setIdStudent] = useState('new');
     const [name, setName] = useState("");
     const [lastname, setLastname] = useState("");
     const [dateOfBirth, setDateOfBirth] = useState("");
@@ -13,16 +15,19 @@ export const FormStudents = () => {
     const [parent, setParent] = useState("");
     const groups = store.groups;
     const parents = store.parents
-    // const simplifiedDate = date.toISOString().slice(0, 10);
     const navigate = useNavigate();
 
 
-    const handleSelectGroup = (e) => {
-        setGroup(e.target.value);
-    }
-    const handleSelectParent = (e) => {
-        setParent(e.target.value);
-    }
+    useEffect(() => {
+        const StudentToEdit = store.currentStudent;
+        if (StudentToEdit) {
+            setIdStudent(StudentToEdit.id);
+            setName(StudentToEdit.name);
+            setLastname(StudentToEdit.lastname);
+            setGroup(StudentToEdit.group);
+        }
+    }, [])
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -33,9 +38,28 @@ export const FormStudents = () => {
             parent_id: parent,
             group_id: group
         };
-        actions.createStudent(newStudent);
+        const editedStudent = {
+            name: name,
+            lastname: lastname,
+            date_of_birth: store.currentStudent.date_of_birth,
+            parent_id: store.currentStudent.parent_id,
+            group_id: group
+        };
+        if (idStudent && idStudent !== 'new') {
+            actions.updateStudent(idStudent, editedStudent);
+        } else {
+            console.log("Creating new Student");
+            actions.createStudent(newStudent);
+        }
         navigate("/students");
-    }
+    };
+
+    const handleSelectGroup = (e) => {
+        setGroup(e.target.value);
+    };
+    const handleSelectParent = (e) => {
+        setParent(e.target.value);
+    };
 
     const handleReset = () => {
         setName('')
@@ -49,14 +73,8 @@ export const FormStudents = () => {
     const handleGetBack = () => {
         handleReset();
         navigate(-1);
-    }
+    };
 
-    useEffect(() => {
-        if (store.profile.is_admin) {
-            actions.getGroups();
-            actions.getParents();
-        }
-    }, [])
 
     return (
         <div className="login-root pb-4">
@@ -92,38 +110,46 @@ export const FormStudents = () => {
                                             />
                                         </div>
                                     </div>
-                                    <div className="field">
-                                        <div className="grid--50-50">
-                                            <label htmlFor="address">Fecha de Nacimiento</label>
+                                    {idStudent == 'new' ?
+                                        <div className="field">
+                                            <div className="grid--50-50">
+                                                <label htmlFor="address">Fecha de Nacimiento</label>
+                                            </div>
+                                            <input
+                                                className="input"
+                                                type="date"
+                                                placeholder="Fecha de nacimiento"
+                                                value={dateOfBirth}
+                                                onChange={(e) => setDateOfBirth(e.target.value)}
+                                            />
                                         </div>
-                                        <input
-                                            className="input"
-                                            type="date"
-                                            placeholder="Fecha de nacimiento"
-                                            value={dateOfBirth}
-                                            onChange={(e) => setDateOfBirth(e.target.value)}
-                                        />
-                                    </div>
-                                    <div className="field">
-                                        <div className="grid--50-50">
-                                            <label htmlFor="Grupo">Padre</label>
+                                        :
+                                        ""
+                                    }
+                                    {idStudent == 'new' ?
+                                        <div className="field">
+                                            <div className="grid--50-50">
+                                                <label htmlFor="Grupo">Padre</label>
+                                            </div>
+                                            <div className="input padding-bottom--15">
+                                                <select
+                                                    className="form-select"
+                                                    aria-label="select parent"
+                                                    value={parent}
+                                                    onChange={handleSelectParent}
+                                                    defaultValue="Seleccionar Padre"
+                                                    placeholder="Padre"
+                                                >
+                                                    <option value="" selected disabled hidden>Seleccionar Padre</option>
+                                                    {parents.map(item => (
+                                                        <option key={item.id} value={item.id}>{item.name} {item.lastname}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div className="input padding-bottom--15">
-                                            <select
-                                                className="form-select"
-                                                aria-label="select parent"
-                                                value={parent}
-                                                onChange={handleSelectParent}
-                                                defaultValue="Seleccionar Padre"
-                                                placeholder="Padre"
-                                            >
-                                                <option value="" selected disabled hidden>Seleccionar Padre</option>
-                                                {parents.map(item => (
-                                                    <option key={item.id} value={item.id}>{item.name} {item.lastname}</option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                    </div>
+                                        :
+                                        ""
+                                    }
                                     <div className="field">
                                         <div className="grid--50-50">
                                             <label htmlFor="Grupo">grupo</label>
@@ -134,9 +160,8 @@ export const FormStudents = () => {
                                                 aria-label="select group"
                                                 value={group}
                                                 onChange={handleSelectGroup}
-                                                defaultValue="Seleccionar Grupo"
                                             >
-                                                <option value="" selected disabled hidden>Seleccionar Grupo</option>
+                                                <option value="" disabled hidden>Seleccionar Grupo</option>
                                                 {groups.map(item => (
                                                     <option key={item.id} value={item.id}>{item.name}</option>
                                                 ))}
@@ -149,7 +174,13 @@ export const FormStudents = () => {
                                     <div className="field">
                                     </div>
                                     <div className="field d-flex justify-content-center gap-2">
-                                        <button className="btn btn-success input submit" type='reset' style={{ backgroundColor: "#086972" }} onClick={handleReset}>Reset</button>
+                                        <button
+                                            className="btn btn-success input submit"
+                                            type='reset' style={{ backgroundColor: "#086972" }}
+                                            onClick={handleReset}
+                                        >
+                                            Reset
+                                        </button>
                                         <button className="btn btn-danger input submit" type="button" onClick={handleGetBack}>Cancel</button>
                                     </div>
                                 </form>

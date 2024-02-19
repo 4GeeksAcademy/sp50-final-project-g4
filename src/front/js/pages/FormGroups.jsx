@@ -1,5 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import '../../img/Babysteps.png'
 import '../../styles/test.css'
 import { Context } from "../store/appContext";
 
@@ -7,11 +8,8 @@ import { Context } from "../store/appContext";
 export const FormGroups = () => {
     const { store, actions } = useContext(Context);
     const [name, setName] = useState("");
-    const [group, setGroup] = useState("");
     const [professor, setProfessor] = useState("");
-    // const groups = store.groups;
     const professors = store.professors
-    // const simplifiedDate = date.toISOString().slice(0, 10);
     const navigate = useNavigate();
 
 
@@ -27,8 +25,7 @@ export const FormGroups = () => {
         };
         actions.createGroup(newGroup);
         console.log('grupo creado: ', newGroup);
-        navigate("/homeadmin");
-
+        navigate("/groups");
     }
 
 
@@ -38,13 +35,6 @@ export const FormGroups = () => {
         navigate(-1)
     }
 
-    useEffect(() => {
-        if (store.profile.is_admin) {
-            actions.getGroups();
-            actions.getProfessors();
-            actions.getStudents();
-        }
-    }, [])
 
     return (
         <div className="login-root pb-4">
@@ -73,7 +63,7 @@ export const FormGroups = () => {
                                     </div>
                                     <div className="field">
                                         <div className="grid--50-50">
-                                            <label htmlFor="Grupo">Padre</label>
+                                            <label htmlFor="Grupo">Grupo</label>
                                         </div>
                                         <div className="input padding-bottom--15">
                                             <select
@@ -81,9 +71,8 @@ export const FormGroups = () => {
                                                 aria-label="select grprofessoroup"
                                                 value={professor}
                                                 onChange={handleSelectProfessor}
-                                                defaultValue="Seleccionar Profesor"
                                             >
-                                                <option value="" selected disabled hidden>Seleccionar Profesor</option>
+                                                <option value="" disabled hidden>Seleccionar Profesor</option>
                                                 {professors.map(item => (
                                                     <option key={item.id} value={item.id}>{item.name} {item.lastname} </option>
                                                 ))}
